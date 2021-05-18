@@ -19,7 +19,7 @@ const footerStyle = css`
 
 const Footer = () => (
   <footer className={footerStyle}>
-    <span>&copy; Ultimate Ice Cream</span>
+    <span>&copy; My Ice Cream</span>
   </footer>
 );
 

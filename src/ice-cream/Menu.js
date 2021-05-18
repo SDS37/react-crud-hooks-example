@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import Main from '../structure/Main';
-import LoaderMessage from '../structure/LoaderMessage';
-import IceCreamCardContainer from './IceCreamCardContainer';
-import IceCreamCard from './IceCreamCard';
-import { getMenu } from '../data/iceCreamData';
-import { css } from 'emotion/macro';
-import PropTypes from 'prop-types';
+// import React, { useState, useEffect } from 'react';
+// import Main from '../structure/Main';
+// import LoaderMessage from '../structure/LoaderMessage';
+// import IceCreamCardContainer from './IceCreamCardContainer';
+// import IceCreamCard from './IceCreamCard';
+// import { getMenu } from '../data/iceCreamData';
+// import PropTypes from 'prop-types';
 
+import React, { useState, useEffect } from 'react';
+import { getMenu } from '../data/iceCreamData';
+import IceCreamImage from './IceCreamImage';
+import LoaderMessage from '../structure/LoaderMessage';
+
+import Helmet from 'react-helmet';
+
+import { css } from 'emotion/macro';
 const cardContentStyle = css`
   display: flex;
   flex-direction: row;
@@ -55,7 +62,7 @@ const cardContentStyle = css`
   }
 `;
 
-const Menu = ({ history }) => {
+const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -69,57 +76,104 @@ const Menu = ({ history }) => {
     });
     return () => {
       isMounted = false;
-    };
-  }, []);
+    }
+  }, [])
 
   return (
-    <Main headingText="Rock your taste buds with one of these!">
-      <LoaderMessage
-        loadingMsg="Loading menu."
-        doneMsg="Loading menu complete."
-        isLoading={isLoading}
-      />
-      {!isLoading && (
-        <div>
-          {menu.length > 0 && !isLoading ? (
-            <>
-              <IceCreamCardContainer>
-                {menu.map(
-                  ({ id, iceCream, price, description, inStock, quantity }) => (
-                    <IceCreamCard
-                      key={id}
-                      iceCreamId={iceCream.id}
-                      to={`/menu-items/${id.toString()}`}
-                      heading={iceCream.name}
-                      history={history}
-                    >
-                      <div className={cardContentStyle}>
-                        <p className="price">{`$${price.toFixed(2)}`}</p>
-                        <p className={`stock${inStock ? '' : ' out'}`}>
-                          {inStock
-                            ? `${quantity} in stock`
-                            : 'Currently out of stock!'}
-                        </p>
-                        <p className="description">{description}</p>
-                      </div>
-                    </IceCreamCard>
-                  )
-                )}
-              </IceCreamCardContainer>
-            </>
-          ) : (
-            <p>Your menu is empty! The sadness!!</p>
-          )}
-        </div>
-      )}
-    </Main>
+    <main>
+      <Helmet><title>Rock your taste buds with one of these | My Ice Cream</title></Helmet>
+      <h2>Rock your taste buds with one of these</h2>
+      <LoaderMessage loadingMessage="Ice creams loading" doneMessage="Menu complete" isLoading={isLoading}/>
+     
+      {menu.length > 0 ?
+        <ul>
+          {menu.map( ({id, iceCream, price, description, inStock, quantity}) =>
+          <li key={id.toString()}>
+            <section>
+              <div>
+                <IceCreamImage iceCreamId={iceCream.id}/>
+              </div>
+              <div className={cardContentStyle}>
+                <p className="price">{`$${price.toFixed(2)}`}</p>
+                <p className={`stock${inStock ? '' : ' out'}`}>
+                  {inStock ? `${quantity} in stock` : 'Currently out of stock!'}
+                </p>
+                <p className="description">{description}</p>
+              </div>
+            </section>
+          </li>)}
+        </ul>
+      : ( !isLoading && <p>nothing to show !</p> ) }
+    </main>
   );
-};
+}
 
-Menu.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }),
-};
+export default Menu; 
+// const Menu = ({ history }) => {
+//   const [menu, setMenu] = useState([]);
+//   const [isLoading, setIsLoading] = useState(true);
 
-export default Menu;
+//   useEffect(() => {
+//     let isMounted = true;
+//     getMenu().then(menuData => {
+//       if (isMounted) {
+//         setMenu(menuData);
+//         setIsLoading(false);
+//       }
+//     });
+//     return () => {
+//       isMounted = false;
+//     };
+//   }, []);
+
+//   return (
+//     <Main headingText="Rock your taste buds with one of these!">
+//       <LoaderMessage
+//         loadingMsg="Loading menu."
+//         doneMsg="Loading menu complete."
+//         isLoading={isLoading}
+//       />
+//       {!isLoading && (
+//         <div>
+//           {menu.length > 0 && !isLoading ? (
+//             <>
+//               <IceCreamCardContainer>
+//                 {menu.map(
+//                   ({ id, iceCream, price, description, inStock, quantity }) => (
+//                     <IceCreamCard
+//                       key={id}
+//                       iceCreamId={iceCream.id}
+//                       to={`/menu-items/${id.toString()}`}
+//                       heading={iceCream.name}
+//                       history={history}
+//                     >
+//                       <div className={cardContentStyle}>
+//                         <p className="price">{`$${price.toFixed(2)}`}</p>
+//                         <p className={`stock${inStock ? '' : ' out'}`}>
+//                           {inStock
+//                             ? `${quantity} in stock`
+//                             : 'Currently out of stock!'}
+//                         </p>
+//                         <p className="description">{description}</p>
+//                       </div>
+//                     </IceCreamCard>
+//                   )
+//                 )}
+//               </IceCreamCardContainer>
+//             </>
+//           ) : (
+//             <p>Your menu is empty! The sadness!!</p>
+//           )}
+//         </div>
+//       )}
+//     </Main>
+//   );
+// };
+
+// Menu.propTypes = {
+//   history: PropTypes.shape({
+//     push: PropTypes.func.isRequired,
+//   }),
+// };
+
+// export default Menu;

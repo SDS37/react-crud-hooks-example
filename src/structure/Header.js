@@ -1,8 +1,9 @@
 import React from 'react';
-import FocusLink from '../structure/FocusLink';
-import iceCream from '../assets/img/ultimate-ice-cream.svg';
-import { css } from 'emotion/macro';
 
+import iceCream from '../assets/img/ice-cream.svg';
+// import FocusLink from '../structure/FocusLink';
+
+import { css } from 'emotion/macro';
 const headerStyle = css`
   position: relative;
   text-align: center;
@@ -83,18 +84,29 @@ const headerStyle = css`
 const Header = () => (
   <header className={headerStyle}>
     <h1>
-      <img src={iceCream} alt="" />
-      Ultimate Ice Cream
+      <img src={iceCream} alt=""/>
+      My Ice Cream
     </h1>
-    <nav>
-      <FocusLink to="/" activeClassName="active" exact>
-        Menu
-      </FocusLink>
-      <FocusLink to="/ice-creams" activeClassName="active">
-        Add Ice Cream
-      </FocusLink>
-    </nav>
   </header>
 );
 
 export default Header;
+
+
+// const Header = () => (
+//   <header className={headerStyle}>
+//     <h1>
+//       <img src={iceCream} alt="" />
+//       Ultimate Ice Cream
+//     </h1>
+//     <nav>
+//       <FocusLink to="/" activeClassName="active" exact>
+//         Menu
+//       </FocusLink>
+//       <FocusLink to="/ice-creams" activeClassName="active">
+//         Add Ice Cream
+//       </FocusLink>
+//     </nav>
+//   </header>
+// );
+
