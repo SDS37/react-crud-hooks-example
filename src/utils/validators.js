@@ -1,3 +1,11 @@
+export const validateDescription = description =>
+  description ? null : 'You must enter a description';
+
+export const validateQuantity = (quantity, inStock) =>
+  inStock && quantity === '0'
+    ? 'An in stock item should have a quantity'
+    : null;
+
 export const validatePrice = price => {
   const regex = /^[0-9]+(\.[0-9][0-9])$/;
 
@@ -8,11 +16,3 @@ export const validatePrice = price => {
   }
   return null;
 };
-
-export const validateDescription = description =>
-  description ? null : 'You must enter a description';
-
-export const validateQuantity = (quantity, inStock) =>
-  inStock && quantity === '0'
-    ? 'An in stock item should have a quantity'
-    : null;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { css } from 'emotion/macro';
 import PropTypes from 'prop-types';
 
+import { css } from 'emotion/macro';
 const containerStyle = css`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

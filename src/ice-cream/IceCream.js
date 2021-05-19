@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ErrorContainer from './ErrorContainer';
-import IceCreamImage from './IceCreamImage';
-import useUniqueIds from '../hooks/useUniqueIds';
-import useValidation from '../hooks/useValidation';
-import {
-  validatePrice,
-  validateQuantity,
-  validateDescription,
-} from '../utils/validators';
-import { css } from 'emotion/macro';
 import PropTypes from 'prop-types';
 
+import useUniqueIds from '../hooks/useUniqueIds';
+import useValidation from '../hooks/useValidation';
+import { validatePrice, validateQuantity, validateDescription } from '../utils/validators';
+
+import ErrorContainer from './ErrorContainer';
+import IceCreamImage from './IceCreamImage';
+
+import { css } from 'emotion/macro';
 const formStyle = css`
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -299,15 +297,7 @@ const formStyle = css`
   }
 `;
 
-const IceCream = ({
-  iceCream,
-  price = 0,
-  quantity = 0,
-  inStock = true,
-  description = '',
-  onDelete,
-  onSubmit,
-}) => {
+const IceCream = ({ iceCream = {}, price = 0, quantity = 0, inStock = true, description = '', onDelete, onSubmit }) => {
   const [
     descriptionId,
     descriptionErrorId,
@@ -369,22 +359,18 @@ const IceCream = ({
       [e.target.name]:
         e.target.type === 'checkbox' ? e.target.checked : e.target.value,
     };
-
     if (e.target.name === 'quantity') {
       newInternalData.inStock = e.target.value !== '0';
     }
-
     if (e.target.name === 'inStock' && !e.target.checked) {
       newInternalData.quantity = '0';
     }
-
     setInternalData(newInternalData);
   };
 
   const onSubmitHandler = e => {
     e.preventDefault();
     setHasSubmitted(true);
-
     if (descriptionError || quantityError || priceError) {
       setTimeout(() => {
         const errorControl = formRef.current.querySelector(
@@ -415,22 +401,19 @@ const IceCream = ({
             <dd>{iceCream.name}</dd>
           </dl>
           <form noValidate onSubmit={onSubmitHandler} ref={formRef}>
-            <label htmlFor={descriptionId}>
-              Description<span aria-hidden="true">*</span> :
+            <label htmlFor={descriptionId}>Description<span aria-hidden="true">*</span> :
             </label>
             <ErrorContainer
               errorText={descriptionError}
               errorId={descriptionErrorId}
-              hasSubmitted={hasSubmitted}
-            >
+              hasSubmitted={hasSubmitted}>
               <textarea
                 id={descriptionId}
                 name="description"
                 rows="3"
                 onChange={onChangeHandler}
                 value={internalData.description}
-                {...descriptionErrorProps}
-              />
+                {...descriptionErrorProps}/>
             </ErrorContainer>
             <label htmlFor={stockId}>In Stock :</label>
             <div className="checkbox-wrapper">
@@ -447,15 +430,13 @@ const IceCream = ({
             <ErrorContainer
               errorText={quantityError}
               errorId={quantityErrorId}
-              hasSubmitted={hasSubmitted}
-            >
+              hasSubmitted={hasSubmitted}>
               <select
                 id={quantityId}
                 name="quantity"
                 onChange={onChangeHandler}
                 value={internalData.quantity}
-                {...quantityErrorProps}
-              >
+                {...quantityErrorProps}>
                 <option value="0">0</option>
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -464,14 +445,12 @@ const IceCream = ({
                 <option value="50">50</option>
               </select>
             </ErrorContainer>
-            <label htmlFor={priceId}>
-              Price<span aria-hidden="true">*</span> :
+            <label htmlFor={priceId}>Price<span aria-hidden="true">*</span> :
             </label>
             <ErrorContainer
               errorText={priceError}
               errorId={priceErrorId}
-              hasSubmitted={hasSubmitted}
-            >
+              hasSubmitted={hasSubmitted}>
               <input
                 id={priceId}
                 type="number"
@@ -479,18 +458,15 @@ const IceCream = ({
                 name="price"
                 onChange={onChangeHandler}
                 value={internalData.price}
-                {...priceErrorProps}
-              />
+                {...priceErrorProps}/>
             </ErrorContainer>
             <div className="button-container">
-              <button className="ok" type="submit">
-                Save
-              </button>
-              {onDelete && (
-                <button className="warning" type="button" onClick={onDelete}>
-                  Delete
-                </button>
-              )}
+              <button className="ok" type="submit">Save</button>
+              {
+                onDelete && (
+                  <button className="warning" type="button" onClick={onDelete}>Delete</button>
+                )
+              }
             </div>
           </form>
         </div>

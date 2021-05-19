@@ -1,19 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useRef } from 'react';
+import PropTypes from 'prop-types';
+
+import { getIceCream, postMenuItem } from '../data/iceCreamData';
+
 import Main from '../structure/Main';
 import LoaderMessage from '../structure/LoaderMessage';
 import IceCream from './IceCream';
-import { getIceCream, postMenuItem } from '../data/iceCreamData';
-import PropTypes from 'prop-types';
 
-const AddIceCream = ({ location, history }) => {
+const AddIceCream = ({ history, location }) => {
+  const isMounted = useRef(true);
   const [isLoading, setIsLoading] = useState(true);
   const [iceCream, setIceCream] = useState({});
 
   useEffect(() => {
-    let isMounted = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
     getIceCream(location.search.split('=')[1])
       .then(iceCreamResponse => {
-        if (isMounted) {
+        if (isMounted.current) {
           setIceCream(iceCreamResponse);
           setIsLoading(false);
         }
@@ -23,9 +31,6 @@ const AddIceCream = ({ location, history }) => {
           history.replace('/', { focus: true });
         }
       });
-    return () => {
-      isMounted = false;
-    };
   }, [history, location.search]);
 
   const onSubmitHandler = menuItem => {
@@ -36,26 +41,24 @@ const AddIceCream = ({ location, history }) => {
 
   return (
     <Main headingText="Add some goodness to the menu">
-      <LoaderMessage
-        loadingMsg="Loading ice cream."
-        doneMsg="Ice cream loaded."
-        isLoading={isLoading}
-      />
-      {!isLoading && (
-        <IceCream iceCream={iceCream} onSubmit={onSubmitHandler} />
-      )}
+      <LoaderMessage loadingMessage="Loading ice cream." doneMessage="Ice cream loaded." isLoading={isLoading}/>
+      {
+        !isLoading && (
+          <IceCream iceCream={iceCream} onSubmit={onSubmitHandler} />
+        )
+      }
     </Main>
   );
 };
 
 AddIceCream.propTypes = {
-  location: PropTypes.shape({
-    search: PropTypes.string.isRequired,
-  }),
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
   }),
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired,
+  })
 };
 
 export default AddIceCream;

@@ -1,3 +1,12 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import Header from './structure/Header';
+import Footer from './structure/Footer';
+import Menu from './ice-cream/Menu';
+import EditIceCream from './ice-cream/EditIceCream';
+import IceCreams from './ice-cream/IceCreams';
+import AddIceCream from './ice-cream/AddIceCream';
+
 // node-sass not installed ---------------------------------
 // import './styles/ice-cream.scss';
 import geomanistBookWoff from './assets/fonts/geomanist/geomanist-book.woff';
@@ -5,20 +14,6 @@ import geomanistBookWoff2 from './assets/fonts/geomanist/geomanist-book.woff2';
 import cornerstoneWoff from './assets/fonts/cornerstone.woff';
 import cornerstoneWoff2 from './assets/fonts/cornerstone.woff2';
 import { Global, css } from '@emotion/core';
-// ---------------------------------------------------------
-
-import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from 'react-router-dom';
-import Header from './structure/Header';
-import Footer from './structure/Footer';
-import Menu from './ice-cream/Menu';
-import EditIceCream from './ice-cream/EditIceCream';
-
 const globalStyle = css`
   @font-face {
     font-family: 'geomanist';
@@ -117,15 +112,21 @@ const globalStyle = css`
     }
   }
 `;
+// ---------------------------------------------------------
 
 const App = () => {
   return (
     <Router>
       <Global styles={globalStyle} />
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <Header />
       <Switch>
         <Route path="/" component={ Menu } exact />
-        <Route path="/menu-items/:menuItemId" component={EditIceCream} exact />
+        <Route path="/ice-creams" component={IceCreams} />
+        <Route path="/menu-items/add" component={AddIceCream} exact />
+        <Route path="/menu-items/:menuItemId" component={EditIceCream} />
         <Redirect to="/" />
       </Switch>
       <Footer />
@@ -134,30 +135,3 @@ const App = () => {
 }
 
 export default App;
-
-
-
-// import IceCreams from './ice-cream/IceCreams';
-// import AddIceCream from './ice-cream/AddIceCream';
-
-// const App = () => {
-//   return (
-//     <Router>
-//       <Global styles={globalStyle} />
-//       <a href="#main" className="skip-link">
-//         Skip to content
-//       </a>
-//       <Header />
-//       <Switch>
-//         <Route path="/" component={Menu} exact />
-//         <Route path="/ice-creams" component={IceCreams} exact />
-//         <Route path="/menu-items/add" component={AddIceCream} exact />
-//         <Route path="/menu-items/:menuItemId" component={EditIceCream} exact />
-//         <Redirect to="/" />
-//       </Switch>
-//       <Footer />
-//     </Router>
-//   );
-// };
-
-// export default App;

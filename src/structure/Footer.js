@@ -1,6 +1,6 @@
 import React from 'react';
-import { css } from 'emotion/macro';
 
+import { css } from 'emotion/macro';
 const footerStyle = css`
   max-width: 63.75em;
   margin-left: auto;

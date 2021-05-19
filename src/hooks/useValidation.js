@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useValidation = (
-  value,
-  errorId,
-  showError,
-  validatorFn,
-  isRequired,
-  compareValue = null
-) => {
+const useValidation = ( value, errorId, showError, validatorFn, isRequired, compareValue = null ) => {
   const [error, setError] = useState('');
 
   useEffect(() => {

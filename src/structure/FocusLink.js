@@ -14,7 +14,7 @@ const FocusLink = ({ to, children, activeClassName, ...props }) => {
           state: to.state ? { ...to.state, focus: true } : { focus: true },
         };
   return activeClassName ? (
-    <NavLink to={newTo} {...props}>
+    <NavLink to={newTo} {...props} activeClassName={activeClassName}>
       {children}
     </NavLink>
   ) : (

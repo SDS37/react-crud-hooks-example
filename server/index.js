@@ -120,9 +120,6 @@ app.get('/api/menu/stock-ice-creams/:id', (req, res) => {
 });
 
 app.get('/api/menu', (req, res) => {
-  // setTimeout(() => {
-  //   res.send(menuData);
-  // }, 3000);
   res.send(menuData);
 });
 

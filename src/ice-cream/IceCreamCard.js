@@ -1,9 +1,10 @@
 import React from 'react';
-import FocusLink from '../structure/FocusLink';
-import IceCreamImage from './IceCreamImage';
-import { css } from 'emotion/macro';
 import PropTypes from 'prop-types';
 
+import FocusLink from '../structure/FocusLink';
+import IceCreamImage from './IceCreamImage';
+
+import { css } from 'emotion/macro';
 const cardStyle = css`
   position: relative;
   display: grid;
@@ -91,15 +92,10 @@ const cardStyle = css`
   }
 `;
 
-export const IceCreamCard = ({
-  iceCreamId,
-  heading,
-  to,
-  history,
-  children,
-}) => {
+export const IceCreamCard = ({ children, to, history, iceCreamId, heading }) => {
+
   const onItemClickHandler = () => {
-    history.push(to);
+    history.push(to, { focus: true });
   };
 
   const onLinkClickHandler = e => {
@@ -111,10 +107,7 @@ export const IceCreamCard = ({
   return (
     <section
       className={cardStyle}
-      onClick={() => {
-        onItemClickHandler();
-      }}
-    >
+      onClick={onItemClickHandler}>
       <div className="image-container">
         <IceCreamImage iceCreamId={iceCreamId} />
       </div>
@@ -124,7 +117,8 @@ export const IceCreamCard = ({
             {heading}
           </FocusLink>
         </h3>
-        {children && <div className="content">{children}</div>}
+        {/* {children && <div className="content">{children}</div>} */}
+        {children}
       </div>
     </section>
   );

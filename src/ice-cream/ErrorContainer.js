@@ -14,7 +14,7 @@ ErrorContainer.propTypes = {
   children: PropTypes.node.isRequired,
   errorText: PropTypes.string,
   hasSubmitted: PropTypes.bool.isRequired,
-  errorId: PropTypes.string.isRequired,
+  errorId: PropTypes.string.isRequired
 };
 
 export default ErrorContainer;

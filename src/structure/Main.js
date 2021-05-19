@@ -1,9 +1,11 @@
-import React, { useRef, useLayoutEffect } from 'react';
-import { css } from 'emotion/macro';
+import React, { useRef } from 'react';
+
 import Helmet from 'react-helmet';
+
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { css } from 'emotion/macro';
 const mainStyle = css`
   max-width: 63.75em;
   margin-left: auto;
@@ -23,21 +25,14 @@ const mainStyle = css`
   }
 `;
 
-const Main = ({ headingText, headingLevel = 2, children, location }) => {
+const Main = ({ children, headingText, headingLevel = 2 }) => {
   const heading = useRef(null);
   const H = `h${headingLevel}`;
-
-  useLayoutEffect(() => {
-    if (location.state && location.state.focus) {
-      heading.current.focus();
-    }
-    window.scrollTo(0, 0);
-  }, [location.state]);
-
+  
   return (
     <main className={mainStyle} tabIndex="-1" id="main">
       <Helmet>
-        <title>{headingText} | Ultimate Ice Cream</title>
+        <title>{headingText} | My Ice Cream</title>
       </Helmet>
       <H className="main-heading" ref={heading} tabIndex="-1">
         {headingText}
@@ -45,7 +40,7 @@ const Main = ({ headingText, headingLevel = 2, children, location }) => {
       {children}
     </main>
   );
-};
+}
 
 Main.propTypes = {
   headingText: PropTypes.string.isRequired,
