@@ -24,6 +24,30 @@ Checked on 17 October 2026.
 
 Add `"engines": { "node": ">=24.22.0" }` and `.nvmrc` containing `24.22.0` in the toolchain commit.
 
+### Supporting packages
+
+Status: accepted amendment, 18 October 2026. The target table does not name these, but the targets need them. Checked on npm on 18 October 2026. Do not pick different versions.
+
+| Package | Version | Why the target needs it |
+| --- | --- | --- |
+| `@react-router/node` | 8.4.0 | SPA mode still pre-renders the root route at build time, so the React Router docs (`how-to/spa`) require this package even with `ssr: false`. |
+| `@testing-library/dom` | 10.4.2 | Required peer of `@testing-library/react` 16.3.3. |
+| `@testing-library/jest-dom` | 7.0.1 | The target row names this package without a version. 7.0.1 is the latest. |
+| `jsdom` | 30.1.3 | Vitest DOM environment for any test that renders a component. The three characterization files stay in the `node` environment. |
+| `@eslint/js` | 10.0.1 | Recommended core rules for the ESLint 10 flat config. |
+| `globals` | 17.13.0 | Browser and Node globals for the flat config. |
+| `eslint-plugin-react-hooks` | 7.1.1 | Keeps the Rules of Hooks check that CRA's `react-app` config runs today. Supports ESLint 10. |
+
+React Router config and route files stay JavaScript: `react-router.config.js` and `src/routes.js`, with `appDirectory: "src"`.
+
+### Tracked `node_modules`
+
+`node_modules/` has been committed since the first commit (31,428 files), even though `.gitignore` lists it. The toolchain commit runs `git rm -r --cached node_modules` so the reinstall does not land in history. It changes no file on disk.
+
+### Formatting on `main`
+
+`server/app.js` and the three characterization test files use single quotes and trailing commas, so `npx prettier --check` fails on them with both Prettier 1.17 and 3.9.10 defaults. The toolchain commit reformats them with Prettier 3.9.10. That is a style change only. No assertion changes.
+
 ## Preserve
 
 These are the characterization assertions. Lock them in tests before changing dependencies. During the rewrite, change the test runner and imports only. Do not change what they assert.
