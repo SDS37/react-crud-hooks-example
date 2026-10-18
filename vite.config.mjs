@@ -5,7 +5,9 @@ const apiServer = "http://localhost:5001";
 const appSourceFile = /\/src\/.*\.js$/;
 
 // The app keeps JSX in .js files, and Vite only compiles JSX in .jsx files.
-// The automatic runtime needs no React import in each file.
+// The React Router plugin parses .js route modules with Babel, which rejects
+// JSX, so this must run first. It outlives React 16: drop it only by renaming
+// the files to .jsx. The automatic runtime needs no React import in each file.
 const jsxInJsFiles = {
   name: "jsx-in-js-files",
   enforce: "pre",
