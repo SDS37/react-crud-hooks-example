@@ -86,6 +86,7 @@ These files lock the behavior above. Later commits may change how they run, not 
 - `src/utils/validators.test.js`: description, price, and the quantity and stock coupling.
 - `src/data/iceCreamData.test.js`: client-side name sorting.
 - End-to-end tests under `e2e/`. These drive the running app in a browser and lock the routes, the first-submit validation, the move to the first `[aria-invalid="true"]` control, the heading focus after a save that returns home, the skip link, the `main` landmark, the loading live region, and decorative `alt=""`. They are not in the repo yet. Add them after the toolchain commit, when Node 24 can run Playwright, and before changing the router or the page shell. Later commits may change how they start the app, not what they assert.
+  - The legacy app never focuses the heading, so the heading-focus test lands with its final assertion marked `test.fixme`. The commit that implements that focus during the router or page shell migration removes only the `fixme` marker. Accepted amendment, 18 October 2026.
 
 ## Commands in force
 
