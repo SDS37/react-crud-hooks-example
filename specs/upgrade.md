@@ -72,6 +72,7 @@ These are legacy mechanisms, not behavior. Remove them as the matching target la
 - Create React App, `react-scripts`, the `proxy` field, and the `jest-dom` 3 import.
 - axios 0.18 and the separate `body-parser` dependency.
 - `FocusLink` may stay or be folded into the router link, but navigation must still be a link and the heading must receive focus after a save that redirects home. The `focus` flag is currently unused. Implement that focus as part of keeping the accessibility behavior, rather than preserving the unused flag.
+- `uniqid`. It reads `process.pid` and `require('os')` when it loads, which only CRA's webpack polyfills supplied. Under Vite the page renders nothing. In the toolchain commit, `useUniqueIds` takes its ids from a module-level counter and `uniqid` is removed. When React 19.3.1 lands, `useUniqueIds` uses React's `useId`. Accepted amendment, 18 October 2026.
 
 ## Characterization tests
 
