@@ -1,8 +1,13 @@
+import path from "node:path";
 import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig, transformWithOxc } from "vite";
 
 const apiServer = "http://localhost:5001";
-const appSourceFile = /\/src\/.*\.js$/;
+const appSourceDir = path.resolve("src") + path.sep;
+const isAppSourceFile = (id) =>
+  id.startsWith(appSourceDir) &&
+  !id.includes("/node_modules/") &&
+  id.endsWith(".js");
 
 // The app keeps JSX in .js files, and Vite only compiles JSX in .jsx files.
 // The React Router plugin parses .js route modules with Babel, which rejects
@@ -12,7 +17,7 @@ const jsxInJsFiles = {
   name: "jsx-in-js-files",
   enforce: "pre",
   async transform(code, id) {
-    if (!appSourceFile.test(id)) {
+    if (!isAppSourceFile(id)) {
       return null;
     }
     const result = await transformWithOxc(code, id, {
@@ -34,7 +39,7 @@ export default defineConfig({
       "@emotion/react/jsx-dev-runtime",
       "prop-types",
     ],
-    // The dependency scanner does not run the plugin above.
+    // Dependency pre-bundling and its scan do not run the plugin above.
     rolldownOptions: {
       moduleTypes: { ".js": "jsx" },
     },
