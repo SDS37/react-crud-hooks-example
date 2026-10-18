@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { Children } from "react";
+import PropTypes from "prop-types";
 
-import { css } from 'emotion/macro';
+import { css } from "@emotion/react";
 const containerStyle = css`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -21,8 +21,8 @@ const containerStyle = css`
 `;
 
 const IceCreamCardContainer = ({ children }) => (
-  <ul className={containerStyle}>
-    {React.Children.map(children, card => (
+  <ul css={containerStyle}>
+    {Children.map(children, (card) => (
       <li>{card}</li>
     ))}
   </ul>

@@ -1,76 +1,80 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router";
 
-import { getMenuItem, putMenuItem, deleteMenuItem } from '../data/iceCreamData';
+import { getMenuItem, putMenuItem, deleteMenuItem } from "../data/iceCreamData";
 
-import LoaderMessage from '../structure/LoaderMessage';
-import Main from '../structure/Main';
-import IceCream from './IceCream';
+import LoadError from "../structure/LoadError";
+import LoaderMessage from "../structure/LoaderMessage";
+import Main from "../structure/Main";
+import IceCream from "./IceCream";
 
-const EditIceCream = ({ match, history }) => {
+const EditIceCream = () => {
+  const navigate = useNavigate();
+  const { menuItemId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const isMounted = useRef(true);
+  const [hasError, setHasError] = useState(false);
   const [menuItem, setMenuItem] = useState({});
- 
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    }
-  }, [])
+  const [saveError, setSaveError] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
     setIsLoading(true);
-    getMenuItem(match.params.menuItemId)
-      .then( item => {
-        if (isMounted.current) {
-          setMenuItem(item);
+    setHasError(false);
+    getMenuItem(menuItemId, { signal: controller.signal })
+      .then((item) => {
+        setMenuItem(item);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        if (controller.signal.aborted) {
+          return;
+        }
+        if (err.status === 404) {
+          navigate("/", { replace: true, state: { focus: true } });
+        } else {
+          setHasError(true);
           setIsLoading(false);
         }
-      })
-      .catch(err => {
-        if (err.response.status === 404 && isMounted.current) {
-          history.replace('/', {focus: true});
-        }
       });
-    
-  }, [match.params.menuItemId, history]);
+    return () => controller.abort();
+  }, [menuItemId, navigate]);
 
-  const onSubmitHandler = updatedItem => {
-    putMenuItem({ id: menuItem.id, ...updatedItem }).then(() => {
-      history.push('/', { focus: true });
-    });
+  const onSubmitHandler = (updatedItem) => {
+    setSaveError("");
+    putMenuItem({ id: menuItem.id, ...updatedItem })
+      .then(() => {
+        navigate("/", { state: { focus: true } });
+      })
+      .catch(() => setSaveError("The ice cream could not be saved."));
   };
 
   const onDeleteHandler = () => {
-    deleteMenuItem(match.params.menuItemId).then(() => {
-      history.replace('/', { focus: true });
-    });
+    setSaveError("");
+    deleteMenuItem(menuItemId)
+      .then(() => {
+        navigate("/", { replace: true, state: { focus: true } });
+      })
+      .catch(() => setSaveError("The ice cream could not be deleted."));
   };
 
   return (
     <Main headingText="Update this beauty">
-      <LoaderMessage loadingMessage="Loading ice cream." doneMessage="Ice cream loaded." isLoading={isLoading}/>
-      {
-        !isLoading && (
-          <IceCream
-            {...menuItem}
-            onDelete={onDeleteHandler}
-            onSubmit={onSubmitHandler}
-          />
-        )
-      }
+      <LoaderMessage
+        loadingMessage="Loading ice cream."
+        doneMessage="Ice cream loaded."
+        isLoading={isLoading}
+      />
+      {hasError && <LoadError message="The ice cream could not be loaded." />}
+      {!isLoading && !hasError && (
+        <IceCream
+          {...menuItem}
+          onDelete={onDeleteHandler}
+          onSubmit={onSubmitHandler}
+        />
+      )}
+      {saveError && <LoadError message={saveError} />}
     </Main>
   );
-};
-
-EditIceCream.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.object.isRequired,
-  }),
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired,
-  }),
 };
 
 export default EditIceCream;

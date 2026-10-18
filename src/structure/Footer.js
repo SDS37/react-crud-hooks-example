@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { css } from 'emotion/macro';
+import { css } from "@emotion/react";
 const footerStyle = css`
   max-width: 63.75em;
   margin-left: auto;
@@ -12,13 +10,13 @@ const footerStyle = css`
 
   span {
     margin: 0;
-    font-family: 'cornerstone', sans-serif;
+    font-family: "cornerstone", sans-serif;
     font-weight: 600;
   }
 `;
 
 const Footer = () => (
-  <footer className={footerStyle}>
+  <footer css={footerStyle}>
     <span>&copy; My Ice Cream</span>
   </footer>
 );

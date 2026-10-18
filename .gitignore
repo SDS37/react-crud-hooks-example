@@ -1,3 +1,9 @@
 node_modules/
 .codegraph/
 .DS_Store
+dist/
+build/
+.react-router/
+test-results/
+playwright-report/
+blob-report/

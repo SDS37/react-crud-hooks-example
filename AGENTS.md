@@ -4,19 +4,26 @@ Canonical project guidance for coding agents working in this repository. Claude 
 
 ## Commands
 
-Use **npm** (`yarn.lock` is stale; don't update it).
+Use **npm** (`yarn.lock` is stale; don't update it) on Node 24.22.0 (`.nvmrc`; `nvm use`).
 
 The app needs two processes running together:
 
-- `npm run start-server`: Express API on port 5000 (`server/index.js`)
-- `npm start`: CRA dev server on port 3000. `"proxy": "http://localhost:5000"` in package.json forwards the frontend's relative `/api/...` calls.
+- `npm run start-server`: Express API on port 5001 (`server/index.js`). Port 5000 is taken by macOS's AirPlay Receiver.
+- `npm start`: React Router dev server (a Vite server) on port 3000. `server.proxy` in `vite.config.mjs` forwards the frontend's relative `/api/...` calls to port 5001.
 
-Other:
+Checks (the same list as "Commands in force" in `specs/upgrade.md`):
 
-- Tests: `CI=true npm test` runs once (plain `npm test` is watch mode). For a single file: `CI=true npm test -- src/path/File.test.js`. Characterization tests live in `src/serverApi.test.js`, `src/utils/validators.test.js`, and `src/data/iceCreamData.test.js`. Use `@testing-library/react` with the old `jest-dom` package (`jest-dom/extend-expect`, already loaded in `src/setupTests.js`). `jest-emotion` is the snapshot serializer. The end-to-end suite in `specs/upgrade.md` is not in the repo yet.
-- Formatting: Prettier 1.17 with **default options** (double quotes, 80 columns). The existing code still uses single quotes, so files get reformatted when touched. `npm run format` uses an unquoted glob that skips the top-level `src/*.js` files; to cover a specific file, run `npx prettier --write <file>`.
-- Lint: only CRA's built-in `react-app` ESLint config. Warnings show in `npm start` / `npm run build` output, and there is no separate lint script. The upgrade adds `npm run lint`.
-- The code on disk is the legacy stack: React 16.8, react-scripts 3.0.1, react-router v5, axios 0.18, Node 14. That is the starting point, not the destination. The destination and the behavior that must survive are in `specs/upgrade.md`. Do not add new legacy-only APIs. A file that has not been migrated yet must keep working until the upgrade changes it.
+- Full suite: `npm test` runs Vitest once. `npm run test:watch` is watch mode.
+- One file: `npm test -- src/path/File.test.js`.
+- Format check: `npx prettier --check <file>`. Prettier 3.9.10 with **default options** (double quotes, trailing commas, 80 columns). `npx prettier --write <file>` formats one file; `npm run format` formats the repo.
+- Lint: `npm run lint` (ESLint 10 flat config in `eslint.config.mjs`).
+- Build: `npm run build` (React Router, SPA mode: `build/client/index.html` plus assets; `build/server` is a by-product).
+- End to end: `npx playwright test`. `playwright.config.mjs` starts both dev servers itself, so stop any you have running first. Run `npx playwright install chromium` once.
+
+Characterization tests live in `src/serverApi.test.js`, `src/utils/validators.test.js`, `src/data/iceCreamData.test.js`, and `e2e/`. Vitest runs with `globals: true` in the `node` environment; `src/setupTests.js` loads `@testing-library/jest-dom/vitest`.
+
+- The stack is React 19.3.1, React Router 8.4.0 (framework mode, SPA), Vite 8, Emotion 11, Express 5 and `fetch`. The behavior that must survive the upgrade is recorded in `specs/upgrade.md`. Keep the app JavaScript: no TypeScript without an accepted spec.
+- Vite compiles JSX in `src/**/*.js` through the `jsx-in-js-files` plugin in `vite.config.mjs`. It stays because Vite 8 only compiles JSX in `.jsx` files, and the React Router plugin parses `.js` route modules with Babel, which fails on JSX without it. Do not remove it unless the files are renamed to `.jsx`.
 
 ## Git workflow
 
@@ -32,16 +39,16 @@ A change is done when every check under "Commands in force" in `specs/upgrade.md
 
 An ice cream shop menu CRUD demo built from function components and hooks.
 
-**Backend**: `server/app.js` exports `createApp()` with **in-memory data**, so every new app starts from the seed menu. `server/index.js` listens on port 5000.
+**Backend**: `server/app.js` exports `createApp()` with **in-memory data**, so every new app starts from the seed menu. `server/index.js` listens on port 5001.
 
 - `iceCreams` is the catalogue (`{id, name}`). Each `id` maps to `public/ice-cream-images/ice-cream-{id}.svg`.
 - `menuData` holds the menu items (`{id, iceCream: {id, name}, inStock, quantity, price, description}`).
 - `/api/menu/stock-ice-creams` returns catalogue flavours that aren't on the menu yet. It must stay declared before `/api/menu/:id`.
 - On POST/PUT the server ignores the client's `iceCream.name` and looks it up by `iceCream.id`. It stores the other fields without validating them.
 
-**Data layer**: every API call goes through `src/data/iceCreamData.js` (axios), and components never call axios directly. List results are sorted by name on the client.
+**Data layer**: every API call goes through `src/data/iceCreamData.js` (`fetch`), and components never call `fetch` directly. Each function takes an optional `{ signal }` for an `AbortController`, and a non-2xx response throws an error with `status`. List results are sorted by name on the client.
 
-**Routes (`src/App.js`)**:
+**Routes**: `src/routes.js` is the route config (paths and file extensions are relative to `appDirectory: "src"` in `react-router.config.js`). `ssr: false` makes it SPA mode: the build pre-renders only `build/client/index.html` from the root layout. `package.json` is `"type": "module"` because the pre-render loads `build/server/index.js`. The default client entry runs the app under StrictMode. `src/root.js` is the root layout: the document shell (`<html>`, icons, manifest, default `<title>`), the Emotion `<Global>` styles and fonts, the skip link, `Header` and `Footer`, and an `<Outlet>`. Its `Layout` and `HydrateFallback` also run in Node at build time, so keep browser-only code out of them. The catch-all route's `clientLoader` in `src/routes/catch-all.js` redirects to `/`.
 
 - `/`: Menu
 - `/ice-creams`: catalogue flavours you can add
@@ -49,16 +56,16 @@ An ice cream shop menu CRUD demo built from function components and hooks.
 - `/menu-items/:menuItemId`: EditIceCream
 - Anything else redirects to `/`.
 
-**Forms**: `AddIceCream` and `EditIceCream` are thin containers. They fetch data and render the shared `src/ice-cream/IceCream.js` form with `onSubmit` (and `onDelete` for edit). After saving they navigate with `history.push/replace('/', { focus: true })`. They use an `isMounted` ref to avoid setting state after unmount; check `isMounted.current`, not the ref itself.
+**Forms**: `AddIceCream` and `EditIceCream` are thin containers. They fetch data and render the shared `src/ice-cream/IceCream.js` form with `onSubmit` (and `onDelete` for edit). After saving they navigate with `useNavigate()` (`navigate("/", { state: { focus: true } })`, with `replace: true` where it replaced). Their load effects create an `AbortController`, pass its `signal` to the data layer and abort in the cleanup; a rejection after abort is ignored (`controller.signal.aborted`).
 
-**Validation**: `useValidation` (in `src/hooks/`) takes a validator from `src/utils/validators.js` and returns `[error, ariaProps]`. Spread `ariaProps` onto the input. Errors show only after the first submit (`hasSubmitted`). On a failed submit, focus moves to the first `[aria-invalid="true"]` control. Use `useUniqueIds` for label/input/error ids. In the form, `inStock` and `quantity` are coupled (quantity 0 ⇔ out of stock).
+**Validation**: `useValidation` (in `src/hooks/`) takes a validator from `src/utils/validators.js` and returns `[error, ariaProps]`. Spread `ariaProps` onto the input. Errors show only after the first submit (`hasSubmitted`). On a failed submit, focus moves to the first `[aria-invalid="true"]` control. Use `useUniqueIds` (built on `useId`) for label/input/error ids. In the form, `inStock` and `quantity` are coupled (quantity 0 ⇔ out of stock).
 
 **Accessibility**: keep these conventions intact.
 
 - Skip link to `#main`.
-- `structure/Main` renders the `<main>` landmark, sets the page title via react-helmet, and renders the heading.
+- `structure/Main` renders the `<main>` landmark, sets the page title with a React 19 `<title>` element, and renders the heading.
 - `LoaderMessage` announces loading through an `aria-live` region.
 - Decorative images use `alt=""`.
-- Navigation goes through `FocusLink`, which adds `state: { focus: true }`. Nothing uses that flag yet: `Main` creates a `heading` ref but never focuses it.
+- After a save or delete the containers navigate home with `state: { focus: true }`, and `Main` focuses its heading when it mounts with that state. Plain links through `FocusLink` do not move focus.
 
-**Styling**: Emotion. Each component defines `css` blocks from `emotion/macro` at the top of its file. Global styles and `@font-face` rules live in `App.js` via `<Global>` from `@emotion/core`. `src/styles/ice-cream.scss` and `src/assets/css/style.css` are dead: they aren't imported and there's no sass compiler. Don't edit them to change styles.
+**Styling**: Emotion 11 (`@emotion/react`). Each component defines `css` blocks at the top of its file and applies them with the `css` prop (the Vite JSX plugin sets `importSource: "@emotion/react"`). Global styles and `@font-face` rules live in `root.js` via `<Global>`.

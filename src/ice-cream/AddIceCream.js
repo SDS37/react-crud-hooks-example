@@ -1,64 +1,68 @@
-import React, { useEffect, useState , useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 
-import { getIceCream, postMenuItem } from '../data/iceCreamData';
+import { getIceCream, postMenuItem } from "../data/iceCreamData";
 
-import Main from '../structure/Main';
-import LoaderMessage from '../structure/LoaderMessage';
-import IceCream from './IceCream';
+import Main from "../structure/Main";
+import LoadError from "../structure/LoadError";
+import LoaderMessage from "../structure/LoaderMessage";
+import IceCream from "./IceCream";
 
-const AddIceCream = ({ history, location }) => {
-  const isMounted = useRef(true);
+const AddIceCream = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const iceCreamId = searchParams.get("iceCreamId");
+  const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [iceCream, setIceCream] = useState({});
+  const [hasSaveError, setHasSaveError] = useState(false);
 
   useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    getIceCream(location.search.split('=')[1])
-      .then(iceCreamResponse => {
-        if (isMounted.current) {
-          setIceCream(iceCreamResponse);
+    const controller = new AbortController();
+    getIceCream(iceCreamId, { signal: controller.signal })
+      .then((iceCreamResponse) => {
+        setIceCream(iceCreamResponse);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        if (controller.signal.aborted) {
+          return;
+        }
+        if (err.status === 404) {
+          navigate("/", { replace: true, state: { focus: true } });
+        } else {
+          setHasError(true);
           setIsLoading(false);
         }
-      })
-      .catch(err => {
-        if (err.response.status === 404 && isMounted) {
-          history.replace('/', { focus: true });
-        }
       });
-  }, [history, location.search]);
+    return () => controller.abort();
+  }, [navigate, iceCreamId]);
 
-  const onSubmitHandler = menuItem => {
-    postMenuItem(menuItem).then(() => {
-      history.push('/', { focus: true });
-    });
+  const onSubmitHandler = (menuItem) => {
+    setHasSaveError(false);
+    postMenuItem(menuItem)
+      .then(() => {
+        navigate("/", { state: { focus: true } });
+      })
+      .catch(() => setHasSaveError(true));
   };
 
   return (
     <Main headingText="Add some goodness to the menu">
-      <LoaderMessage loadingMessage="Loading ice cream." doneMessage="Ice cream loaded." isLoading={isLoading}/>
-      {
-        !isLoading && (
-          <IceCream iceCream={iceCream} onSubmit={onSubmitHandler} />
-        )
-      }
+      <LoaderMessage
+        loadingMessage="Loading ice cream."
+        doneMessage="Ice cream loaded."
+        isLoading={isLoading}
+      />
+      {hasError && <LoadError message="The ice cream could not be loaded." />}
+      {!isLoading && !hasError && (
+        <IceCream iceCream={iceCream} onSubmit={onSubmitHandler} />
+      )}
+      {hasSaveError && (
+        <LoadError message="The ice cream could not be saved." />
+      )}
     </Main>
   );
-};
-
-AddIceCream.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired,
-  }),
-  location: PropTypes.shape({
-    search: PropTypes.string.isRequired,
-  })
 };
 
 export default AddIceCream;

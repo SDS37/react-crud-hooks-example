@@ -1,9 +1,7 @@
-import React from 'react';
+import iceCream from "../assets/img/ice-cream.svg";
+import FocusLink from "../structure/FocusLink";
 
-import iceCream from '../assets/img/ice-cream.svg';
-import FocusLink from '../structure/FocusLink';
-
-import { css } from 'emotion/macro';
+import { css } from "@emotion/react";
 const headerStyle = css`
   position: relative;
   text-align: center;
@@ -14,7 +12,7 @@ const headerStyle = css`
     justify-content: center;
     color: #313030;
     font-weight: bold;
-    font-family: 'cornerstone', sans-serif;
+    font-family: "cornerstone", sans-serif;
     font-size: 2.5em;
 
     img {
@@ -55,7 +53,7 @@ const headerStyle = css`
 
       &:nth-of-type(n + 2) {
         &:before {
-          content: '';
+          content: "";
           position: absolute;
           left: -2px;
           top: 15%;
@@ -82,18 +80,16 @@ const headerStyle = css`
 `;
 
 const Header = () => (
-  <header className={headerStyle}>
+  <header css={headerStyle}>
     <h1>
-      <img src={iceCream} alt=""/>
+      <img src={iceCream} alt="" />
       My Ice Cream
     </h1>
     <nav>
-      <FocusLink to="/" activeClassName="active" exact>
+      <FocusLink to="/" end>
         Menu
       </FocusLink>
-      <FocusLink to="/ice-creams" activeClassName="active">
-        Add Ice Cream
-      </FocusLink>
+      <FocusLink to="/ice-creams">Add Ice Cream</FocusLink>
     </nav>
   </header>
 );

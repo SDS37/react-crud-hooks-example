@@ -1,9 +1,8 @@
-import { useRef } from 'react';
-import uniqid from 'uniqid';
+import { useId } from "react";
 
-const useUniqueIds = count => {
-  const ids = useRef([...new Array(count)].map(() => uniqid()));
-  return ids.current;
+const useUniqueIds = (count) => {
+  const prefix = useId();
+  return Array.from({ length: count }, (_, index) => `${prefix}-${index}`);
 };
 
 export default useUniqueIds;
