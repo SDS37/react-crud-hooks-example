@@ -48,6 +48,10 @@ React Router config and route files stay JavaScript: `react-router.config.js` an
 
 `server/app.js` and the three characterization test files use single quotes and trailing commas, so `npx prettier --check` fails on them with both Prettier 1.17 and 3.9.10 defaults. The toolchain commit reformats them with Prettier 3.9.10. That is a style change only. No assertion changes.
 
+### API port
+
+Accepted amendment, 18 October 2026. macOS's AirPlay Receiver listens on port 5000, so the Express server cannot bind there and the proxy receives AirPlay's 403. The toolchain commit moves `server/index.js` and the Vite `/api` proxy to port 5001.
+
 ## Preserve
 
 These are the characterization assertions. Lock them in tests before changing dependencies. During the rewrite, change the test runner and imports only. Do not change what they assert.
