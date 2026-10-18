@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 
 import { getIceCreams } from "../data/iceCreamData";
 
@@ -15,7 +14,7 @@ const paragraphStyle = css`
   padding-bottom: 3em;
 `;
 
-const IceCreams = ({ history }) => {
+const IceCreams = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [iceCreams, setIceCreams] = useState([]);
 
@@ -50,7 +49,6 @@ const IceCreams = ({ history }) => {
                 pathname: "/menu-items/add",
                 search: `?iceCreamId=${id.toString()}`,
               }}
-              history={history}
             />
           ))}
         </IceCreamCardContainer>
@@ -59,12 +57,6 @@ const IceCreams = ({ history }) => {
       )}
     </Main>
   );
-};
-
-IceCreams.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }),
 };
 
 export default IceCreams;

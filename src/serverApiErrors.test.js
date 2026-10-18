@@ -1,5 +1,5 @@
-const http = require("http");
-const { createApp } = require("../server/app");
+import http from "node:http";
+import { createApp } from "../server/app.js";
 
 function request(app, method, path) {
   return new Promise((resolve, reject) => {

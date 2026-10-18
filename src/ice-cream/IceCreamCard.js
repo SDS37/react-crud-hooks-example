@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import PropTypes from "prop-types";
 
 import FocusLink from "../structure/FocusLink";
@@ -93,15 +94,11 @@ const cardStyle = css`
   }
 `;
 
-export const IceCreamCard = ({
-  children,
-  to,
-  history,
-  iceCreamId,
-  heading,
-}) => {
+export const IceCreamCard = ({ children, to, iceCreamId, heading }) => {
+  const navigate = useNavigate();
+
   const onItemClickHandler = () => {
-    history.push(to, { focus: true });
+    navigate(to, { state: { focus: true } });
   };
 
   const onLinkClickHandler = (e) => {
@@ -137,9 +134,6 @@ IceCreamCard.propTypes = {
       pathname: PropTypes.string.isRequired,
     }),
   ]).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }),
   children: PropTypes.node,
 };
 

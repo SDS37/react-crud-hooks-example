@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import { useNavigate, useParams } from "react-router";
 
 import { getMenuItem, putMenuItem, deleteMenuItem } from "../data/iceCreamData";
 
@@ -7,7 +7,9 @@ import LoaderMessage from "../structure/LoaderMessage";
 import Main from "../structure/Main";
 import IceCream from "./IceCream";
 
-const EditIceCream = ({ match, history }) => {
+const EditIceCream = () => {
+  const navigate = useNavigate();
+  const { menuItemId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const isMounted = useRef(true);
   const [menuItem, setMenuItem] = useState({});
@@ -20,7 +22,7 @@ const EditIceCream = ({ match, history }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    getMenuItem(match.params.menuItemId)
+    getMenuItem(menuItemId)
       .then((item) => {
         if (isMounted.current) {
           setMenuItem(item);
@@ -29,20 +31,20 @@ const EditIceCream = ({ match, history }) => {
       })
       .catch((err) => {
         if (err.status === 404 && isMounted.current) {
-          history.replace("/", { focus: true });
+          navigate("/", { replace: true, state: { focus: true } });
         }
       });
-  }, [match.params.menuItemId, history]);
+  }, [menuItemId, navigate]);
 
   const onSubmitHandler = (updatedItem) => {
     putMenuItem({ id: menuItem.id, ...updatedItem }).then(() => {
-      history.push("/", { focus: true });
+      navigate("/", { state: { focus: true } });
     });
   };
 
   const onDeleteHandler = () => {
-    deleteMenuItem(match.params.menuItemId).then(() => {
-      history.replace("/", { focus: true });
+    deleteMenuItem(menuItemId).then(() => {
+      navigate("/", { replace: true, state: { focus: true } });
     });
   };
 
@@ -62,16 +64,6 @@ const EditIceCream = ({ match, history }) => {
       )}
     </Main>
   );
-};
-
-EditIceCream.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.object.isRequired,
-  }),
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired,
-  }),
 };
 
 export default EditIceCream;

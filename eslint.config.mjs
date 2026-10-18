@@ -6,6 +6,8 @@ import globals from "globals";
 export default defineConfig([
   globalIgnores([
     "dist/",
+    "build/",
+    ".react-router/",
     "test-results/",
     "playwright-report/",
     "blob-report/",
@@ -39,7 +41,7 @@ export default defineConfig([
   {
     files: ["server/**/*.js"],
     extends: [js.configs.recommended],
-    languageOptions: { sourceType: "commonjs", globals: globals.node },
+    languageOptions: { sourceType: "module", globals: globals.node },
   },
   {
     files: ["*.mjs", "e2e/**/*.js"],

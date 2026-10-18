@@ -1,5 +1,6 @@
-function createApp() {
-  const express = require("express");
+import express from "express";
+
+export function createApp() {
   const app = express();
   app.use(express.json());
   const iceCreams = [
@@ -188,5 +189,3 @@ function createApp() {
 
   return app;
 }
-
-module.exports = { createApp };
