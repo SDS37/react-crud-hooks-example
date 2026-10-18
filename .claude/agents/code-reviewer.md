@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: Reviews recently changed code for correctness, silent failures, security, and convention adherence. Use after a logical chunk of work, before committing, or before opening a PR.
-model: sonnet
+model: opus
 disallowedTools: Write, Edit, NotebookEdit
 ---
 
