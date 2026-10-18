@@ -1,8 +1,7 @@
 function createApp() {
   const express = require("express");
-  const bodyParser = require("body-parser");
   const app = express();
-  app.use(bodyParser.json());
+  app.use(express.json());
   const iceCreams = [
     { id: 0, name: "Stripey Madness" },
     { id: 1, name: "Cherry Blast" },
@@ -178,6 +177,13 @@ function createApp() {
     );
     res.status(204);
     res.send();
+  });
+
+  // Without this Express renders the error stack outside production.
+  // eslint-disable-next-line no-unused-vars
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.send({ error: "Request failed" });
   });
 
   return app;
