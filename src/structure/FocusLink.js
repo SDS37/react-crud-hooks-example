@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 import PropTypes from "prop-types";
 
 const FocusLink = ({ to, children, ...props }) => (
-  <NavLink to={to} state={{ focus: true }} {...props}>
+  <NavLink to={to} {...props}>
     {children}
   </NavLink>
 );
