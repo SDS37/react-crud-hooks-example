@@ -2,7 +2,7 @@
 
 **What to build:** After a save or delete that returns to `/`, keyboard and screen reader focus lands on the menu page's main heading instead of being lost on the page. The unused `focus` flag from the legacy links is not kept for its own sake.
 
-**Blocked by:** 07: The app runs on React Router 8 in SPA mode
+**Blocked by:** 07: The app runs on React Router 8 in SPA mode; 11: The first e2e run after a fresh install passes
 
 **Status:** ready-for-agent
 
