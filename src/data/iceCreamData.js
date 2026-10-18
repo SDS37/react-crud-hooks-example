@@ -1,44 +1,52 @@
-import axios from 'axios';
+const request = async (url, { method = "GET", body, signal } = {}) => {
+  const options = { method, signal };
+  if (body !== undefined) {
+    options.headers = { "Content-Type": "application/json" };
+    options.body = JSON.stringify(body);
+  }
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    const error = new Error(`Request failed with status ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
+  return response;
+};
 
-export const getMenu = () => {
-  return axios.get('/api/menu').then( response => {
-    return response.data.sort((a,b) =>{
-      if(a.iceCream.name < b.iceCream.name) {
+const requestJson = async (url, options) => {
+  const response = await request(url, options);
+  return response.json();
+};
+
+export const getMenu = ({ signal } = {}) =>
+  requestJson("/api/menu", { signal }).then((data) =>
+    data.sort((a, b) => {
+      if (a.iceCream.name < b.iceCream.name) {
         return -1;
       }
-      if(a.iceCream.name > b.iceCream.name) {
+      if (a.iceCream.name > b.iceCream.name) {
         return 1;
       }
       return 0;
-    })
+    }),
+  );
+
+export const getMenuItem = (id, { signal } = {}) =>
+  requestJson(`/api/menu/${id}`, { signal });
+
+export const putMenuItem = (menuItem, { signal } = {}) =>
+  requestJson(`/api/menu/${menuItem.id.toString()}`, {
+    method: "PUT",
+    body: menuItem,
+    signal,
   });
-}
 
-export const getMenuItem = id => {
-  return axios
-    .get(`/api/menu/${id}`)
-    .then(response => response.data)
-    .catch(err => {
-      throw err;
-    });
-};
+export const deleteMenuItem = (id, { signal } = {}) =>
+  request(`/api/menu/${id.toString()}`, { method: "DELETE", signal });
 
-export const putMenuItem = menuItem => {
-  return axios
-    .put(`/api/menu/${menuItem.id.toString()}`, menuItem)
-    .then(response => response.data)
-    .catch(err => {
-      throw err;
-    });
-};
-
-export const deleteMenuItem = id => {
-  return axios.delete(`/api/menu/${id.toString()}`);
-};
-
-export const getIceCreams = () => {
-  return axios.get('/api/menu/stock-ice-creams').then(response => {
-    return response.data.sort((a, b) => {
+export const getIceCreams = ({ signal } = {}) =>
+  requestJson("/api/menu/stock-ice-creams", { signal }).then((data) =>
+    data.sort((a, b) => {
       if (a.name < b.name) {
         return -1;
       }
@@ -46,26 +54,11 @@ export const getIceCreams = () => {
         return 1;
       }
       return 0;
-    });
-  });
-};
+    }),
+  );
 
-export const getIceCream = id => {
-  return axios
-    .get(`/api/menu/stock-ice-creams/${id.toString()}`)
-    .then(response => response.data)
-    .catch(err => {
-      throw err;
-    });
-};
+export const getIceCream = (id, { signal } = {}) =>
+  requestJson(`/api/menu/stock-ice-creams/${id.toString()}`, { signal });
 
-export const postMenuItem = menuItem => {
-  return axios
-    .post('/api/menu', menuItem)
-    .then(response => {
-      return response.data;
-    })
-    .catch(err => {
-      throw err;
-    });
-};
+export const postMenuItem = (menuItem, { signal } = {}) =>
+  requestJson("/api/menu", { method: "POST", body: menuItem, signal });
