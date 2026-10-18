@@ -11,5 +11,5 @@ This app adds these boundaries:
 - Add and edit are thin containers. They render `src/ice-cream/IceCream.js`.
 - `useValidation` returns `[error, ariaProps]`. Spread `ariaProps` on the input. Errors show after the first submit. A failed submit focuses the first `[aria-invalid="true"]` control.
 - Quantity 0 and out of stock stay coupled.
-- Styles are Emotion `css` blocks in the component file. Do not edit `src/styles/ice-cream.scss` or `src/assets/css/style.css`.
+- Styles are Emotion `css` blocks in the component file, applied with the `css` prop.
 - The skip link targets `#main`. `main` is the landmark. Loading uses `aria-live`. Decorative images use `alt=""`.

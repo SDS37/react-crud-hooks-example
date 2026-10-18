@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 
-import { css } from "emotion";
+import { css } from "@emotion/react";
 const loaderMessageStyle = css`
   .loading {
     font-size: 3em;
@@ -45,11 +45,7 @@ const LoaderMessage = ({ loadingMessage, doneMessage, isLoading }) => {
   }, [isLoading]);
 
   return (
-    <div
-      aria-live="assertive"
-      aria-atomic="true"
-      className={loaderMessageStyle}
-    >
+    <div aria-live="assertive" aria-atomic="true" css={loaderMessageStyle}>
       {showLoadingMessage && <p>{loadingMessage}</p>}
       {showDoneMessage && <p className="visually-hidden">{doneMessage}</p>}
     </div>

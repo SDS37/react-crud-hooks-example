@@ -1,4 +1,4 @@
-import { css } from "emotion";
+import { css } from "@emotion/react";
 const footerStyle = css`
   max-width: 63.75em;
   margin-left: auto;
@@ -16,7 +16,7 @@ const footerStyle = css`
 `;
 
 const Footer = () => (
-  <footer className={footerStyle}>
+  <footer css={footerStyle}>
     <span>&copy; My Ice Cream</span>
   </footer>
 );

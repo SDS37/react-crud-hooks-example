@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import FocusLink from "../structure/FocusLink";
 import IceCreamImage from "./IceCreamImage";
 
-import { css } from "emotion";
+import { css } from "@emotion/react";
 const cardStyle = css`
   position: relative;
   display: grid;
@@ -111,7 +111,7 @@ export const IceCreamCard = ({
   };
 
   return (
-    <section className={cardStyle} onClick={onItemClickHandler}>
+    <section css={cardStyle} onClick={onItemClickHandler}>
       <div className="image-container">
         <IceCreamImage iceCreamId={iceCreamId} />
       </div>

@@ -8,7 +8,7 @@ import Main from "../structure/Main";
 import IceCreamCardContainer from "./IceCreamCardContainer";
 import IceCreamCard from "./IceCreamCard";
 
-import { css } from "emotion";
+import { css } from "@emotion/react";
 const cardContentStyle = css`
   display: flex;
   flex-direction: row;
@@ -92,7 +92,7 @@ const Menu = ({ history }) => {
                 heading={iceCream.name}
                 history={history}
               >
-                <div className={cardContentStyle}>
+                <div css={cardContentStyle}>
                   <p className="price">{`$${price.toFixed(2)}`}</p>
                   <p className={`stock${inStock ? "" : " out"}`}>
                     {inStock

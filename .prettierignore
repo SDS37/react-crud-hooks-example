@@ -3,5 +3,3 @@ test-results/
 playwright-report/
 blob-report/
 package-lock.json
-src/styles/
-src/assets/css/

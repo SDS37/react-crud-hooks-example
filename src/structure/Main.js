@@ -5,7 +5,7 @@ import Helmet from "react-helmet";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { css } from "emotion";
+import { css } from "@emotion/react";
 const mainStyle = css`
   max-width: 63.75em;
   margin-left: auto;
@@ -30,7 +30,7 @@ const Main = ({ children, headingText, headingLevel = 2 }) => {
   const H = `h${headingLevel}`;
 
   return (
-    <main className={mainStyle} tabIndex="-1" id="main">
+    <main css={mainStyle} tabIndex="-1" id="main">
       <Helmet>
         <title>{headingText} | My Ice Cream</title>
       </Helmet>
