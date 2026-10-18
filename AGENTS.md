@@ -65,6 +65,6 @@ An ice cream shop menu CRUD demo built from function components and hooks.
 - `structure/Main` renders the `<main>` landmark, sets the page title via react-helmet, and renders the heading.
 - `LoaderMessage` announces loading through an `aria-live` region.
 - Decorative images use `alt=""`.
-- Navigation goes through `FocusLink`, which adds `state: { focus: true }`. Nothing uses that flag yet: `Main` creates a `heading` ref but never focuses it.
+- After a save or delete the containers navigate home with `state: { focus: true }`, and `Main` focuses its heading when it mounts with that state. Plain links through `FocusLink` do not move focus.
 
 **Styling**: Emotion 11 (`@emotion/react`). Each component defines `css` blocks at the top of its file and applies them with the `css` prop (the Vite JSX plugin sets `importSource: "@emotion/react"`). Global styles and `@font-face` rules live in `root.js` via `<Global>`.

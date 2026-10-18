@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useLocation } from "react-router";
 
 import PropTypes from "prop-types";
 
@@ -25,6 +26,15 @@ const mainStyle = css`
 const Main = ({ children, headingText, headingLevel = 2 }) => {
   const heading = useRef(null);
   const H = `h${headingLevel}`;
+  const { state } = useLocation();
+  const shouldFocus = Boolean(state && state.focus);
+
+  // A save or delete that returns home asks for the heading to take focus.
+  useEffect(() => {
+    if (shouldFocus && heading.current) {
+      heading.current.focus();
+    }
+  }, [shouldFocus]);
 
   return (
     <main css={mainStyle} tabIndex="-1" id="main">

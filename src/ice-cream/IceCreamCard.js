@@ -98,7 +98,7 @@ export const IceCreamCard = ({ children, to, iceCreamId, heading }) => {
   const navigate = useNavigate();
 
   const onItemClickHandler = () => {
-    navigate(to, { state: { focus: true } });
+    navigate(to);
   };
 
   const onLinkClickHandler = (e) => {

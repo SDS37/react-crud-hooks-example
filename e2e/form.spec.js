@@ -78,7 +78,7 @@ test.describe("form", () => {
 
   // The legacy app never focuses the heading. The router or page shell
   // migration implements it and removes only this fixme marker.
-  test.fixme("the heading receives focus after a save that returns home", async ({
+  test("the heading receives focus after a save that returns home", async ({
     page,
   }) => {
     await page.goto("/menu-items/1");
