@@ -1,7 +1,5 @@
 import { useRef } from "react";
 
-import Helmet from "react-helmet";
-
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -31,9 +29,7 @@ const Main = ({ children, headingText, headingLevel = 2 }) => {
 
   return (
     <main css={mainStyle} tabIndex="-1" id="main">
-      <Helmet>
-        <title>{headingText} | My Ice Cream</title>
-      </Helmet>
+      <title>{`${headingText} | My Ice Cream`}</title>
       <H className="main-heading" ref={heading} tabIndex="-1">
         {headingText}
       </H>
