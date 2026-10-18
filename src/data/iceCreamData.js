@@ -35,14 +35,14 @@ export const getMenuItem = (id, { signal } = {}) =>
   requestJson(`/api/menu/${id}`, { signal });
 
 export const putMenuItem = (menuItem, { signal } = {}) =>
-  requestJson(`/api/menu/${menuItem.id.toString()}`, {
+  requestJson(`/api/menu/${menuItem.id}`, {
     method: "PUT",
     body: menuItem,
     signal,
   });
 
 export const deleteMenuItem = (id, { signal } = {}) =>
-  request(`/api/menu/${id.toString()}`, { method: "DELETE", signal });
+  request(`/api/menu/${id}`, { method: "DELETE", signal });
 
 export const getIceCreams = ({ signal } = {}) =>
   requestJson("/api/menu/stock-ice-creams", { signal }).then((data) =>
@@ -58,7 +58,7 @@ export const getIceCreams = ({ signal } = {}) =>
   );
 
 export const getIceCream = (id, { signal } = {}) =>
-  requestJson(`/api/menu/stock-ice-creams/${id.toString()}`, { signal });
+  requestJson(`/api/menu/stock-ice-creams/${id}`, { signal });
 
 export const postMenuItem = (menuItem, { signal } = {}) =>
   requestJson("/api/menu", { method: "POST", body: menuItem, signal });

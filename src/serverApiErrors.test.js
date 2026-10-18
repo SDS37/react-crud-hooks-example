@@ -41,6 +41,15 @@ describe("menu API errors", () => {
     expect(response.text).not.toMatch(/\bat\s.+\(.+:\d+:\d+\)/);
   });
 
+  test("a non-numeric catalogue id is a not-found response", async () => {
+    const response = await request(
+      createApp(),
+      "GET",
+      "/api/menu/stock-ice-creams/null",
+    );
+    expect(response.status).toBe(404);
+  });
+
   test("a write without a body fails without a stack trace", async () => {
     const response = await request(createApp(), "POST", "/api/menu");
     expect(response.status).toBeGreaterThanOrEqual(400);
