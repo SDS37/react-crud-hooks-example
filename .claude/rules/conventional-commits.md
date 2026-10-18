@@ -15,36 +15,36 @@ The description is the reason, in the imperative, and it fits on one line. Merge
 
 ## Types
 
-| Type | When |
-| --- | --- |
-| feat | A new slice of menu behavior |
-| fix | A bug fix |
-| docs | Documentation only |
-| style | Formatting only |
+| Type     | When                                                 |
+| -------- | ---------------------------------------------------- |
+| feat     | A new slice of menu behavior                         |
+| fix      | A bug fix                                            |
+| docs     | Documentation only                                   |
+| style    | Formatting only                                      |
 | refactor | A change that neither fixes a bug nor adds a feature |
-| perf | A performance change |
-| test | Tests only |
-| build | Build system or dependencies |
-| ci | CI configuration |
-| chore | Tooling and other housekeeping |
-| revert | Reverts a previous commit |
+| perf     | A performance change                                 |
+| test     | Tests only                                           |
+| build    | Build system or dependencies                         |
+| ci       | CI configuration                                     |
+| chore    | Tooling and other housekeeping                       |
+| revert   | Reverts a previous commit                            |
 
 ## Scopes
 
 Use the area the change lives in.
 
-| Scope | Area |
-| --- | --- |
-| menu | Menu list and menu-item routes |
-| catalogue | Flavours that are not on the menu yet |
-| form | Add and edit form, validation, stock and quantity |
-| api | Express menu API |
-| data | `src/data/iceCreamData.js` |
-| a11y | Landmarks, focus, and live regions |
-| styles | Emotion styles |
-| harness | Claude rules, skills, and hooks |
-| docs | Documentation |
-| infra | Local run wiring, Vite, and CI |
+| Scope     | Area                                              |
+| --------- | ------------------------------------------------- |
+| menu      | Menu list and menu-item routes                    |
+| catalogue | Flavours that are not on the menu yet             |
+| form      | Add and edit form, validation, stock and quantity |
+| api       | Express menu API                                  |
+| data      | `src/data/iceCreamData.js`                        |
+| a11y      | Landmarks, focus, and live regions                |
+| styles    | Emotion styles                                    |
+| harness   | Claude rules, skills, and hooks                   |
+| docs      | Documentation                                     |
+| infra     | Local run wiring, Vite, and CI                    |
 
 Omit the scope when the change is the whole repo (`docs: describe the upgrade target`).
 
