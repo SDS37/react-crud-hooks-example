@@ -38,6 +38,13 @@ export default defineConfig({
       "@emotion/react/jsx-runtime",
       "@emotion/react/jsx-dev-runtime",
       "prop-types",
+      "react",
+      "react/jsx-runtime",
+      "react/jsx-dev-runtime",
+      "react-dom",
+      "react-dom/client",
+      "react-router",
+      "react-router/dom",
     ],
     // Dependency pre-bundling and its scan do not run the plugin above.
     rolldownOptions: {

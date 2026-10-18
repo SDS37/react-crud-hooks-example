@@ -332,12 +332,12 @@ const IceCream = ({
 
   const formRef = useRef(null);
 
-  const [internalData, setInternalData] = useState({
-    price: "0.00",
-    inStock: true,
-    quantity: "0",
-    description: "",
-  });
+  const [internalData, setInternalData] = useState(() => ({
+    price: price.toFixed(2),
+    inStock,
+    quantity: quantity.toString(),
+    description,
+  }));
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -395,10 +395,7 @@ const IceCream = ({
     setHasSubmitted(true);
     if (descriptionError || quantityError || priceError) {
       setTimeout(() => {
-        const errorControl = formRef.current.querySelector(
-          '[aria-invalid="true"]',
-        );
-        errorControl.focus();
+        formRef.current?.querySelector('[aria-invalid="true"]')?.focus();
       });
     } else {
       onSubmit({
