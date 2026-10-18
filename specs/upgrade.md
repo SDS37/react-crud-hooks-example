@@ -28,15 +28,16 @@ Add `"engines": { "node": ">=24.22.0" }` and `.nvmrc` containing `24.22.0` in th
 
 Status: accepted amendment, 18 October 2026. The target table does not name these, but the targets need them. Checked on npm on 18 October 2026. Do not pick different versions.
 
-| Package                     | Version | Why the target needs it                                                                                                                       |
-| --------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@react-router/node`        | 8.4.0   | SPA mode still pre-renders the root route at build time, so the React Router docs (`how-to/spa`) require this package even with `ssr: false`. |
-| `@testing-library/dom`      | 10.4.2  | Required peer of `@testing-library/react` 16.3.3.                                                                                             |
-| `@testing-library/jest-dom` | 7.0.1   | The target row names this package without a version. 7.0.1 is the latest.                                                                     |
-| `jsdom`                     | 30.1.3  | Vitest DOM environment for any test that renders a component. The three characterization files stay in the `node` environment.                |
-| `@eslint/js`                | 10.0.1  | Recommended core rules for the ESLint 10 flat config.                                                                                         |
-| `globals`                   | 17.13.0 | Browser and Node globals for the flat config.                                                                                                 |
-| `eslint-plugin-react-hooks` | 7.1.1   | Keeps the Rules of Hooks check that CRA's `react-app` config runs today. Supports ESLint 10.                                                  |
+| Package                     | Version | Why the target needs it                                                                                                                                                                 |
+| --------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@react-router/node`        | 8.4.0   | SPA mode still pre-renders the root route at build time, so the React Router docs (`how-to/spa`) require this package even with `ssr: false`.                                           |
+| `@testing-library/dom`      | 10.4.2  | Required peer of `@testing-library/react` 16.3.3.                                                                                                                                       |
+| `@testing-library/jest-dom` | 7.0.1   | The target row names this package without a version. 7.0.1 is the latest.                                                                                                               |
+| `jsdom`                     | 30.1.3  | Vitest DOM environment for any test that renders a component. The three characterization files stay in the `node` environment.                                                          |
+| `@eslint/js`                | 10.0.1  | Recommended core rules for the ESLint 10 flat config.                                                                                                                                   |
+| `globals`                   | 17.13.0 | Browser and Node globals for the flat config.                                                                                                                                           |
+| `eslint-plugin-react-hooks` | 7.1.1   | Keeps the Rules of Hooks check that CRA's `react-app` config runs today. Supports ESLint 10.                                                                                            |
+| `isbot`                     | 5.2.2   | React Router's default server entry imports it for the SPA pre-render. `react-router build` adds it to `package.json` itself and fails without it. Accepted amendment, 18 October 2026. |
 
 React Router config and route files stay JavaScript: `react-router.config.js` and `src/routes.js`, with `appDirectory: "src"`.
 
