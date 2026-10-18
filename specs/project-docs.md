@@ -1,8 +1,8 @@
 # Project docs
 
-Status: accepted, 18 October 2026.
+**Status:** done, 18 October 2026. The files in the table below are written, and `CLAUDE.md` points at `docs/README.md`. The four definition-of-done commands exited 0 on Node 24.22.0.
 
-This change starts after the upgrade's stop condition: the characterization tests and `npx playwright test` pass, `npm run build` exits 0, and `npm run lint` exits 0. It does not change the menu, the API, or the toolchain.
+The upgrade's checks had already passed. This spec does not change the menu, the API, or the toolchain.
 
 ## Spec process
 
@@ -16,12 +16,13 @@ Write these against the upgraded app. Point `CLAUDE.md` at `docs/README.md` with
 
 | File | What it holds |
 | --- | --- |
-| `docs/README.md` | Read order: definition of done, architecture decisions, then `.claude/rules/conventional-commits.md`. |
+| `docs/README.md` | Read order: definition of done, architecture, architecture decisions, then `.claude/rules/conventional-commits.md`. |
 | `docs/DoD.md` | Checkboxes a command can prove: the test command, `npx playwright test`, `npm run build`, and `npm run lint` from the upgraded “Commands in force”. A “Not in this DoD” section: TypeScript conversion, server rendering, language style guides, and diagrams. |
 | `docs/architecture-decision-records.md` | Decisions already made in `specs/upgrade.md`: Node 24.22.0, Vite, React 19, React Router with `ssr: false`, Vitest, `fetch` only inside `src/data/iceCreamData.js`, `@emotion/react` 11, JavaScript. Each record has context, decision, alternatives, and consequences. |
+| `docs/architecture.md` | How the layers connect, and the component tree. Accepted amendment, 18 October 2026. |
 
-A new decision is a new ADR. Do not silently rewrite an accepted one. `docs/README.md`, `docs/DoD.md`, and `docs/architecture-decision-records.md` stay current after the upgrade.
+A new decision is a new ADR. Do not silently rewrite an accepted one. `docs/README.md`, `docs/DoD.md`, `docs/architecture.md`, and `docs/architecture-decision-records.md` stay current after the upgrade.
 
 `docs/commits.md` is not a second copy of the commit rule. The agent-facing rule stays `.claude/rules/conventional-commits.md`. The index links to it.
 
-Do not add `docs/standards/` files that restate React, Express, or JavaScript documentation. Do not add Mermaid diagrams.
+Do not add `docs/standards/` files that restate React, Express, or JavaScript documentation. Mermaid diagrams belong only in `docs/architecture.md`. Do not add them to the decision records or the definition of done.

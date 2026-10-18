@@ -1,68 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Ultimate React Ice Cream
 
-## Available Scripts
+A menu for an ice cream shop. Browse what is on the menu, add a flavour from the catalogue, and edit or delete a menu item. The UI is function components and hooks. The API keeps the menu in memory, so restarting it restores the seed menu.
 
-In the project directory, you can run:
+## Stack
 
-### `npm start`
+Node 24.22.0, React 19, React Router 8 in SPA mode, Vite 8, Emotion 11, and Express 5. Pages call `fetch` only through `src/data/iceCreamData.js`. The app stays JavaScript.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Requirements
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Node 24.22.0. From this directory, `nvm use` reads `.nvmrc`. Install with npm. `package-lock.json` is the lockfile.
 
-### `npm test`
+```bash
+npm install
+```
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Run
 
-### `npm run build`
+The app needs both processes. Port 5000 is taken by the macOS AirPlay Receiver, so the API listens on 5001. Vite on port 3000 proxies `/api` to that port.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm run start-server
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+```bash
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Open [http://localhost:3000](http://localhost:3000).
 
-### `npm run eject`
+| URL | Page |
+| --- | --- |
+| `/` | Menu |
+| `/ice-creams` | Catalogue flavours that are not on the menu yet |
+| `/menu-items/add?iceCreamId=N` | Add that flavour |
+| `/menu-items/:menuItemId` | Edit or delete that item |
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Any other path ends on `/`.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Checks
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Run these on Node 24.22.0. The definition of done is [docs/DoD.md](docs/DoD.md).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+| Command | What it does |
+| --- | --- |
+| `npm test` | Vitest, once. `npm run test:watch` is watch mode. |
+| `npm test -- src/path/File.test.js` | One test file. |
+| `npm run lint` | ESLint. |
+| `npm run build` | SPA build. The page is `build/client/index.html`. |
+| `npx playwright test` | End-to-end tests. Install the browser once with `npx playwright install chromium`. |
 
-## Learn More
+Playwright starts the API and the dev server itself. Stop anything already listening on ports 3000 and 5001 before that command.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Docs
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Start at [docs/README.md](docs/README.md). That index leads to the definition of done, the architecture overview, the decision records, and the commit rules.

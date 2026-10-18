@@ -69,7 +69,7 @@ Accepted amendment, 18 October 2026. Removing `isMounted` made request failures 
 
 ### Unused lockfile and font files
 
-Accepted amendment, 18 October 2026. The app uses npm, so `yarn.lock` is removed. `package-lock.json` stays. Font files that no stylesheet imports are removed: Geomanist Book `.eot`, `.svg`, and `.ttf`; every Geomanist Medium and Geomanist Regular file; and `kathen.otf`. Geomanist Book and Cornerstone `.woff` and `.woff2` stay. `README.md` stays until its own spec.
+Accepted amendment, 18 October 2026. The app uses npm, so `yarn.lock` is removed. `package-lock.json` stays. Font files that no stylesheet imports are removed: Geomanist Book `.eot`, `.svg`, and `.ttf`; every Geomanist Medium and Geomanist Regular file; and `kathen.otf`. Geomanist Book and Cornerstone `.woff` and `.woff2` stay. The root `README.md` describes this app and points at `docs/README.md`.
 
 ## Preserve
 

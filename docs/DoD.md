@@ -6,10 +6,10 @@ The commands come from "Commands in force" in [`specs/upgrade.md`](../specs/upgr
 
 The format check (`npx prettier --check` on every changed file) also stays in force. The edit hook and Lefthook run it.
 
-- [ ] `npm test` runs the Vitest suite once and passes.
-- [ ] `npx playwright test` passes. Its config starts both dev servers, so nothing may already be running on ports 3000 or 5001.
-- [ ] `npm run build` writes the SPA to `build/client/index.html`.
-- [ ] `npm run lint` reports no errors.
+- [x] `npm test` runs the Vitest suite once and passes.
+- [x] `npx playwright test` passes. Its config starts both dev servers, so nothing may already be running on ports 3000 or 5001.
+- [x] `npm run build` writes the SPA to `build/client/index.html`.
+- [x] `npm run lint` reports no errors.
 
 ## Not in this DoD
 
