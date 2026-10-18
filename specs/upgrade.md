@@ -56,6 +56,14 @@ Accepted amendment, 18 October 2026. macOS's AirPlay Receiver listens on port 50
 
 Accepted amendment, 18 October 2026. React Router 8's SPA build pre-renders the root route in Node, and that pre-render fails with a 500 while `package.json` is CommonJS. The React Router migration sets `"type": "module"` and converts `server/app.js` and `server/index.js` to ES modules. The server tests change `require` to `import`. That is an import change only. No assertion changes.
 
+### Load and save failures
+
+Accepted amendment, 18 October 2026. Removing `isMounted` made request failures visible, so the app now handles them:
+
+- When loading fails for a reason other than a not-found or a cancelled request, the page shows a `role="alert"` message from `src/structure/LoadError.js` and does not show the empty-list text.
+- When a save or delete fails, the form stays on screen and shows a `role="alert"` message. It does not navigate.
+- The server logs the stack of an error that answers 500 or above. It never logs the request body, and the client still receives no stack trace.
+
 ## Preserve
 
 These are the characterization assertions. Lock them in tests before changing dependencies. During the rewrite, change the test runner and imports only. Do not change what they assert.
