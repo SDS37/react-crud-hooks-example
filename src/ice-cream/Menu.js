@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import { getMenu } from "../data/iceCreamData";
 
+import LoadError from "../structure/LoadError";
 import LoaderMessage from "../structure/LoaderMessage";
 import Main from "../structure/Main";
 import IceCreamCardContainer from "./IceCreamCardContainer";
@@ -59,18 +60,22 @@ const cardContentStyle = css`
 const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;
-    getMenu().then((menuData) => {
-      if (isMounted) {
+    const controller = new AbortController();
+    getMenu({ signal: controller.signal })
+      .then((menuData) => {
         setMenu(menuData);
         setIsLoading(false);
-      }
-    });
-    return () => {
-      isMounted = false;
-    };
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) {
+          setHasError(true);
+          setIsLoading(false);
+        }
+      });
+    return () => controller.abort();
   }, []);
 
   return (
@@ -80,6 +85,7 @@ const Menu = () => {
         doneMessage="Menu complete"
         isLoading={isLoading}
       />
+      {hasError && <LoadError message="The menu could not be loaded." />}
       {menu.length > 0 ? (
         <IceCreamCardContainer>
           {menu.map(

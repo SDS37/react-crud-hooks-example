@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { getMenuItem, putMenuItem, deleteMenuItem } from "../data/iceCreamData";
 
+import LoadError from "../structure/LoadError";
 import LoaderMessage from "../structure/LoaderMessage";
 import Main from "../structure/Main";
 import IceCream from "./IceCream";
@@ -11,29 +12,30 @@ const EditIceCream = () => {
   const navigate = useNavigate();
   const { menuItemId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const isMounted = useRef(true);
+  const [hasError, setHasError] = useState(false);
   const [menuItem, setMenuItem] = useState({});
 
   useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
+    const controller = new AbortController();
     setIsLoading(true);
-    getMenuItem(menuItemId)
+    setHasError(false);
+    getMenuItem(menuItemId, { signal: controller.signal })
       .then((item) => {
-        if (isMounted.current) {
-          setMenuItem(item);
-          setIsLoading(false);
-        }
+        setMenuItem(item);
+        setIsLoading(false);
       })
       .catch((err) => {
-        if (err.status === 404 && isMounted.current) {
+        if (controller.signal.aborted) {
+          return;
+        }
+        if (err.status === 404) {
           navigate("/", { replace: true, state: { focus: true } });
+        } else {
+          setHasError(true);
+          setIsLoading(false);
         }
       });
+    return () => controller.abort();
   }, [menuItemId, navigate]);
 
   const onSubmitHandler = (updatedItem) => {
@@ -55,7 +57,8 @@ const EditIceCream = () => {
         doneMessage="Ice cream loaded."
         isLoading={isLoading}
       />
-      {!isLoading && (
+      {hasError && <LoadError message="The ice cream could not be loaded." />}
+      {!isLoading && !hasError && (
         <IceCream
           {...menuItem}
           onDelete={onDeleteHandler}
