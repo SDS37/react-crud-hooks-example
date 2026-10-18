@@ -1,22 +1,14 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import { Global, css } from "@emotion/react";
 import Header from "./structure/Header";
 import Footer from "./structure/Footer";
-import Menu from "./ice-cream/Menu";
-import EditIceCream from "./ice-cream/EditIceCream";
-import IceCreams from "./ice-cream/IceCreams";
-import AddIceCream from "./ice-cream/AddIceCream";
 
 // node-sass not installed ---------------------------------
 import geomanistBookWoff from "./assets/fonts/geomanist/geomanist-book.woff";
 import geomanistBookWoff2 from "./assets/fonts/geomanist/geomanist-book.woff2";
 import cornerstoneWoff from "./assets/fonts/cornerstone.woff";
 import cornerstoneWoff2 from "./assets/fonts/cornerstone.woff2";
-import { Global, css } from "@emotion/react";
+
 const globalStyle = css`
   @font-face {
     font-family: "geomanist";
@@ -117,26 +109,42 @@ const globalStyle = css`
     }
   }
 `;
-// ---------------------------------------------------------
 
-const App = () => {
+export function Layout({ children }) {
   return (
-    <Router>
-      <Global styles={globalStyle} />
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <Header />
-      <Switch>
-        <Route path="/" component={Menu} exact />
-        <Route path="/ice-creams" component={IceCreams} />
-        <Route path="/menu-items/add" component={AddIceCream} exact />
-        <Route path="/menu-items/:menuItemId" component={EditIceCream} />
-        <Redirect to="/" />
-      </Switch>
-      <Footer />
-    </Router>
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
+        <title>Ultimate Ice Cream</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <Global styles={globalStyle} />
+        <div id="root">
+          <a href="#main" className="skip-link">
+            Skip to content
+          </a>
+          <Header />
+          {children}
+          <Footer />
+        </div>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
   );
-};
+}
 
-export default App;
+export default function Root() {
+  return <Outlet />;
+}
+
+export function HydrateFallback() {
+  return null;
+}

@@ -86,12 +86,10 @@ const Header = () => (
       My Ice Cream
     </h1>
     <nav>
-      <FocusLink to="/" activeClassName="active" exact>
+      <FocusLink to="/" end>
         Menu
       </FocusLink>
-      <FocusLink to="/ice-creams" activeClassName="active">
-        Add Ice Cream
-      </FocusLink>
+      <FocusLink to="/ice-creams">Add Ice Cream</FocusLink>
     </nav>
   </header>
 );

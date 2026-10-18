@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 
 import { getMenu } from "../data/iceCreamData";
 
@@ -57,7 +56,7 @@ const cardContentStyle = css`
   }
 `;
 
-const Menu = ({ history }) => {
+const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -90,7 +89,6 @@ const Menu = ({ history }) => {
                 iceCreamId={iceCream.id}
                 to={`/menu-items/${id.toString()}`}
                 heading={iceCream.name}
-                history={history}
               >
                 <div css={cardContentStyle}>
                   <p className="price">{`$${price.toFixed(2)}`}</p>
@@ -110,12 +108,6 @@ const Menu = ({ history }) => {
       )}
     </Main>
   );
-};
-
-Menu.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }),
 };
 
 export default Menu;

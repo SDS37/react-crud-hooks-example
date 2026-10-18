@@ -6,6 +6,8 @@ import globals from "globals";
 export default defineConfig([
   globalIgnores([
     "dist/",
+    "build/",
+    ".react-router/",
     "test-results/",
     "playwright-report/",
     "blob-report/",

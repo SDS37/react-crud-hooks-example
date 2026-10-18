@@ -1,6 +1,5 @@
 import { useRef } from "react";
 
-import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { css } from "@emotion/react";
@@ -42,11 +41,6 @@ Main.propTypes = {
   headingText: PropTypes.string.isRequired,
   headingLevel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   children: PropTypes.node.isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      focus: PropTypes.bool,
-    }),
-  }).isRequired,
 };
 
-export default withRouter(Main);
+export default Main;

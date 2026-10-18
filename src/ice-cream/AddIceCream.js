@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import PropTypes from "prop-types";
+import { useNavigate, useSearchParams } from "react-router";
 
 import { getIceCream, postMenuItem } from "../data/iceCreamData";
 
@@ -7,7 +7,10 @@ import Main from "../structure/Main";
 import LoaderMessage from "../structure/LoaderMessage";
 import IceCream from "./IceCream";
 
-const AddIceCream = ({ history, location }) => {
+const AddIceCream = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const iceCreamId = searchParams.get("iceCreamId");
   const isMounted = useRef(true);
   const [isLoading, setIsLoading] = useState(true);
   const [iceCream, setIceCream] = useState({});
@@ -19,7 +22,7 @@ const AddIceCream = ({ history, location }) => {
   }, []);
 
   useEffect(() => {
-    getIceCream(location.search.split("=")[1])
+    getIceCream(iceCreamId)
       .then((iceCreamResponse) => {
         if (isMounted.current) {
           setIceCream(iceCreamResponse);
@@ -28,14 +31,14 @@ const AddIceCream = ({ history, location }) => {
       })
       .catch((err) => {
         if (err.status === 404 && isMounted) {
-          history.replace("/", { focus: true });
+          navigate("/", { replace: true, state: { focus: true } });
         }
       });
-  }, [history, location.search]);
+  }, [navigate, iceCreamId]);
 
   const onSubmitHandler = (menuItem) => {
     postMenuItem(menuItem).then(() => {
-      history.push("/", { focus: true });
+      navigate("/", { state: { focus: true } });
     });
   };
 
@@ -51,16 +54,6 @@ const AddIceCream = ({ history, location }) => {
       )}
     </Main>
   );
-};
-
-AddIceCream.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired,
-  }),
-  location: PropTypes.shape({
-    search: PropTypes.string.isRequired,
-  }),
 };
 
 export default AddIceCream;

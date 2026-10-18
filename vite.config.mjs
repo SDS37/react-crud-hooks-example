@@ -1,3 +1,4 @@
+import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig, transformWithOxc } from "vite";
 
 const apiServer = "http://localhost:5001";
@@ -21,8 +22,11 @@ const jsxInJsFiles = {
 };
 
 export default defineConfig({
-  plugins: [jsxInJsFiles],
+  // Vitest tests no routes, and the router plugin expects its own CLI.
+  plugins: [jsxInJsFiles, !process.env.VITEST && reactRouter()],
   optimizeDeps: {
+    // Found late otherwise, which reloads the page during the first visit.
+    include: ["@emotion/react/jsx-runtime", "@emotion/react/jsx-dev-runtime"],
     // The dependency scanner does not run the plugin above.
     rolldownOptions: {
       moduleTypes: { ".js": "jsx" },
