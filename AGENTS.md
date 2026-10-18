@@ -15,14 +15,15 @@ Checks (the same list as "Commands in force" in `specs/upgrade.md`):
 
 - Full suite: `npm test` runs Vitest once. `npm run test:watch` is watch mode.
 - One file: `npm test -- src/path/File.test.js`.
-- Format check: `npx prettier --check <file>`. Prettier 3.9.10 with **default options** (double quotes, trailing commas, 80 columns). Legacy files still use single quotes, so they get reformatted when touched. `npx prettier --write <file>` formats one file; `npm run format` formats the repo.
+- Format check: `npx prettier --check <file>`. Prettier 3.9.10 with **default options** (double quotes, trailing commas, 80 columns). `npx prettier --write <file>` formats one file; `npm run format` formats the repo.
 - Lint: `npm run lint` (ESLint 10 flat config in `eslint.config.mjs`).
 - Build: `npm run build` (React Router, SPA mode: `build/client/index.html` plus assets; `build/server` is a by-product).
 - End to end: `npx playwright test`. `playwright.config.mjs` starts both dev servers itself, so stop any you have running first. Run `npx playwright install chromium` once.
 
 Characterization tests live in `src/serverApi.test.js`, `src/utils/validators.test.js`, `src/data/iceCreamData.test.js`, and `e2e/`. Vitest runs with `globals: true` in the `node` environment; `src/setupTests.js` loads `@testing-library/jest-dom/vitest`.
 
-- The rest of the code is still the legacy stack: React 16.8, axios 0.18, Express 4, Emotion 10. Vite compiles JSX in `src/**/*.js` through a small plugin in `vite.config.mjs`. That is the starting point, not the destination. The destination and the behavior that must survive are in `specs/upgrade.md`. Do not add new legacy-only APIs. A file that has not been migrated yet must keep working until the upgrade changes it.
+- The stack is React 19.3.1, React Router 8.4.0 (framework mode, SPA), Vite 8, Emotion 11, Express 5 and `fetch`. The behavior that must survive the upgrade is recorded in `specs/upgrade.md`. Keep the app JavaScript: no TypeScript without an accepted spec.
+- Vite compiles JSX in `src/**/*.js` through the `jsx-in-js-files` plugin in `vite.config.mjs`. It stays because Vite 8 only compiles JSX in `.jsx` files, and the React Router plugin parses `.js` route modules with Babel, which fails on JSX without it. Do not remove it unless the files are renamed to `.jsx`.
 
 ## Git workflow
 
@@ -45,9 +46,9 @@ An ice cream shop menu CRUD demo built from function components and hooks.
 - `/api/menu/stock-ice-creams` returns catalogue flavours that aren't on the menu yet. It must stay declared before `/api/menu/:id`.
 - On POST/PUT the server ignores the client's `iceCream.name` and looks it up by `iceCream.id`. It stores the other fields without validating them.
 
-**Data layer**: every API call goes through `src/data/iceCreamData.js` (axios), and components never call axios directly. List results are sorted by name on the client.
+**Data layer**: every API call goes through `src/data/iceCreamData.js` (`fetch`), and components never call `fetch` directly. Each function takes an optional `{ signal }` for an `AbortController`, and a non-2xx response throws an error with `status`. List results are sorted by name on the client.
 
-**Routes (`src/routes.js`, shell in `src/root.js`)**: `ssr: false` in `react-router.config.js`; `package.json` is `"type": "module"` because the build pre-render needs it. `src/entry.client.js` omits StrictMode until the containers' effects are fixed (ticket 09). The catch-all route's `clientLoader` redirects to `/`.
+**Routes**: `src/routes.js` is the route config (paths and file extensions are relative to `appDirectory: "src"` in `react-router.config.js`). `ssr: false` makes it SPA mode: the build pre-renders only `build/client/index.html` from the root layout. `package.json` is `"type": "module"` because the pre-render loads `build/server/index.js`. The default client entry runs the app under StrictMode. `src/root.js` is the root layout: the document shell (`<html>`, icons, manifest, default `<title>`), the Emotion `<Global>` styles and fonts, the skip link, `Header` and `Footer`, and an `<Outlet>`. Its `Layout` and `HydrateFallback` also run in Node at build time, so keep browser-only code out of them. The catch-all route's `clientLoader` in `src/routes/catch-all.js` redirects to `/`.
 
 - `/`: Menu
 - `/ice-creams`: catalogue flavours you can add
@@ -55,14 +56,14 @@ An ice cream shop menu CRUD demo built from function components and hooks.
 - `/menu-items/:menuItemId`: EditIceCream
 - Anything else redirects to `/`.
 
-**Forms**: `AddIceCream` and `EditIceCream` are thin containers. They fetch data and render the shared `src/ice-cream/IceCream.js` form with `onSubmit` (and `onDelete` for edit). After saving they navigate with `useNavigate()` (`navigate('/', { state: { focus: true } })`, with `replace: true` where it replaced). They use an `isMounted` ref to avoid setting state after unmount; check `isMounted.current`, not the ref itself.
+**Forms**: `AddIceCream` and `EditIceCream` are thin containers. They fetch data and render the shared `src/ice-cream/IceCream.js` form with `onSubmit` (and `onDelete` for edit). After saving they navigate with `useNavigate()` (`navigate("/", { state: { focus: true } })`, with `replace: true` where it replaced). Their load effects create an `AbortController`, pass its `signal` to the data layer and abort in the cleanup; a rejection after abort is ignored (`controller.signal.aborted`).
 
-**Validation**: `useValidation` (in `src/hooks/`) takes a validator from `src/utils/validators.js` and returns `[error, ariaProps]`. Spread `ariaProps` onto the input. Errors show only after the first submit (`hasSubmitted`). On a failed submit, focus moves to the first `[aria-invalid="true"]` control. Use `useUniqueIds` for label/input/error ids. In the form, `inStock` and `quantity` are coupled (quantity 0 ⇔ out of stock).
+**Validation**: `useValidation` (in `src/hooks/`) takes a validator from `src/utils/validators.js` and returns `[error, ariaProps]`. Spread `ariaProps` onto the input. Errors show only after the first submit (`hasSubmitted`). On a failed submit, focus moves to the first `[aria-invalid="true"]` control. Use `useUniqueIds` (built on `useId`) for label/input/error ids. In the form, `inStock` and `quantity` are coupled (quantity 0 ⇔ out of stock).
 
 **Accessibility**: keep these conventions intact.
 
 - Skip link to `#main`.
-- `structure/Main` renders the `<main>` landmark, sets the page title via react-helmet, and renders the heading.
+- `structure/Main` renders the `<main>` landmark, sets the page title with a React 19 `<title>` element, and renders the heading.
 - `LoaderMessage` announces loading through an `aria-live` region.
 - Decorative images use `alt=""`.
 - After a save or delete the containers navigate home with `state: { focus: true }`, and `Main` focuses its heading when it mounts with that state. Plain links through `FocusLink` do not move focus.
