@@ -22,6 +22,13 @@ const jsxInJsFiles = {
 
 export default defineConfig({
   plugins: [jsxInJsFiles],
+  optimizeDeps: {
+    // The dependency scanner does not run the plugin above.
+    rolldownOptions: {
+      moduleTypes: { ".js": "jsx" },
+      transform: { jsx: { runtime: "classic" } },
+    },
+  },
   server: {
     port: 3000,
     strictPort: true,
