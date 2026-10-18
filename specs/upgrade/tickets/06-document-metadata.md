@@ -4,9 +4,9 @@
 
 **Blocked by:** 04: React 19 renders the app; 05: Styles use @emotion/react 11
 
-**Status:** ready-for-agent
+**Status:** done (merged to `main` in #2)
 
-- [ ] A new e2e test, written first, checks the title on `/`, `/ice-creams`, the add form and the edit form.
-- [ ] `src/structure/Main.js` sets the title without react-helmet, and `react-helmet` is no longer in `package.json`.
-- [ ] Navigating between routes updates the title.
-- [ ] Every check in "Commands in force" exits 0.
+- [x] A new e2e test, written first, checks the title on `/`, `/ice-creams`, the add form and the edit form.
+- [x] `src/structure/Main.js` sets the title without react-helmet, and `react-helmet` is no longer in `package.json`.
+- [x] Navigating between routes updates the title.
+- [x] Every check in "Commands in force" exits 0.

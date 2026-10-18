@@ -1,5 +1,7 @@
 # Upgrade
 
+**Status:** done. Merged to `main` in #2. Every check in "Commands in force" exited 0 on the final integration tip. The tickets are in `specs/upgrade/tickets/`.
+
 Delta spec for moving this ice cream menu app off its legacy toolchain. The product stays the same. The stack moves to the latest stable releases below. Do not pick different versions. Confirm any API in the `docs` skill before writing it.
 
 Checked on 17 October 2026.

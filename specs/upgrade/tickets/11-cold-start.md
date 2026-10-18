@@ -4,9 +4,9 @@
 
 **Blocked by:** 07: The app runs on React Router 8 in SPA mode
 
-**Status:** ready-for-agent
+**Status:** done (merged to `main` in #2)
 
-- [ ] Reproduce the failure first: remove `node_modules/.vite` and run the e2e suite through the lock. Record the failing test and the Vite log line.
-- [ ] After the fix, three consecutive runs that each start from a removed `node_modules/.vite` exit 0, and the dev server log shows no re-optimization after the first page load.
-- [ ] The fix lives in the dev server or dependency-optimizer configuration, or in how `playwright.config.mjs` starts the app. It does not add retries and does not change e2e assertions.
-- [ ] Every check in "Commands in force" exits 0.
+- [x] Reproduce the failure first: remove `node_modules/.vite` and run the e2e suite through the lock. Record the failing test and the Vite log line.
+- [x] After the fix, three consecutive runs that each start from a removed `node_modules/.vite` exit 0, and the dev server log shows no re-optimization after the first page load.
+- [x] The fix lives in the dev server or dependency-optimizer configuration, or in how `playwright.config.mjs` starts the app. It does not add retries and does not change e2e assertions.
+- [x] Every check in "Commands in force" exits 0.

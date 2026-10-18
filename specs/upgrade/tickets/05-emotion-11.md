@@ -4,11 +4,11 @@
 
 **Blocked by:** 04: React 19 renders the app
 
-**Status:** ready-for-agent
+**Status:** done (merged to `main` in #2)
 
-- [ ] `package.json` pins `@emotion/react` 11.14.0 and no longer lists `emotion` or `@emotion/core`.
-- [ ] Each component still defines its `css` blocks at the top of its own file.
-- [ ] No module imports `emotion`, `emotion/macro` or `@emotion/core`.
-- [ ] `src/styles/ice-cream.scss` and `src/assets/css/style.css` are deleted, and their entries in `.prettierignore` are removed.
-- [ ] Screenshots of `/`, `/ice-creams`, the add form and the edit form match the screenshots taken before the change. The screenshots are not committed.
-- [ ] Every check in "Commands in force" exits 0.
+- [x] `package.json` pins `@emotion/react` 11.14.0 and no longer lists `emotion` or `@emotion/core`.
+- [x] Each component still defines its `css` blocks at the top of its own file.
+- [x] No module imports `emotion`, `emotion/macro` or `@emotion/core`.
+- [x] `src/styles/ice-cream.scss` and `src/assets/css/style.css` are deleted, and their entries in `.prettierignore` are removed.
+- [x] Screenshots of `/`, `/ice-creams`, the add form and the edit form match the screenshots taken before the change. The screenshots are not committed.
+- [x] Every check in "Commands in force" exits 0.

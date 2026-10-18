@@ -4,8 +4,8 @@
 
 **Blocked by:** None
 
-**Status:** ready-for-agent
+**Status:** done (merged to `main` in #2)
 
-- [ ] With `node_modules/.vite` removed, `npx vite --force` starts without "Failed to run dependency scan" in its output.
-- [ ] The production build still exits 0 and the app still renders under `npm start`.
-- [ ] Every check in "Commands in force" in `specs/upgrade.md` exits 0.
+- [x] With `node_modules/.vite` removed, `npx vite --force` starts without "Failed to run dependency scan" in its output.
+- [x] The production build still exits 0 and the app still renders under `npm start`.
+- [x] Every check in "Commands in force" in `specs/upgrade.md` exits 0.

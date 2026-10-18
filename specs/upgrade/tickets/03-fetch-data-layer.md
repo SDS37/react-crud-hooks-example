@@ -4,11 +4,11 @@
 
 **Blocked by:** None
 
-**Status:** ready-for-agent
+**Status:** done (merged to `main` in #2)
 
-- [ ] `src/data/iceCreamData.js` is the only module that calls `fetch`, and no module imports axios.
-- [ ] `axios` is no longer in `package.json`.
-- [ ] A non-OK response rejects. It never resolves as if the request succeeded.
-- [ ] Opening the add form for a flavour that is already on the menu still ends on `/`. The add and edit containers read the status from the new error shape.
-- [ ] `src/data/iceCreamData.test.js` mocks `fetch` instead of axios. Its sorting assertions and the requested URLs do not change.
-- [ ] Every check in "Commands in force" exits 0.
+- [x] `src/data/iceCreamData.js` is the only module that calls `fetch`, and no module imports axios.
+- [x] `axios` is no longer in `package.json`.
+- [x] A non-OK response rejects. It never resolves as if the request succeeded.
+- [x] Opening the add form for a flavour that is already on the menu still ends on `/`. The add and edit containers read the status from the new error shape.
+- [x] `src/data/iceCreamData.test.js` mocks `fetch` instead of axios. Its sorting assertions and the requested URLs do not change.
+- [x] Every check in "Commands in force" exits 0.
