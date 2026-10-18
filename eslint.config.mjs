@@ -22,12 +22,8 @@ export default defineConfig([
       // The same two hook rules CRA's react-app config ran.
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-      // The classic JSX runtime uses the React import implicitly, and CRA did
-      // not report unused caught errors.
-      "no-unused-vars": [
-        "error",
-        { varsIgnorePattern: "^React$", caughtErrors: "none" },
-      ],
+      // CRA did not report unused caught errors.
+      "no-unused-vars": ["error", { caughtErrors: "none" }],
     },
   },
   {

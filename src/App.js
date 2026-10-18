@@ -1,32 +1,38 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import Header from './structure/Header';
-import Footer from './structure/Footer';
-import Menu from './ice-cream/Menu';
-import EditIceCream from './ice-cream/EditIceCream';
-import IceCreams from './ice-cream/IceCreams';
-import AddIceCream from './ice-cream/AddIceCream';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
+import Header from "./structure/Header";
+import Footer from "./structure/Footer";
+import Menu from "./ice-cream/Menu";
+import EditIceCream from "./ice-cream/EditIceCream";
+import IceCreams from "./ice-cream/IceCreams";
+import AddIceCream from "./ice-cream/AddIceCream";
 
 // node-sass not installed ---------------------------------
 // import './styles/ice-cream.scss';
-import geomanistBookWoff from './assets/fonts/geomanist/geomanist-book.woff';
-import geomanistBookWoff2 from './assets/fonts/geomanist/geomanist-book.woff2';
-import cornerstoneWoff from './assets/fonts/cornerstone.woff';
-import cornerstoneWoff2 from './assets/fonts/cornerstone.woff2';
-import { Global, css } from '@emotion/core';
+import geomanistBookWoff from "./assets/fonts/geomanist/geomanist-book.woff";
+import geomanistBookWoff2 from "./assets/fonts/geomanist/geomanist-book.woff2";
+import cornerstoneWoff from "./assets/fonts/cornerstone.woff";
+import cornerstoneWoff2 from "./assets/fonts/cornerstone.woff2";
+import { Global, css } from "@emotion/core";
 const globalStyle = css`
   @font-face {
-    font-family: 'geomanist';
-    src: url(${geomanistBookWoff2}) format('woff2'),
-      url(${geomanistBookWoff}) format('woff');
+    font-family: "geomanist";
+    src:
+      url(${geomanistBookWoff2}) format("woff2"),
+      url(${geomanistBookWoff}) format("woff");
     font-weight: 400;
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'cornerstone';
-    src: url(${cornerstoneWoff2}) format('woff2'),
-      url(${cornerstoneWoff}) format('woff');
+    font-family: "cornerstone";
+    src:
+      url(${cornerstoneWoff2}) format("woff2"),
+      url(${cornerstoneWoff}) format("woff");
     font-weight: 400;
     font-style: normal;
   }
@@ -47,7 +53,7 @@ const globalStyle = css`
     padding: 0;
     color: #333;
     background: #ff71ba;
-    font-family: 'geomanist', sans-serif;
+    font-family: "geomanist", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     display: flex;
@@ -123,7 +129,7 @@ const App = () => {
       </a>
       <Header />
       <Switch>
-        <Route path="/" component={ Menu } exact />
+        <Route path="/" component={Menu} exact />
         <Route path="/ice-creams" component={IceCreams} />
         <Route path="/menu-items/add" component={AddIceCream} exact />
         <Route path="/menu-items/:menuItemId" component={EditIceCream} />
@@ -132,6 +138,6 @@ const App = () => {
       <Footer />
     </Router>
   );
-}
+};
 
 export default App;

@@ -1,5 +1,3 @@
-import React from "react";
-
 import { css } from "emotion";
 const footerStyle = css`
   max-width: 63.75em;

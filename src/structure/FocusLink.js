@@ -1,10 +1,9 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { Link, NavLink } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const FocusLink = ({ to, children, activeClassName, ...props }) => {
   const newTo =
-    typeof to === 'string'
+    typeof to === "string"
       ? {
           pathname: to,
           state: { focus: true },

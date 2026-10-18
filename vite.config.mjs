@@ -4,7 +4,7 @@ const apiServer = "http://localhost:5001";
 const appSourceFile = /\/src\/.*\.js$/;
 
 // The app keeps JSX in .js files, and Vite only compiles JSX in .jsx files.
-// React 16.8 has no automatic JSX runtime, so this uses the classic one.
+// The automatic runtime needs no React import in each file.
 const jsxInJsFiles = {
   name: "jsx-in-js-files",
   enforce: "pre",
@@ -14,7 +14,7 @@ const jsxInJsFiles = {
     }
     const result = await transformWithOxc(code, id, {
       lang: "jsx",
-      jsx: { runtime: "classic" },
+      jsx: { runtime: "automatic" },
     });
     return { code: result.code, map: result.map };
   },

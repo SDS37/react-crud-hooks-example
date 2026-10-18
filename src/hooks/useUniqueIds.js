@@ -1,18 +1,8 @@
-import { useRef } from "react";
-
-let lastId = 0;
-
-const nextId = () => {
-  lastId += 1;
-  return `id-${lastId}`;
-};
+import { useId } from "react";
 
 const useUniqueIds = (count) => {
-  const ids = useRef(null);
-  if (ids.current === null) {
-    ids.current = [...new Array(count)].map(nextId);
-  }
-  return ids.current;
+  const prefix = useId();
+  return Array.from({ length: count }, (_, index) => `${prefix}-${index}`);
 };
 
 export default useUniqueIds;
