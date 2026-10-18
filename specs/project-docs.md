@@ -1,6 +1,6 @@
 # Project docs
 
-Status: proposed. Do not add `docs/` until this file is accepted.
+Status: accepted, 18 October 2026.
 
 This change starts after the upgrade's stop condition: the characterization tests and `npx playwright test` pass, `npm run build` exits 0, and `npm run lint` exits 0. It does not change the menu, the API, or the toolchain.
 
