@@ -11,7 +11,7 @@ Messages follow [Conventional Commits](https://www.conventionalcommits.org/en/v1
 type(scope): short description
 ```
 
-The description is the reason, in the imperative, and it fits on one line.
+The description is the reason, in the imperative, and it fits on one line. Merge commits (`Merge ticket NN: ...`) are exempt.
 
 ## Types
 
