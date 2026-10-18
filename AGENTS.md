@@ -4,19 +4,25 @@ Canonical project guidance for coding agents working in this repository. Claude 
 
 ## Commands
 
-Use **npm** (`yarn.lock` is stale; don't update it).
+Use **npm** (`yarn.lock` is stale; don't update it) on Node 24.22.0 (`.nvmrc`; `nvm use`).
 
 The app needs two processes running together:
 
-- `npm run start-server`: Express API on port 5000 (`server/index.js`)
-- `npm start`: CRA dev server on port 3000. `"proxy": "http://localhost:5000"` in package.json forwards the frontend's relative `/api/...` calls.
+- `npm run start-server`: Express API on port 5001 (`server/index.js`). Port 5000 is taken by macOS's AirPlay Receiver.
+- `npm start`: Vite dev server on port 3000. `server.proxy` in `vite.config.mjs` forwards the frontend's relative `/api/...` calls to port 5001.
 
-Other:
+Checks (the same list as "Commands in force" in `specs/upgrade.md`):
 
-- Tests: `CI=true npm test` runs once (plain `npm test` is watch mode). For a single file: `CI=true npm test -- src/path/File.test.js`. Characterization tests live in `src/serverApi.test.js`, `src/utils/validators.test.js`, and `src/data/iceCreamData.test.js`. Use `@testing-library/react` with the old `jest-dom` package (`jest-dom/extend-expect`, already loaded in `src/setupTests.js`). `jest-emotion` is the snapshot serializer. The end-to-end suite in `specs/upgrade.md` is not in the repo yet.
-- Formatting: Prettier 1.17 with **default options** (double quotes, 80 columns). The existing code still uses single quotes, so files get reformatted when touched. `npm run format` uses an unquoted glob that skips the top-level `src/*.js` files; to cover a specific file, run `npx prettier --write <file>`.
-- Lint: only CRA's built-in `react-app` ESLint config. Warnings show in `npm start` / `npm run build` output, and there is no separate lint script. The upgrade adds `npm run lint`.
-- The code on disk is the legacy stack: React 16.8, react-scripts 3.0.1, react-router v5, axios 0.18, Node 14. That is the starting point, not the destination. The destination and the behavior that must survive are in `specs/upgrade.md`. Do not add new legacy-only APIs. A file that has not been migrated yet must keep working until the upgrade changes it.
+- Full suite: `npm test` runs Vitest once. `npm run test:watch` is watch mode.
+- One file: `npm test -- src/path/File.test.js`.
+- Format check: `npx prettier --check <file>`. Prettier 3.9.10 with **default options** (double quotes, trailing commas, 80 columns). Legacy files still use single quotes, so they get reformatted when touched. `npx prettier --write <file>` formats one file; `npm run format` formats the repo.
+- Lint: `npm run lint` (ESLint 10 flat config in `eslint.config.mjs`).
+- Build: `npm run build` (Vite, output in `dist/`).
+- End to end: `npx playwright test`. `playwright.config.mjs` starts both dev servers itself, so stop any you have running first. Run `npx playwright install chromium` once.
+
+Characterization tests live in `src/serverApi.test.js`, `src/utils/validators.test.js`, `src/data/iceCreamData.test.js`, and `e2e/`. Vitest runs with `globals: true` in the `node` environment; `src/setupTests.js` loads `@testing-library/jest-dom/vitest`.
+
+- The rest of the code is still the legacy stack: React 16.8, react-router v5, axios 0.18, Express 4, Emotion 10. Vite compiles JSX in `src/**/*.js` through a small plugin in `vite.config.mjs`. That is the starting point, not the destination. The destination and the behavior that must survive are in `specs/upgrade.md`. Do not add new legacy-only APIs. A file that has not been migrated yet must keep working until the upgrade changes it.
 
 ## Git workflow
 
@@ -32,7 +38,7 @@ A change is done when every check under "Commands in force" in `specs/upgrade.md
 
 An ice cream shop menu CRUD demo built from function components and hooks.
 
-**Backend**: `server/app.js` exports `createApp()` with **in-memory data**, so every new app starts from the seed menu. `server/index.js` listens on port 5000.
+**Backend**: `server/app.js` exports `createApp()` with **in-memory data**, so every new app starts from the seed menu. `server/index.js` listens on port 5001.
 
 - `iceCreams` is the catalogue (`{id, name}`). Each `id` maps to `public/ice-cream-images/ice-cream-{id}.svg`.
 - `menuData` holds the menu items (`{id, iceCream: {id, name}, inStock, quantity, price, description}`).

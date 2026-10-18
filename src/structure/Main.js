@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
-import Helmet from 'react-helmet';
+import Helmet from "react-helmet";
 
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
-import { css } from 'emotion/macro';
+import { css } from "emotion";
 const mainStyle = css`
   max-width: 63.75em;
   margin-left: auto;
@@ -16,7 +16,7 @@ const mainStyle = css`
   outline: 0;
 
   .main-heading {
-    font-family: 'cornerstone', sans-serif;
+    font-family: "cornerstone", sans-serif;
     padding: 1rem 0 2rem;
     color: #313030;
     font-size: 1.8em;
@@ -28,7 +28,7 @@ const mainStyle = css`
 const Main = ({ children, headingText, headingLevel = 2 }) => {
   const heading = useRef(null);
   const H = `h${headingLevel}`;
-  
+
   return (
     <main className={mainStyle} tabIndex="-1" id="main">
       <Helmet>
@@ -40,7 +40,7 @@ const Main = ({ children, headingText, headingLevel = 2 }) => {
       {children}
     </main>
   );
-}
+};
 
 Main.propTypes = {
   headingText: PropTypes.string.isRequired,

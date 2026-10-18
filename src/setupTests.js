@@ -1,4 +1,4 @@
-import 'jest-dom/extend-expect';
+import "@testing-library/jest-dom/vitest";
 
 //This is required to silence a React DOM error that will be fixed in
 //version 16.9.0. Once this is released, remove this code.

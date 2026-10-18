@@ -1,7 +1,7 @@
-const { createApp } = require('./app');
+const { createApp } = require("./app");
 
-const port = 5000;
+const port = 5001;
 
 createApp().listen(port, () =>
-  console.log(`Project ICE server listening on port ${port}!`)
+  console.log(`Project ICE server listening on port ${port}!`),
 );

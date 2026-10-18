@@ -6,21 +6,21 @@ Checked on 17 October 2026.
 
 ## Target
 
-| Concern | Legacy, in the repo today | Target |
-| --- | --- | --- |
-| Node | 14 | 24.22.0 (Active LTS). Node 26 is still Current. Do not use it. |
-| UI | React 16.8, react-scripts 3.0.1 | React 19.3.1 and react-dom 19.3.1 |
-| Build | Create React App | Vite 8.3.4 |
-| Routing | react-router-dom 5 | react-router 8.4.0 and @react-router/dev 8.4.0, Vite plugin, `ssr: false` |
-| Tests | Jest via react-scripts, `jest-dom` 3 | Vitest 5.0.5, `@testing-library/react` 16.3.3, `@testing-library/jest-dom` |
-| End to end | None | Playwright 1.64.1. Checked on 18 October 2026. |
-| Format | Prettier 1.17 | Prettier 3.9.10, default options |
-| Lint | ESLint buried in react-scripts | ESLint 10.13.0 with a flat config and `npm run lint` |
-| HTTP client | axios 0.18, only inside `src/data/iceCreamData.js` | `fetch` inside that same module |
-| Server | Express 4 and the `body-parser` package | Express 5.3.0 and `express.json()` |
-| Styles | `emotion` 10 and `@emotion/core` | `@emotion/react` 11.14.0 |
-| Document title | `react-helmet` 5 | React 19 document metadata when the docs confirm it works for this client-rendered app. Otherwise `react-helmet-async`. |
-| Language | JavaScript | JavaScript. Do not convert the app to TypeScript in this upgrade. |
+| Concern        | Legacy, in the repo today                          | Target                                                                                                                  |
+| -------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Node           | 14                                                 | 24.22.0 (Active LTS). Node 26 is still Current. Do not use it.                                                          |
+| UI             | React 16.8, react-scripts 3.0.1                    | React 19.3.1 and react-dom 19.3.1                                                                                       |
+| Build          | Create React App                                   | Vite 8.3.4                                                                                                              |
+| Routing        | react-router-dom 5                                 | react-router 8.4.0 and @react-router/dev 8.4.0, Vite plugin, `ssr: false`                                               |
+| Tests          | Jest via react-scripts, `jest-dom` 3               | Vitest 5.0.5, `@testing-library/react` 16.3.3, `@testing-library/jest-dom`                                              |
+| End to end     | None                                               | Playwright 1.64.1. Checked on 18 October 2026.                                                                          |
+| Format         | Prettier 1.17                                      | Prettier 3.9.10, default options                                                                                        |
+| Lint           | ESLint buried in react-scripts                     | ESLint 10.13.0 with a flat config and `npm run lint`                                                                    |
+| HTTP client    | axios 0.18, only inside `src/data/iceCreamData.js` | `fetch` inside that same module                                                                                         |
+| Server         | Express 4 and the `body-parser` package            | Express 5.3.0 and `express.json()`                                                                                      |
+| Styles         | `emotion` 10 and `@emotion/core`                   | `@emotion/react` 11.14.0                                                                                                |
+| Document title | `react-helmet` 5                                   | React 19 document metadata when the docs confirm it works for this client-rendered app. Otherwise `react-helmet-async`. |
+| Language       | JavaScript                                         | JavaScript. Do not convert the app to TypeScript in this upgrade.                                                       |
 
 Add `"engines": { "node": ">=24.22.0" }` and `.nvmrc` containing `24.22.0` in the toolchain commit.
 
@@ -28,15 +28,15 @@ Add `"engines": { "node": ">=24.22.0" }` and `.nvmrc` containing `24.22.0` in th
 
 Status: accepted amendment, 18 October 2026. The target table does not name these, but the targets need them. Checked on npm on 18 October 2026. Do not pick different versions.
 
-| Package | Version | Why the target needs it |
-| --- | --- | --- |
-| `@react-router/node` | 8.4.0 | SPA mode still pre-renders the root route at build time, so the React Router docs (`how-to/spa`) require this package even with `ssr: false`. |
-| `@testing-library/dom` | 10.4.2 | Required peer of `@testing-library/react` 16.3.3. |
-| `@testing-library/jest-dom` | 7.0.1 | The target row names this package without a version. 7.0.1 is the latest. |
-| `jsdom` | 30.1.3 | Vitest DOM environment for any test that renders a component. The three characterization files stay in the `node` environment. |
-| `@eslint/js` | 10.0.1 | Recommended core rules for the ESLint 10 flat config. |
-| `globals` | 17.13.0 | Browser and Node globals for the flat config. |
-| `eslint-plugin-react-hooks` | 7.1.1 | Keeps the Rules of Hooks check that CRA's `react-app` config runs today. Supports ESLint 10. |
+| Package                     | Version | Why the target needs it                                                                                                                       |
+| --------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@react-router/node`        | 8.4.0   | SPA mode still pre-renders the root route at build time, so the React Router docs (`how-to/spa`) require this package even with `ssr: false`. |
+| `@testing-library/dom`      | 10.4.2  | Required peer of `@testing-library/react` 16.3.3.                                                                                             |
+| `@testing-library/jest-dom` | 7.0.1   | The target row names this package without a version. 7.0.1 is the latest.                                                                     |
+| `jsdom`                     | 30.1.3  | Vitest DOM environment for any test that renders a component. The three characterization files stay in the `node` environment.                |
+| `@eslint/js`                | 10.0.1  | Recommended core rules for the ESLint 10 flat config.                                                                                         |
+| `globals`                   | 17.13.0 | Browser and Node globals for the flat config.                                                                                                 |
+| `eslint-plugin-react-hooks` | 7.1.1   | Keeps the Rules of Hooks check that CRA's `react-app` config runs today. Supports ESLint 10.                                                  |
 
 React Router config and route files stay JavaScript: `react-router.config.js` and `src/routes.js`, with `appDirectory: "src"`.
 
@@ -91,14 +91,17 @@ These files lock the behavior above. Later commits may change how they run, not 
 
 `test-runner` runs the checks. The dev servers are how the end-to-end suite reaches the app. Update this section in the same commit that changes the runner.
 
-Checks today, before the toolchain commit:
+Run every check on Node 24.22.0 (`.nvmrc`).
 
-- One file: `CI=true npm test -- src/path/File.test.js`
-- Full suite: `CI=true npm test`
-- Format check: `npx prettier --check <file>`
+- One file: `npm test -- src/path/File.test.js`
+- Full suite: `npm test` (Vitest, one run)
+- Format check: `npx prettier --check <file>` for every changed file
+- Lint: `npm run lint`
+- Build: `npm run build`
+- End to end: `npx playwright test`. Its config starts both dev servers, so none may already be running on ports 3000 or 5001.
 
-Dev servers today: `npm run start-server` and `npm start`.
+Dev servers: `npm run start-server` (Express on port 5001) and `npm start` (Vite on port 3000, with `/api` proxied to port 5001).
 
-`npx prettier --write <file>` is the formatter. The edit hook runs it. `npm run format` skips the top-level `src/*.js` files.
+`npx prettier --write <file>` is the formatter. The edit hook runs it. `npm run format` formats the whole repo.
 
-After the toolchain commit, the checks are the Vitest one-file command, the Vitest full suite, `npx prettier --check <file>`, `npm run lint`, `npm run build`, and `npx playwright test`. The dev servers are the Vite server and `npm run start-server`, with `/api` proxied to the Express port. Update the Commands section of `AGENTS.md` in that same commit. The upgrade is not done until every check exits 0. Do not report the suite green when a check was not run.
+The toolchain commit lands before the `e2e/` suite, so on that commit alone `npx playwright test` stops with "No tests found". Every later commit runs it. The upgrade is not done until every check exits 0. Do not report the suite green when a check was not run.

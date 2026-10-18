@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-import { getMenu } from '../data/iceCreamData';
+import { getMenu } from "../data/iceCreamData";
 
-import LoaderMessage from '../structure/LoaderMessage';
-import Main from '../structure/Main';
-import IceCreamCardContainer from './IceCreamCardContainer';
-import IceCreamCard from './IceCreamCard';
+import LoaderMessage from "../structure/LoaderMessage";
+import Main from "../structure/Main";
+import IceCreamCardContainer from "./IceCreamCardContainer";
+import IceCreamCard from "./IceCreamCard";
 
-import { css } from 'emotion/macro';
+import { css } from "emotion";
 const cardContentStyle = css`
   display: flex;
   flex-direction: row;
@@ -27,7 +27,7 @@ const cardContentStyle = css`
     color: rgba(64, 49, 71, 0.8);
 
     &:after {
-      content: '';
+      content: "";
       width: 4px;
       height: 4px;
       position: absolute;
@@ -57,13 +57,13 @@ const cardContentStyle = css`
   }
 `;
 
-const Menu = ({history}) => {
+const Menu = ({ history }) => {
   const [menu, setMenu] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
-    getMenu().then(menuData => {
+    getMenu().then((menuData) => {
       if (isMounted) {
         setMenu(menuData);
         setIsLoading(false);
@@ -71,39 +71,46 @@ const Menu = ({history}) => {
     });
     return () => {
       isMounted = false;
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <Main headingText="Rock your taste buds with one of these!">
-      <LoaderMessage loadingMessage="Ice creams loading" doneMessage="Menu complete" isLoading={isLoading}/>
-      { 
-        menu.length > 0 ? (
-          <IceCreamCardContainer>
-            {
-              menu.map(({ id, iceCream, price, description, inStock, quantity }) => (
-                <IceCreamCard
-                  key={id.toString()}
-                  iceCreamId={iceCream.id}
-                  to={`/menu-items/${id.toString()}`}
-                  heading={iceCream.name}
-                  history={history}>
-                  <div className={cardContentStyle}>
-                    <p className="price">{`$${price.toFixed(2)}`}</p>
-                    <p className={`stock${inStock ? '' : ' out'}`}>
-                      {inStock ? `${quantity} in stock` : 'Currently out of stock!'}
-                    </p>
-                    <p className="description">{description}</p>
-                  </div>
-                </IceCreamCard>
-              ))
-            }
-          </IceCreamCardContainer>
-        ) : ( !isLoading && <p>nothing to show !</p> )
-      }
+      <LoaderMessage
+        loadingMessage="Ice creams loading"
+        doneMessage="Menu complete"
+        isLoading={isLoading}
+      />
+      {menu.length > 0 ? (
+        <IceCreamCardContainer>
+          {menu.map(
+            ({ id, iceCream, price, description, inStock, quantity }) => (
+              <IceCreamCard
+                key={id.toString()}
+                iceCreamId={iceCream.id}
+                to={`/menu-items/${id.toString()}`}
+                heading={iceCream.name}
+                history={history}
+              >
+                <div className={cardContentStyle}>
+                  <p className="price">{`$${price.toFixed(2)}`}</p>
+                  <p className={`stock${inStock ? "" : " out"}`}>
+                    {inStock
+                      ? `${quantity} in stock`
+                      : "Currently out of stock!"}
+                  </p>
+                  <p className="description">{description}</p>
+                </div>
+              </IceCreamCard>
+            ),
+          )}
+        </IceCreamCardContainer>
+      ) : (
+        !isLoading && <p>nothing to show !</p>
+      )}
     </Main>
   );
-}
+};
 
 Menu.propTypes = {
   history: PropTypes.shape({
@@ -111,4 +118,4 @@ Menu.propTypes = {
   }),
 };
 
-export default Menu; 
+export default Menu;

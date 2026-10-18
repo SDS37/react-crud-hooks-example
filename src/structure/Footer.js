@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { css } from 'emotion/macro';
+import { css } from "emotion";
 const footerStyle = css`
   max-width: 63.75em;
   margin-left: auto;
@@ -12,7 +12,7 @@ const footerStyle = css`
 
   span {
     margin: 0;
-    font-family: 'cornerstone', sans-serif;
+    font-family: "cornerstone", sans-serif;
     font-weight: 600;
   }
 `;

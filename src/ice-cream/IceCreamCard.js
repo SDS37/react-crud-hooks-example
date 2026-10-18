@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import FocusLink from '../structure/FocusLink';
-import IceCreamImage from './IceCreamImage';
+import FocusLink from "../structure/FocusLink";
+import IceCreamImage from "./IceCreamImage";
 
-import { css } from 'emotion/macro';
+import { css } from "emotion";
 const cardStyle = css`
   position: relative;
   display: grid;
@@ -42,7 +42,9 @@ const cardStyle = css`
   }
 
   &:focus-within {
-    box-shadow: 0 0 0 3px #ff71ba, 0 0 0 6px rgba(0, 0, 0, 0.6);
+    box-shadow:
+      0 0 0 3px #ff71ba,
+      0 0 0 6px rgba(0, 0, 0, 0.6);
 
     a {
       outline: 2px solid transparent;
@@ -92,22 +94,25 @@ const cardStyle = css`
   }
 `;
 
-export const IceCreamCard = ({ children, to, history, iceCreamId, heading }) => {
-
+export const IceCreamCard = ({
+  children,
+  to,
+  history,
+  iceCreamId,
+  heading,
+}) => {
   const onItemClickHandler = () => {
     history.push(to, { focus: true });
   };
 
-  const onLinkClickHandler = e => {
+  const onLinkClickHandler = (e) => {
     //This is done to avoid the click handler of the <li>
     //firing and placing two browse entries in browser history
     e.stopPropagation();
   };
 
   return (
-    <section
-      className={cardStyle}
-      onClick={onItemClickHandler}>
+    <section className={cardStyle} onClick={onItemClickHandler}>
       <div className="image-container">
         <IceCreamImage iceCreamId={iceCreamId} />
       </div>

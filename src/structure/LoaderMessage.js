@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
 
-import { css } from 'emotion/macro';
+import { css } from "emotion";
 const loaderMessageStyle = css`
   .loading {
     font-size: 3em;
@@ -13,7 +13,7 @@ const loaderMessageStyle = css`
   }
 `;
 
-const LoaderMessage = ({loadingMessage, doneMessage, isLoading}) => {
+const LoaderMessage = ({ loadingMessage, doneMessage, isLoading }) => {
   const [showLoadingMessage, setShowLoadingMessage] = useState(false);
   const [showDoneMessage, setShowDoneMessage] = useState(false);
   const isLoadingPreviousValue = useRef(null);
@@ -22,8 +22,8 @@ const LoaderMessage = ({loadingMessage, doneMessage, isLoading}) => {
     let loadingMessageDelay;
     let doneMessageDelay;
 
-    if(isLoading) {
-      loadingMessageDelay = setTimeout( () => {
+    if (isLoading) {
+      loadingMessageDelay = setTimeout(() => {
         setShowLoadingMessage(true);
       }, 400);
     } else {
@@ -41,16 +41,20 @@ const LoaderMessage = ({loadingMessage, doneMessage, isLoading}) => {
       clearTimeout(doneMessageDelay);
       setShowLoadingMessage(false);
       setShowDoneMessage(false);
-    }
-  }, [isLoading])
+    };
+  }, [isLoading]);
 
   return (
-    <div aria-live="assertive" aria-atomic="true" className={loaderMessageStyle}>
+    <div
+      aria-live="assertive"
+      aria-atomic="true"
+      className={loaderMessageStyle}
+    >
       {showLoadingMessage && <p>{loadingMessage}</p>}
       {showDoneMessage && <p className="visually-hidden">{doneMessage}</p>}
     </div>
   );
-}
+};
 
 LoaderMessage.propTypes = {
   loadingMessage: PropTypes.string.isRequired,
