@@ -3,7 +3,6 @@ import { Global, css } from "@emotion/react";
 import Header from "./structure/Header";
 import Footer from "./structure/Footer";
 
-// node-sass not installed ---------------------------------
 import geomanistBookWoff from "./assets/fonts/geomanist/geomanist-book.woff";
 import geomanistBookWoff2 from "./assets/fonts/geomanist/geomanist-book.woff2";
 import cornerstoneWoff from "./assets/fonts/cornerstone.woff";
