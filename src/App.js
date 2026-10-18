@@ -12,12 +12,11 @@ import IceCreams from "./ice-cream/IceCreams";
 import AddIceCream from "./ice-cream/AddIceCream";
 
 // node-sass not installed ---------------------------------
-// import './styles/ice-cream.scss';
 import geomanistBookWoff from "./assets/fonts/geomanist/geomanist-book.woff";
 import geomanistBookWoff2 from "./assets/fonts/geomanist/geomanist-book.woff2";
 import cornerstoneWoff from "./assets/fonts/cornerstone.woff";
 import cornerstoneWoff2 from "./assets/fonts/cornerstone.woff2";
-import { Global, css } from "@emotion/core";
+import { Global, css } from "@emotion/react";
 const globalStyle = css`
   @font-face {
     font-family: "geomanist";

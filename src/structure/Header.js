@@ -1,7 +1,7 @@
 import iceCream from "../assets/img/ice-cream.svg";
 import FocusLink from "../structure/FocusLink";
 
-import { css } from "emotion";
+import { css } from "@emotion/react";
 const headerStyle = css`
   position: relative;
   text-align: center;
@@ -80,7 +80,7 @@ const headerStyle = css`
 `;
 
 const Header = () => (
-  <header className={headerStyle}>
+  <header css={headerStyle}>
     <h1>
       <img src={iceCream} alt="" />
       My Ice Cream

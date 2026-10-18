@@ -67,4 +67,4 @@ An ice cream shop menu CRUD demo built from function components and hooks.
 - Decorative images use `alt=""`.
 - Navigation goes through `FocusLink`, which adds `state: { focus: true }`. Nothing uses that flag yet: `Main` creates a `heading` ref but never focuses it.
 
-**Styling**: Emotion. Each component defines `css` blocks from `emotion/macro` at the top of its file. Global styles and `@font-face` rules live in `App.js` via `<Global>` from `@emotion/core`. `src/styles/ice-cream.scss` and `src/assets/css/style.css` are dead: they aren't imported and there's no sass compiler. Don't edit them to change styles.
+**Styling**: Emotion 11 (`@emotion/react`). Each component defines `css` blocks at the top of its file and applies them with the `css` prop (the Vite JSX plugin sets `importSource: "@emotion/react"`). Global styles and `@font-face` rules live in `App.js` via `<Global>`.

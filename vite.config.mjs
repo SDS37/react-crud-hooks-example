@@ -14,7 +14,7 @@ const jsxInJsFiles = {
     }
     const result = await transformWithOxc(code, id, {
       lang: "jsx",
-      jsx: { runtime: "automatic" },
+      jsx: { runtime: "automatic", importSource: "@emotion/react" },
     });
     return { code: result.code, map: result.map };
   },

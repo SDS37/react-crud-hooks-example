@@ -12,7 +12,7 @@ import {
 import ErrorContainer from "./ErrorContainer";
 import IceCreamImage from "./IceCreamImage";
 
-import { css } from "emotion";
+import { css } from "@emotion/react";
 const formStyle = css`
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -412,7 +412,7 @@ const IceCream = ({
   };
 
   return (
-    <div className={formStyle}>
+    <div css={formStyle}>
       <div className="image-container">
         <IceCreamImage iceCreamId={iceCream.id} />
       </div>

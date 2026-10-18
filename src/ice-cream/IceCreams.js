@@ -8,7 +8,7 @@ import LoaderMessage from "../structure/LoaderMessage";
 import IceCreamCard from "./IceCreamCard";
 import IceCreamCardContainer from "./IceCreamCardContainer";
 
-import { css } from "emotion";
+import { css } from "@emotion/react";
 const paragraphStyle = css`
   max-width: 60%;
   margin: 0 auto;
@@ -55,9 +55,7 @@ const IceCreams = ({ history }) => {
           ))}
         </IceCreamCardContainer>
       ) : (
-        !isLoading && (
-          <p className={paragraphStyle}>Your menu is fully stocked!</p>
-        )
+        !isLoading && <p css={paragraphStyle}>Your menu is fully stocked!</p>
       )}
     </Main>
   );
