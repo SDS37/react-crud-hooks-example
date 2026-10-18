@@ -1,0 +1,75 @@
+# Upgrade
+
+Delta spec for moving this ice cream menu app off its legacy toolchain. The product stays the same. The stack moves to the latest stable releases below. Do not pick different versions. Confirm any API in the `docs` skill before writing it.
+
+Checked on 17 October 2026.
+
+## Target
+
+| Concern | Legacy, in the repo today | Target |
+| --- | --- | --- |
+| Node | 14 | 24.22.0 (Active LTS). Node 26 is still Current. Do not use it. |
+| UI | React 16.8, react-scripts 3.0.1 | React 19.3.1 and react-dom 19.3.1 |
+| Build | Create React App | Vite 8.3.4 |
+| Routing | react-router-dom 5 | react-router 8.4.0 and @react-router/dev 8.4.0, Vite plugin, `ssr: false` |
+| Tests | Jest via react-scripts, `jest-dom` 3 | Vitest 5.0.5, `@testing-library/react` 16.3.3, `@testing-library/jest-dom` |
+| End to end | None | Playwright 1.64.1. Checked on 18 October 2026. |
+| Format | Prettier 1.17 | Prettier 3.9.10, default options |
+| Lint | ESLint buried in react-scripts | ESLint 10.13.0 with a flat config and `npm run lint` |
+| HTTP client | axios 0.18, only inside `src/data/iceCreamData.js` | `fetch` inside that same module |
+| Server | Express 4 and the `body-parser` package | Express 5.3.0 and `express.json()` |
+| Styles | `emotion` 10 and `@emotion/core` | `@emotion/react` 11.14.0 |
+| Document title | `react-helmet` 5 | React 19 document metadata when the docs confirm it works for this client-rendered app. Otherwise `react-helmet-async`. |
+| Language | JavaScript | JavaScript. Do not convert the app to TypeScript in this upgrade. |
+
+Add `"engines": { "node": ">=24.22.0" }` and `.nvmrc` containing `24.22.0` in the toolchain commit.
+
+## Preserve
+
+These are the characterization assertions. Lock them in tests before changing dependencies. During the rewrite, change the test runner and imports only. Do not change what they assert.
+
+- `GET /api/menu/stock-ice-creams` returns catalogue flavours that are not already on the menu. That route stays registered before `/api/menu/:id`.
+- `POST /api/menu` and `PUT /api/menu/:id` ignore the client's `iceCream.name` and store the catalogue name for `iceCream.id`.
+- Menu list results are sorted by name on the client.
+- Routes: `/` menu, `/ice-creams` catalogue, `/menu-items/add?iceCreamId=N` add form, `/menu-items/:menuItemId` edit form. Any other path ends on `/`.
+- In the form, quantity 0 and out of stock stay coupled.
+- Validation errors appear after the first submit. Focus moves to the first `[aria-invalid="true"]` control.
+- Skip link targets `#main`. `main` is the landmark and holds the heading. Loading is announced with `aria-live`. Decorative images use `alt=""`.
+- Components do not call `fetch` or axios. Only `src/data/iceCreamData.js` does.
+- Restarting the server resets the in-memory menu.
+
+## Replace
+
+These are legacy mechanisms, not behavior. Remove them as the matching target lands.
+
+- `history.push` and `history.replace` from React Router 5.
+- The `isMounted` ref. Use the cleanup or abort pattern the current React docs describe.
+- `emotion/macro`, `@emotion/core`, and the dead `src/styles/ice-cream.scss` and `src/assets/css/style.css` files.
+- Create React App, `react-scripts`, the `proxy` field, and the `jest-dom` 3 import.
+- axios 0.18 and the separate `body-parser` dependency.
+- `FocusLink` may stay or be folded into the router link, but navigation must still be a link and the heading must receive focus after a save that redirects home. The `focus` flag is currently unused. Implement that focus as part of keeping the accessibility behavior, rather than preserving the unused flag.
+
+## Characterization tests
+
+These files lock the behavior above. Later commits may change how they run, not what they assert.
+
+- `src/serverApi.test.js`: stock route, catalogue name on create and update, seed menu after a restart. The app under test is `server/app.js`.
+- `src/utils/validators.test.js`: description, price, and the quantity and stock coupling.
+- `src/data/iceCreamData.test.js`: client-side name sorting.
+- End-to-end tests under `e2e/`. These drive the running app in a browser and lock the routes, the first-submit validation, the move to the first `[aria-invalid="true"]` control, the heading focus after a save that returns home, the skip link, the `main` landmark, the loading live region, and decorative `alt=""`. They are not in the repo yet. Add them after the toolchain commit, when Node 24 can run Playwright, and before changing the router or the page shell. Later commits may change how they start the app, not what they assert.
+
+## Commands in force
+
+`test-runner` runs the checks. The dev servers are how the end-to-end suite reaches the app. Update this section in the same commit that changes the runner.
+
+Checks today, before the toolchain commit:
+
+- One file: `CI=true npm test -- src/path/File.test.js`
+- Full suite: `CI=true npm test`
+- Format check: `npx prettier --check <file>`
+
+Dev servers today: `npm run start-server` and `npm start`.
+
+`npx prettier --write <file>` is the formatter. The edit hook runs it. `npm run format` skips the top-level `src/*.js` files.
+
+After the toolchain commit, the checks are the Vitest one-file command, the Vitest full suite, `npx prettier --check <file>`, `npm run lint`, `npm run build`, and `npx playwright test`. The dev servers are the Vite server and `npm run start-server`, with `/api` proxied to the Express port. Update the Commands section of `AGENTS.md` in that same commit. The upgrade is not done until every check exits 0. Do not report the suite green when a check was not run.

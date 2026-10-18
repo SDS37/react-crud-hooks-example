@@ -1,0 +1,6 @@
+# Commit gate. Install once with: brew install lefthook && lefthook install
+pre-commit:
+  commands:
+    prettier:
+      glob: "*.{js,jsx,json,css,scss}"
+      run: npx prettier --check {staged_files}
