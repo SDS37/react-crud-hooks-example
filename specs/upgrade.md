@@ -65,6 +65,10 @@ Accepted amendment, 18 October 2026. Removing `isMounted` made request failures 
 - When a save or delete fails, the form stays on screen and shows a `role="alert"` message. It does not navigate.
 - The server logs the stack of an error that answers 500 or above. It never logs the request body, and the client still receives no stack trace.
 
+### Unused lockfile and font files
+
+Accepted amendment, 18 October 2026. The app uses npm, so `yarn.lock` is removed. `package-lock.json` stays. Font files that no stylesheet imports are removed: Geomanist Book `.eot`, `.svg`, and `.ttf`; every Geomanist Medium and Geomanist Regular file; and `kathen.otf`. Geomanist Book and Cornerstone `.woff` and `.woff2` stay. `README.md` stays until its own spec.
+
 ## Preserve
 
 These are the characterization assertions. Lock them in tests before changing dependencies. During the rewrite, change the test runner and imports only. Do not change what they assert.

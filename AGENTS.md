@@ -4,7 +4,7 @@ Canonical project guidance for coding agents working in this repository. Claude 
 
 ## Commands
 
-Use **npm** (`yarn.lock` is stale; don't update it) on Node 24.22.0 (`.nvmrc`; `nvm use`).
+Use **npm** on Node 24.22.0 (`.nvmrc`; `nvm use`). `package-lock.json` is the lockfile.
 
 The app needs two processes running together:
 

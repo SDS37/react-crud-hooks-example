@@ -7,3 +7,8 @@ build/
 test-results/
 playwright-report/
 blob-report/
+coverage/
+npm-debug.log*
+.env
+.env.*
+!.env.example
