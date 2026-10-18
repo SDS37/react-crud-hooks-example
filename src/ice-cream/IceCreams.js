@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getIceCreams } from "../data/iceCreamData";
 
 import Main from "../structure/Main";
+import LoadError from "../structure/LoadError";
 import LoaderMessage from "../structure/LoaderMessage";
 import IceCreamCard from "./IceCreamCard";
 import IceCreamCardContainer from "./IceCreamCardContainer";
@@ -16,19 +17,23 @@ const paragraphStyle = css`
 
 const IceCreams = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const [iceCreams, setIceCreams] = useState([]);
 
   useEffect(() => {
-    let isMounted = true;
-    getIceCreams().then((iceCreams) => {
-      if (isMounted) {
+    const controller = new AbortController();
+    getIceCreams({ signal: controller.signal })
+      .then((iceCreams) => {
         setIceCreams(iceCreams);
         setIsLoading(false);
-      }
-    });
-    return () => {
-      isMounted = false;
-    };
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) {
+          setHasError(true);
+          setIsLoading(false);
+        }
+      });
+    return () => controller.abort();
   }, []);
 
   return (
@@ -38,6 +43,7 @@ const IceCreams = () => {
         doneMessage="Loading stock list complete."
         isLoading={isLoading}
       />
+      {hasError && <LoadError message="The stock list could not be loaded." />}
       {iceCreams.length > 0 ? (
         <IceCreamCardContainer>
           {iceCreams.map(({ id, name }) => (
