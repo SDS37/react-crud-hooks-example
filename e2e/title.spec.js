@@ -40,4 +40,14 @@ test.describe("document title", () => {
     );
     expect(await page.title()).not.toContain("undefined");
   });
+
+  test("the page has one title element once it has loaded", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page).toHaveTitle(
+      "Rock your taste buds with one of these!" + suffix,
+    );
+    await expect(page.locator("title")).toHaveCount(1);
+  });
 });

@@ -118,7 +118,6 @@ export function Layout({ children }) {
         <meta name="theme-color" content="#000000" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
-        <title>Ultimate Ice Cream</title>
         <Meta />
         <Links />
       </head>
@@ -144,6 +143,7 @@ export default function Root() {
   return <Outlet />;
 }
 
+// Only the pre-rendered index.html shows this. Each page sets its own title.
 export function HydrateFallback() {
-  return null;
+  return <title>Ultimate Ice Cream</title>;
 }
