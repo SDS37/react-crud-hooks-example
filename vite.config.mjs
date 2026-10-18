@@ -26,7 +26,12 @@ export default defineConfig({
   plugins: [jsxInJsFiles, !process.env.VITEST && reactRouter()],
   optimizeDeps: {
     // Found late otherwise, which reloads the page during the first visit.
-    include: ["@emotion/react/jsx-runtime", "@emotion/react/jsx-dev-runtime"],
+    include: [
+      "@emotion/react",
+      "@emotion/react/jsx-runtime",
+      "@emotion/react/jsx-dev-runtime",
+      "prop-types",
+    ],
     // The dependency scanner does not run the plugin above.
     rolldownOptions: {
       moduleTypes: { ".js": "jsx" },
