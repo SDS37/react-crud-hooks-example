@@ -1,11 +1,11 @@
-import React, { useEffect, useState , useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
 
-import { getIceCream, postMenuItem } from '../data/iceCreamData';
+import { getIceCream, postMenuItem } from "../data/iceCreamData";
 
-import Main from '../structure/Main';
-import LoaderMessage from '../structure/LoaderMessage';
-import IceCream from './IceCream';
+import Main from "../structure/Main";
+import LoaderMessage from "../structure/LoaderMessage";
+import IceCream from "./IceCream";
 
 const AddIceCream = ({ history, location }) => {
   const isMounted = useRef(true);
@@ -19,34 +19,36 @@ const AddIceCream = ({ history, location }) => {
   }, []);
 
   useEffect(() => {
-    getIceCream(location.search.split('=')[1])
-      .then(iceCreamResponse => {
+    getIceCream(location.search.split("=")[1])
+      .then((iceCreamResponse) => {
         if (isMounted.current) {
           setIceCream(iceCreamResponse);
           setIsLoading(false);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.status === 404 && isMounted) {
-          history.replace('/', { focus: true });
+          history.replace("/", { focus: true });
         }
       });
   }, [history, location.search]);
 
-  const onSubmitHandler = menuItem => {
+  const onSubmitHandler = (menuItem) => {
     postMenuItem(menuItem).then(() => {
-      history.push('/', { focus: true });
+      history.push("/", { focus: true });
     });
   };
 
   return (
     <Main headingText="Add some goodness to the menu">
-      <LoaderMessage loadingMessage="Loading ice cream." doneMessage="Ice cream loaded." isLoading={isLoading}/>
-      {
-        !isLoading && (
-          <IceCream iceCream={iceCream} onSubmit={onSubmitHandler} />
-        )
-      }
+      <LoaderMessage
+        loadingMessage="Loading ice cream."
+        doneMessage="Ice cream loaded."
+        isLoading={isLoading}
+      />
+      {!isLoading && (
+        <IceCream iceCream={iceCream} onSubmit={onSubmitHandler} />
+      )}
     </Main>
   );
 };
@@ -58,7 +60,7 @@ AddIceCream.propTypes = {
   }),
   location: PropTypes.shape({
     search: PropTypes.string.isRequired,
-  })
+  }),
 };
 
 export default AddIceCream;

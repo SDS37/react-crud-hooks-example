@@ -1,4 +1,4 @@
-import React from "react";
+import { Children } from "react";
 import PropTypes from "prop-types";
 
 import { css } from "emotion";
@@ -22,7 +22,7 @@ const containerStyle = css`
 
 const IceCreamCardContainer = ({ children }) => (
   <ul className={containerStyle}>
-    {React.Children.map(children, (card) => (
+    {Children.map(children, (card) => (
       <li>{card}</li>
     ))}
   </ul>

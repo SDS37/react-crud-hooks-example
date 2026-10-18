@@ -1,5 +1,3 @@
-import React from "react";
-
 import iceCream from "../assets/img/ice-cream.svg";
 import FocusLink from "../structure/FocusLink";
 
