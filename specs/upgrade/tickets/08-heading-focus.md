@@ -4,10 +4,10 @@
 
 **Blocked by:** 07: The app runs on React Router 8 in SPA mode; 11: The first e2e run after a fresh install passes
 
-**Status:** ready-for-agent
+**Status:** done (merged to `main` in #2)
 
-- [ ] Saving the edit form, saving the add form and deleting a menu item each end on `/` with the main heading focused.
-- [ ] In `e2e/form.spec.js`, only the `fixme` marker on the heading-focus test is removed. Its assertion does not change, and the test passes.
-- [ ] A plain link to `/` does not steal focus on its own unless the implementation intends that, and the e2e navigation tests still pass.
-- [ ] No unused `focus` state remains in `FocusLink` or the containers.
-- [ ] Every check in "Commands in force" exits 0.
+- [x] Saving the edit form, saving the add form and deleting a menu item each end on `/` with the main heading focused.
+- [x] In `e2e/form.spec.js`, only the `fixme` marker on the heading-focus test is removed. Its assertion does not change, and the test passes.
+- [x] A plain link to `/` does not steal focus on its own unless the implementation intends that, and the e2e navigation tests still pass.
+- [x] No unused `focus` state remains in `FocusLink` or the containers.
+- [x] Every check in "Commands in force" exits 0.
