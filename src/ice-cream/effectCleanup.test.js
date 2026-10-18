@@ -27,6 +27,11 @@ const pending = () => {
   return { calls, impl };
 };
 
+const emptyText = {
+  Menu: "nothing to show !",
+  IceCreams: "Your menu is fully stocked!",
+};
+
 const Home = () => <p>home page</p>;
 
 const renderAt = (path, routePath, Component, strict = false) => {
@@ -94,6 +99,9 @@ describe.each(cases)("%s", (name, fn, path, routePath, Component) => {
     renderAt(path, routePath, Component);
     expect(await screen.findByRole("alert")).toBeTruthy();
     expect(screen.queryByText("home page")).toBeNull();
+    if (emptyText[name]) {
+      expect(screen.queryByText(emptyText[name])).toBeNull();
+    }
   });
 
   it("loads under StrictMode", async () => {
