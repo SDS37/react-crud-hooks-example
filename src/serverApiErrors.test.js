@@ -1,12 +1,18 @@
 import http from "node:http";
 import { createApp } from "../server/app.js";
 
-function request(app, method, path) {
+function request(app, method, path, body) {
   return new Promise((resolve, reject) => {
     const server = app.listen(0, () => {
       const { port } = server.address();
       const req = http.request(
-        { hostname: "127.0.0.1", port, path, method },
+        {
+          hostname: "127.0.0.1",
+          port,
+          path,
+          method,
+          headers: body ? { "Content-Type": "application/json" } : {},
+        },
         (res) => {
           const chunks = [];
           res.on("data", (chunk) => chunks.push(chunk));
@@ -23,7 +29,7 @@ function request(app, method, path) {
         server.close();
         reject(error);
       });
-      req.end();
+      req.end(body);
     });
   });
 }
@@ -35,10 +41,53 @@ describe("menu API errors", () => {
     expect(response.text).not.toMatch(/\bat\s.+\(.+:\d+:\d+\)/);
   });
 
+  test("a non-numeric catalogue id is a not-found response", async () => {
+    const response = await request(
+      createApp(),
+      "GET",
+      "/api/menu/stock-ice-creams/null",
+    );
+    expect(response.status).toBe(404);
+  });
+
   test("a write without a body fails without a stack trace", async () => {
     const response = await request(createApp(), "POST", "/api/menu");
     expect(response.status).toBeGreaterThanOrEqual(400);
     expect(response.text).not.toMatch(/\bat\s.+\(.+:\d+:\d+\)/);
     expect(response.text).not.toMatch(/TypeError/);
+  });
+
+  describe("server log", () => {
+    let error;
+    beforeEach(() => {
+      error = vi.spyOn(console, "error").mockImplementation(() => {});
+    });
+    afterEach(() => {
+      error.mockRestore();
+    });
+
+    test("logs the stack of a 500 and still sends none to the client", async () => {
+      const response = await request(createApp(), "POST", "/api/menu");
+      expect(response.status).toBe(500);
+      expect(error).toHaveBeenCalledTimes(1);
+      expect(error.mock.calls[0][0]).toMatch(/\bat\s.+:\d+:\d+/);
+      expect(response.text).not.toMatch(/\bat\s.+:\d+:\d+/);
+    });
+
+    test("does not log a request body", async () => {
+      const response = await request(
+        createApp(),
+        "POST",
+        "/api/menu",
+        '{"secret": nope',
+      );
+      expect(response.status).toBe(400);
+      expect(JSON.stringify(error.mock.calls)).not.toContain("secret");
+    });
+
+    test("does not log a not-found response", async () => {
+      await request(createApp(), "GET", "/api/menu/999");
+      expect(error).not.toHaveBeenCalled();
+    });
   });
 });

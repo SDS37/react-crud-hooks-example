@@ -36,4 +36,18 @@ test.describe("heading focus", () => {
     await expect(menuHeading(page)).toBeVisible();
     await expect(menuHeading(page)).not.toBeFocused();
   });
+
+  test("reloading the menu after a save does not focus the heading again", async ({
+    page,
+  }) => {
+    await page.goto("/menu-items/1");
+    await expect(page.getByLabel("Description")).not.toHaveValue("");
+    await page.getByRole("button", { name: "Save" }).click();
+    await expect(menuHeading(page)).toBeFocused();
+
+    await page.reload();
+
+    await expect(menuHeading(page)).toBeVisible();
+    await expect(menuHeading(page)).not.toBeFocused();
+  });
 });

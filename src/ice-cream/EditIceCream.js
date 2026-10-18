@@ -14,6 +14,7 @@ const EditIceCream = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [menuItem, setMenuItem] = useState({});
+  const [saveError, setSaveError] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -39,15 +40,21 @@ const EditIceCream = () => {
   }, [menuItemId, navigate]);
 
   const onSubmitHandler = (updatedItem) => {
-    putMenuItem({ id: menuItem.id, ...updatedItem }).then(() => {
-      navigate("/", { state: { focus: true } });
-    });
+    setSaveError("");
+    putMenuItem({ id: menuItem.id, ...updatedItem })
+      .then(() => {
+        navigate("/", { state: { focus: true } });
+      })
+      .catch(() => setSaveError("The ice cream could not be saved."));
   };
 
   const onDeleteHandler = () => {
-    deleteMenuItem(menuItemId).then(() => {
-      navigate("/", { replace: true, state: { focus: true } });
-    });
+    setSaveError("");
+    deleteMenuItem(menuItemId)
+      .then(() => {
+        navigate("/", { replace: true, state: { focus: true } });
+      })
+      .catch(() => setSaveError("The ice cream could not be deleted."));
   };
 
   return (
@@ -65,6 +72,7 @@ const EditIceCream = () => {
           onSubmit={onSubmitHandler}
         />
       )}
+      {saveError && <LoadError message={saveError} />}
     </Main>
   );
 };

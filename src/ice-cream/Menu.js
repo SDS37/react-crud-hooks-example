@@ -110,7 +110,7 @@ const Menu = () => {
           )}
         </IceCreamCardContainer>
       ) : (
-        !isLoading && <p>nothing to show !</p>
+        !isLoading && !hasError && <p>nothing to show !</p>
       )}
     </Main>
   );

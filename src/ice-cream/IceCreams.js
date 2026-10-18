@@ -59,7 +59,8 @@ const IceCreams = () => {
           ))}
         </IceCreamCardContainer>
       ) : (
-        !isLoading && <p css={paragraphStyle}>Your menu is fully stocked!</p>
+        !isLoading &&
+        !hasError && <p css={paragraphStyle}>Your menu is fully stocked!</p>
       )}
     </Main>
   );

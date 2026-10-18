@@ -76,8 +76,6 @@ test.describe("form", () => {
     ).toBeVisible();
   });
 
-  // The legacy app never focuses the heading. The router or page shell
-  // migration implements it and removes only this fixme marker.
   test("the heading receives focus after a save that returns home", async ({
     page,
   }) => {

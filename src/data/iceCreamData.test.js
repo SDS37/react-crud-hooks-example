@@ -1,4 +1,4 @@
-import { getIceCreams, getMenu } from "./iceCreamData";
+import { getIceCream, getIceCreams, getMenu } from "./iceCreamData";
 
 const jsonResponse = (data) => ({
   ok: true,
@@ -28,7 +28,7 @@ describe("ice cream data", () => {
 
     const menu = await getMenu();
 
-    expect(fetchMock.mock.calls[0][0]).toBe("/api/menu");
+    expect(fetchMock).toHaveBeenCalledWith("/api/menu", expect.anything());
     expect(menu.map((item) => item.iceCream.name)).toEqual([
       "Cherry Blast",
       "Mint Stack",
@@ -42,7 +42,10 @@ describe("ice cream data", () => {
 
     const flavours = await getIceCreams();
 
-    expect(fetchMock.mock.calls[0][0]).toBe("/api/menu/stock-ice-creams");
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/menu/stock-ice-creams",
+      expect.anything(),
+    );
     expect(flavours.map((item) => item.name)).toEqual([
       "Arctic Rainbow",
       "Toxic Sludge",
@@ -66,5 +69,19 @@ describe("ice cream data", () => {
     await getMenu({ signal });
 
     expect(fetchMock.mock.calls[0][1].signal).toBe(signal);
+  });
+
+  test("a missing ice cream id rejects with the not-found status", async () => {
+    fetchMock.mockResolvedValue({
+      ok: false,
+      status: 404,
+      json: async () => ({}),
+    });
+
+    await expect(getIceCream(null)).rejects.toMatchObject({ status: 404 });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/menu/stock-ice-creams/null",
+      expect.anything(),
+    );
   });
 });

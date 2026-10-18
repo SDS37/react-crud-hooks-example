@@ -118,7 +118,6 @@ export const IceCreamCard = ({ children, to, iceCreamId, heading }) => {
             {heading}
           </FocusLink>
         </h3>
-        {/* {children && <div className="content">{children}</div>} */}
         {children}
       </div>
     </section>

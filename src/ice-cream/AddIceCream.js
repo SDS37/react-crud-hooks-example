@@ -15,6 +15,7 @@ const AddIceCream = () => {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [iceCream, setIceCream] = useState({});
+  const [hasSaveError, setHasSaveError] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -38,9 +39,12 @@ const AddIceCream = () => {
   }, [navigate, iceCreamId]);
 
   const onSubmitHandler = (menuItem) => {
-    postMenuItem(menuItem).then(() => {
-      navigate("/", { state: { focus: true } });
-    });
+    setHasSaveError(false);
+    postMenuItem(menuItem)
+      .then(() => {
+        navigate("/", { state: { focus: true } });
+      })
+      .catch(() => setHasSaveError(true));
   };
 
   return (
@@ -53,6 +57,9 @@ const AddIceCream = () => {
       {hasError && <LoadError message="The ice cream could not be loaded." />}
       {!isLoading && !hasError && (
         <IceCream iceCream={iceCream} onSubmit={onSubmitHandler} />
+      )}
+      {hasSaveError && (
+        <LoadError message="The ice cream could not be saved." />
       )}
     </Main>
   );

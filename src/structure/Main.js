@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import PropTypes from "prop-types";
 
@@ -26,15 +26,31 @@ const mainStyle = css`
 const Main = ({ children, headingText, headingLevel = 2 }) => {
   const heading = useRef(null);
   const H = `h${headingLevel}`;
-  const { state } = useLocation();
-  const shouldFocus = Boolean(state && state.focus);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const shouldFocus = Boolean(location.state && location.state.focus);
 
   // A save or delete that returns home asks for the heading to take focus.
+  // Clear the request afterwards so a reload or Back does not repeat it.
   useEffect(() => {
     if (shouldFocus && heading.current) {
       heading.current.focus();
+      navigate(
+        {
+          pathname: location.pathname,
+          search: location.search,
+          hash: location.hash,
+        },
+        { replace: true, state: null, preventScrollReset: true },
+      );
     }
-  }, [shouldFocus]);
+  }, [
+    shouldFocus,
+    navigate,
+    location.pathname,
+    location.search,
+    location.hash,
+  ]);
 
   return (
     <main css={mainStyle} tabIndex="-1" id="main">

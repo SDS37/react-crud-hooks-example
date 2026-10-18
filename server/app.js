@@ -183,6 +183,10 @@ export function createApp() {
   // Without this Express renders the error stack outside production.
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
+    // Log the stack only. An error from body-parser carries the raw body.
+    if (!err.status || err.status >= 500) {
+      console.error(err.stack);
+    }
     res.status(err.status || 500);
     res.send({ error: "Request failed" });
   });
