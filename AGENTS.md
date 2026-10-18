@@ -9,7 +9,7 @@ Use **npm** (`yarn.lock` is stale; don't update it) on Node 24.22.0 (`.nvmrc`; `
 The app needs two processes running together:
 
 - `npm run start-server`: Express API on port 5001 (`server/index.js`). Port 5000 is taken by macOS's AirPlay Receiver.
-- `npm start`: Vite dev server on port 3000. `server.proxy` in `vite.config.mjs` forwards the frontend's relative `/api/...` calls to port 5001.
+- `npm start`: React Router dev server (a Vite server) on port 3000. `server.proxy` in `vite.config.mjs` forwards the frontend's relative `/api/...` calls to port 5001.
 
 Checks (the same list as "Commands in force" in `specs/upgrade.md`):
 
@@ -17,12 +17,12 @@ Checks (the same list as "Commands in force" in `specs/upgrade.md`):
 - One file: `npm test -- src/path/File.test.js`.
 - Format check: `npx prettier --check <file>`. Prettier 3.9.10 with **default options** (double quotes, trailing commas, 80 columns). Legacy files still use single quotes, so they get reformatted when touched. `npx prettier --write <file>` formats one file; `npm run format` formats the repo.
 - Lint: `npm run lint` (ESLint 10 flat config in `eslint.config.mjs`).
-- Build: `npm run build` (Vite, output in `dist/`).
+- Build: `npm run build` (React Router, SPA mode: `build/client/index.html` plus assets; `build/server` is a by-product).
 - End to end: `npx playwright test`. `playwright.config.mjs` starts both dev servers itself, so stop any you have running first. Run `npx playwright install chromium` once.
 
 Characterization tests live in `src/serverApi.test.js`, `src/utils/validators.test.js`, `src/data/iceCreamData.test.js`, and `e2e/`. Vitest runs with `globals: true` in the `node` environment; `src/setupTests.js` loads `@testing-library/jest-dom/vitest`.
 
-- The rest of the code is still the legacy stack: React 16.8, react-router v5, axios 0.18, Express 4, Emotion 10. Vite compiles JSX in `src/**/*.js` through a small plugin in `vite.config.mjs`. That is the starting point, not the destination. The destination and the behavior that must survive are in `specs/upgrade.md`. Do not add new legacy-only APIs. A file that has not been migrated yet must keep working until the upgrade changes it.
+- The rest of the code is still the legacy stack: React 16.8, axios 0.18, Express 4, Emotion 10. Vite compiles JSX in `src/**/*.js` through a small plugin in `vite.config.mjs`. That is the starting point, not the destination. The destination and the behavior that must survive are in `specs/upgrade.md`. Do not add new legacy-only APIs. A file that has not been migrated yet must keep working until the upgrade changes it.
 
 ## Git workflow
 
@@ -47,7 +47,7 @@ An ice cream shop menu CRUD demo built from function components and hooks.
 
 **Data layer**: every API call goes through `src/data/iceCreamData.js` (axios), and components never call axios directly. List results are sorted by name on the client.
 
-**Routes (`src/App.js`)**:
+**Routes (`src/routes.js`, shell in `src/root.js`)**: `ssr: false` in `react-router.config.js`; `package.json` is `"type": "module"` because the build pre-render needs it. `src/entry.client.js` omits StrictMode until the containers' effects are fixed (ticket 09). The catch-all route's `clientLoader` redirects to `/`.
 
 - `/`: Menu
 - `/ice-creams`: catalogue flavours you can add
@@ -55,7 +55,7 @@ An ice cream shop menu CRUD demo built from function components and hooks.
 - `/menu-items/:menuItemId`: EditIceCream
 - Anything else redirects to `/`.
 
-**Forms**: `AddIceCream` and `EditIceCream` are thin containers. They fetch data and render the shared `src/ice-cream/IceCream.js` form with `onSubmit` (and `onDelete` for edit). After saving they navigate with `history.push/replace('/', { focus: true })`. They use an `isMounted` ref to avoid setting state after unmount; check `isMounted.current`, not the ref itself.
+**Forms**: `AddIceCream` and `EditIceCream` are thin containers. They fetch data and render the shared `src/ice-cream/IceCream.js` form with `onSubmit` (and `onDelete` for edit). After saving they navigate with `useNavigate()` (`navigate('/', { state: { focus: true } })`, with `replace: true` where it replaced). They use an `isMounted` ref to avoid setting state after unmount; check `isMounted.current`, not the ref itself.
 
 **Validation**: `useValidation` (in `src/hooks/`) takes a validator from `src/utils/validators.js` and returns `[error, ariaProps]`. Spread `ariaProps` onto the input. Errors show only after the first submit (`hasSubmitted`). On a failed submit, focus moves to the first `[aria-invalid="true"]` control. Use `useUniqueIds` for label/input/error ids. In the form, `inStock` and `quantity` are coupled (quantity 0 ⇔ out of stock).
 
@@ -67,4 +67,4 @@ An ice cream shop menu CRUD demo built from function components and hooks.
 - Decorative images use `alt=""`.
 - Navigation goes through `FocusLink`, which adds `state: { focus: true }`. Nothing uses that flag yet: `Main` creates a `heading` ref but never focuses it.
 
-**Styling**: Emotion 11 (`@emotion/react`). Each component defines `css` blocks at the top of its file and applies them with the `css` prop (the Vite JSX plugin sets `importSource: "@emotion/react"`). Global styles and `@font-face` rules live in `App.js` via `<Global>`.
+**Styling**: Emotion 11 (`@emotion/react`). Each component defines `css` blocks at the top of its file and applies them with the `css` prop (the Vite JSX plugin sets `importSource: "@emotion/react"`). Global styles and `@font-face` rules live in `root.js` via `<Global>`.
