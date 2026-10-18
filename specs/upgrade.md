@@ -52,6 +52,10 @@ React Router config and route files stay JavaScript: `react-router.config.js` an
 
 Accepted amendment, 18 October 2026. macOS's AirPlay Receiver listens on port 5000, so the Express server cannot bind there and the proxy receives AirPlay's 403. The toolchain commit moves `server/index.js` and the Vite `/api` proxy to port 5001.
 
+### Module type
+
+Accepted amendment, 18 October 2026. React Router 8's SPA build pre-renders the root route in Node, and that pre-render fails with a 500 while `package.json` is CommonJS. The React Router migration sets `"type": "module"` and converts `server/app.js` and `server/index.js` to ES modules. The server tests change `require` to `import`. That is an import change only. No assertion changes.
+
 ## Preserve
 
 These are the characterization assertions. Lock them in tests before changing dependencies. During the rewrite, change the test runner and imports only. Do not change what they assert.

@@ -13,5 +13,6 @@
 - [ ] Containers and cards use router hooks for navigation and params, not `history`, `match` or `location` props. No `history.push` or `history.replace` remains.
 - [ ] `FocusLink` is folded into the router link or kept as a thin wrapper over it.
 - [ ] `npm start` and `npm run build` use the React Router CLI, and the build writes a pre-rendered SPA `index.html`.
+- [ ] `package.json` sets `"type": "module"`. `server/app.js` and `server/index.js` are ES modules, and the server tests import them with `import`, with their assertions unchanged. See "Module type" in `specs/upgrade.md`.
 - [ ] The e2e suite passes with its assertions unchanged. Only how `playwright.config.mjs` starts the app may change.
 - [ ] Every check in "Commands in force" exits 0, and the Commands section of `AGENTS.md` matches any changed command.
