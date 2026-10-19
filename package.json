@@ -45,7 +45,7 @@
     "test:watch": "vitest",
     "lint": "eslint .",
     "typecheck": "react-router typegen && tsc",
-    "start-server": "node ./server/index.js",
+    "start-server": "node ./server/index.ts",
     "format": "prettier --write ."
   }
 }

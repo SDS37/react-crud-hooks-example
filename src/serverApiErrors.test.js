@@ -1,5 +1,5 @@
 import http from "node:http";
-import { createApp } from "../server/app.js";
+import { createApp } from "../server/app.ts";
 
 function request(app, method, path, body) {
   return new Promise((resolve, reject) => {
