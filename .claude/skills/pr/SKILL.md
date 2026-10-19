@@ -1,18 +1,18 @@
 ---
 name: pr
-description: Write a pull request body.
+description: Use when writing a PR body.
 ---
 
-Open the pull request with `gh pr create` from a branch off the default branch. Do not commit directly to it.
+Open the pull request with `gh pr create` from a branch off `main`. Do not commit to `main`.
 
 ```markdown
 ## Summary
 
-What changed and why.
+What changed and why, in the vocabulary of AGENTS.md.
 
 ## Evidence
 
-The checks from the definition of done that were run, plus any check the spec adds, and their results. For a visible change, name the route that was exercised.
+The commands from "Commands in force" that were run, and their results. For a visible change, name the route that was exercised.
 
 ## Test plan
 

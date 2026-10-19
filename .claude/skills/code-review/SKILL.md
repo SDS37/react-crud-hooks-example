@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Spawn the code-reviewer agent for a diff. The author does not review its own change.
+description: Spawn the code-reviewer agent for the diff since a fixed point. Use after a logical chunk of work, before committing, or before opening a PR. The author does not review its own change.
 ---
 
 # Code review

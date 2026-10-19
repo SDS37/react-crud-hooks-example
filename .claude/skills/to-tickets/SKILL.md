@@ -13,7 +13,7 @@ The parent spec is the accepted file in `specs/`. If it is missing or still prop
 ## Process
 
 1. Read the spec. If a path is passed as an argument, read that file.
-2. Read the code the spec touches, if you have not already. Use the words already in that code.
+2. Read the code the spec touches, if you have not already. Use the vocabulary in `AGENTS.md`.
 3. Draft the tickets. Each one is demoable on its own and fits in one context. A mechanical change that touches many call sites is three steps: add the new form beside the old, migrate the call sites in batches that stay green, then delete the old form.
 4. Show the list and wait for approval. For each ticket: title, blocked by, and the behavior it makes work. Ask whether the size and the blocking edges are right. Iterate until the user approves.
 5. Write one file per ticket at `specs/<slug>/tickets/<NN>-<slug>.md`, numbered from `01`, blockers first. Name a file when it is a seam the parent spec already names. Do not add a code sample.
