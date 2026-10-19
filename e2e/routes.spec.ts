@@ -1,6 +1,6 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
-const mainHeading = (page, name) =>
+const mainHeading = (page: Page, name: string) =>
   page.getByRole("main").getByRole("heading", { level: 2, name });
 
 test.describe("routes", () => {

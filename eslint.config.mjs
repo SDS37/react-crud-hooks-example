@@ -30,14 +30,13 @@ export default defineConfig([
     },
   },
   {
-    files: ["src/**/*.test.js", "src/setupTests.js"],
-    languageOptions: { globals: { ...globals.node, ...globals.vitest } },
-  },
-  {
     // A characterization file: its runner may change, not its code. CRA did
-    // not run this rule.
-    files: ["src/serverApi.test.js"],
-    rules: { "no-useless-assignment": "off" },
+    // not run this rule, and it did not report unused caught errors.
+    files: ["src/serverApi.test.ts"],
+    rules: {
+      "no-useless-assignment": "off",
+      "@typescript-eslint/no-unused-vars": ["error", { caughtErrors: "none" }],
+    },
   },
   {
     files: ["server/**/*.js"],
@@ -45,7 +44,7 @@ export default defineConfig([
     languageOptions: { sourceType: "module", globals: globals.node },
   },
   {
-    files: ["*.mjs", "e2e/**/*.js"],
+    files: ["*.mjs"],
     extends: [js.configs.recommended],
     languageOptions: { globals: globals.node },
   },

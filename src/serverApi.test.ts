@@ -1,10 +1,19 @@
 import http from "node:http";
+import type { AddressInfo } from "node:net";
+import type { Express } from "express";
+import { describe, expect, test } from "vitest";
+
 import { createApp } from "../server/app.ts";
 
-function request(app, method, path, body) {
+function request<Body = unknown>(
+  app: Express,
+  method: string,
+  path: string,
+  body?: unknown,
+): Promise<{ status: number | undefined; body: Body }> {
   return new Promise((resolve, reject) => {
     const server = app.listen(0, () => {
-      const { port } = server.address();
+      const { port } = server.address() as AddressInfo;
       const payload = body === undefined ? null : JSON.stringify(body);
       const req = http.request(
         {
@@ -20,18 +29,18 @@ function request(app, method, path, body) {
             : {},
         },
         (res) => {
-          const chunks = [];
-          res.on("data", (chunk) => chunks.push(chunk));
+          const chunks: Uint8Array[] = [];
+          res.on("data", (chunk: Uint8Array) => chunks.push(chunk));
           res.on("end", () => {
             server.close();
             const text = Buffer.concat(chunks).toString();
-            let parsed = text;
+            let parsed: unknown = text;
             try {
               parsed = text ? JSON.parse(text) : text;
             } catch (error) {
               parsed = text;
             }
-            resolve({ status: res.statusCode, body: parsed });
+            resolve({ status: res.statusCode, body: parsed as Body });
           });
         },
       );
@@ -49,7 +58,7 @@ function request(app, method, path, body) {
 
 describe("menu API", () => {
   test("stock route is not captured by the menu id route", async () => {
-    const response = await request(
+    const response = await request<{ name: string }[]>(
       createApp(),
       "GET",
       "/api/menu/stock-ice-creams",
@@ -65,7 +74,9 @@ describe("menu API", () => {
   });
 
   test("post stores the catalogue name for the ice cream id", async () => {
-    const response = await request(createApp(), "POST", "/api/menu", {
+    const response = await request<{
+      iceCream: { id: number; name: string };
+    }>(createApp(), "POST", "/api/menu", {
       iceCream: { id: 0, name: "Wrong name" },
       inStock: true,
       quantity: 4,
@@ -80,20 +91,29 @@ describe("menu API", () => {
   });
 
   test("put stores the catalogue name for the ice cream id", async () => {
-    const response = await request(createApp(), "PUT", "/api/menu/1", {
-      iceCream: { id: 0, name: "Wrong name" },
-      inStock: true,
-      quantity: 4,
-      price: 1.25,
-      description: "A test scoop",
-    });
+    const response = await request<{ iceCream: { name: string } }>(
+      createApp(),
+      "PUT",
+      "/api/menu/1",
+      {
+        iceCream: { id: 0, name: "Wrong name" },
+        inStock: true,
+        quantity: 4,
+        price: 1.25,
+        description: "A test scoop",
+      },
+    );
     expect(response.body.iceCream.name).toBe("Stripey Madness");
   });
 
   test("a new app starts from the seed menu", async () => {
     const first = await request(createApp(), "DELETE", "/api/menu/1");
     expect(first.status).toBe(204);
-    const second = await request(createApp(), "GET", "/api/menu/1");
+    const second = await request<{ iceCream: { name: string } }>(
+      createApp(),
+      "GET",
+      "/api/menu/1",
+    );
     expect(second.status).toBe(200);
     expect(second.body.iceCream.name).toBe("Cherry Blast");
   });

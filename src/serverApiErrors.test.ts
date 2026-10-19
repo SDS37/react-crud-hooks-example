@@ -1,10 +1,27 @@
 import http from "node:http";
+import type { AddressInfo } from "node:net";
+import type { Express } from "express";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  test,
+  vi,
+  type MockInstance,
+} from "vitest";
+
 import { createApp } from "../server/app.ts";
 
-function request(app, method, path, body) {
+function request(
+  app: Express,
+  method: string,
+  path: string,
+  body?: string,
+): Promise<{ status: number | undefined; text: string }> {
   return new Promise((resolve, reject) => {
     const server = app.listen(0, () => {
-      const { port } = server.address();
+      const { port } = server.address() as AddressInfo;
       const req = http.request(
         {
           hostname: "127.0.0.1",
@@ -14,8 +31,8 @@ function request(app, method, path, body) {
           headers: body ? { "Content-Type": "application/json" } : {},
         },
         (res) => {
-          const chunks = [];
-          res.on("data", (chunk) => chunks.push(chunk));
+          const chunks: Uint8Array[] = [];
+          res.on("data", (chunk: Uint8Array) => chunks.push(chunk));
           res.on("end", () => {
             server.close();
             resolve({
@@ -58,7 +75,7 @@ describe("menu API errors", () => {
   });
 
   describe("server log", () => {
-    let error;
+    let error: MockInstance;
     beforeEach(() => {
       error = vi.spyOn(console, "error").mockImplementation(() => {});
     });

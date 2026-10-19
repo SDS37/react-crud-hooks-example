@@ -1,6 +1,6 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
-const menuHeading = (page) =>
+const menuHeading = (page: Page) =>
   page.getByRole("main").getByRole("heading", {
     level: 2,
     name: "Rock your taste buds with one of these!",
