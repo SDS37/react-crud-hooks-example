@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import PropTypes from "prop-types";
 
 import { css } from "@emotion/react";
 const loaderMessageStyle = css`
@@ -13,14 +12,24 @@ const loaderMessageStyle = css`
   }
 `;
 
-const LoaderMessage = ({ loadingMessage, doneMessage, isLoading }) => {
+type LoaderMessageProps = {
+  loadingMessage: string;
+  doneMessage: string;
+  isLoading?: boolean;
+};
+
+const LoaderMessage = ({
+  loadingMessage,
+  doneMessage,
+  isLoading,
+}: LoaderMessageProps) => {
   const [showLoadingMessage, setShowLoadingMessage] = useState(false);
   const [showDoneMessage, setShowDoneMessage] = useState(false);
-  const isLoadingPreviousValue = useRef(null);
+  const isLoadingPreviousValue = useRef<boolean | null>(null);
 
   useEffect(() => {
-    let loadingMessageDelay;
-    let doneMessageDelay;
+    let loadingMessageDelay: ReturnType<typeof setTimeout> | undefined;
+    let doneMessageDelay: ReturnType<typeof setTimeout> | undefined;
 
     if (isLoading) {
       loadingMessageDelay = setTimeout(() => {
@@ -35,7 +44,7 @@ const LoaderMessage = ({ loadingMessage, doneMessage, isLoading }) => {
       }
     }
 
-    isLoadingPreviousValue.current = isLoading;
+    isLoadingPreviousValue.current = isLoading ?? null;
     return () => {
       clearTimeout(loadingMessageDelay);
       clearTimeout(doneMessageDelay);
@@ -50,12 +59,6 @@ const LoaderMessage = ({ loadingMessage, doneMessage, isLoading }) => {
       {showDoneMessage && <p className="visually-hidden">{doneMessage}</p>}
     </div>
   );
-};
-
-LoaderMessage.propTypes = {
-  loadingMessage: PropTypes.string.isRequired,
-  doneMessage: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool,
 };
 
 export default LoaderMessage;

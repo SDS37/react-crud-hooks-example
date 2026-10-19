@@ -1,7 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router";
-
-import PropTypes from "prop-types";
 
 import { css } from "@emotion/react";
 const mainStyle = css`
@@ -23,9 +21,15 @@ const mainStyle = css`
   }
 `;
 
-const Main = ({ children, headingText, headingLevel = 2 }) => {
-  const heading = useRef(null);
-  const H = `h${headingLevel}`;
+type MainProps = {
+  headingText: string;
+  headingLevel?: string | number;
+  children: ReactNode;
+};
+
+const Main = ({ children, headingText, headingLevel = 2 }: MainProps) => {
+  const heading = useRef<HTMLHeadingElement>(null);
+  const Heading = `h${headingLevel}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   const navigate = useNavigate();
   const location = useLocation();
   const shouldFocus = Boolean(location.state && location.state.focus);
@@ -53,20 +57,14 @@ const Main = ({ children, headingText, headingLevel = 2 }) => {
   ]);
 
   return (
-    <main css={mainStyle} tabIndex="-1" id="main">
+    <main css={mainStyle} tabIndex={-1} id="main">
       <title>{`${headingText} | My Ice Cream`}</title>
-      <H className="main-heading" ref={heading} tabIndex="-1">
+      <Heading className="main-heading" ref={heading} tabIndex={-1}>
         {headingText}
-      </H>
+      </Heading>
       {children}
     </main>
   );
-};
-
-Main.propTypes = {
-  headingText: PropTypes.string.isRequired,
-  headingLevel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  children: PropTypes.node.isRequired,
 };
 
 export default Main;
