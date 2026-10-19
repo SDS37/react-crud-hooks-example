@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 Write the spec to `specs/<slug>.md` from the conversation and the code. Do not interview the user. Do not publish it to GitHub. Set `Status: proposed` at the top and stop. Do not edit `src/`, `server/`, or `package.json` until the user accepts that file.
 
-Use the vocabulary in `AGENTS.md`. Do not create a glossary or a `docs/` file.
+Use the words already in the code. Do not create a glossary or a `docs/` file.
 
 ## Process
 
@@ -34,11 +34,11 @@ Do not add stories the conversation did not discuss.
 
 ## Implementation Decisions
 
-Modules, interfaces, and API contracts. Name a file when it is the seam, as `specs/upgrade.md` does.
+Modules, interfaces, and API contracts. Name a file when it is the seam.
 
 ## Testing Decisions
 
-What the test observes from outside the module, which existing test it should resemble, and the command from "Commands in force".
+What the test observes from outside the module, which existing test it should resemble, and the check from `docs/DoD.md` or a check this spec adds.
 
 ## Out of Scope
 

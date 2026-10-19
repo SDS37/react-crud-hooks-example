@@ -12,7 +12,7 @@ The checks are the commands in `docs/DoD.md`, plus any extra check the accepted 
 ## Method
 
 1. Read the diff with `git diff`.
-2. Run each check the section lists. Run the format command on the changed files before the suite.
+2. Run each command in `docs/DoD.md`, and any extra check the accepted spec names. Run `npx prettier --check` on the changed files before the suite.
 3. Run the focused test file first when the section has a one-file command, then the full suite.
 
 ## Output

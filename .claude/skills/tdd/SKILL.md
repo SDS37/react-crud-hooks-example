@@ -5,9 +5,9 @@ description: Test-driven development. Use when the user wants to build features 
 
 # Test-driven development
 
-The seams are the ones named by the accepted spec. For the upgrade, those are the Preserve list and the characterization tests in `specs/upgrade.md`. Do not change what those tests assert. When the spec has not named the seam, use the `codebase-design` skill before writing the test. Run the checks through the `test-runner` skill.
+The seams are the ones named by the accepted spec. Do not change an assertion that spec says to keep. When the spec has not named the seam, use the `codebase-design` skill before writing the test. Run the checks through the `test-runner` skill.
 
-A seam is the public boundary you test at. Test through that boundary. Do not test private helpers, and do not mock a module this app owns. The boundary to mock, when a test needs it, is the HTTP edge in `src/data/iceCreamData.js` or the clock. The server tests use `createApp()` from `server/app.js` with its in-memory data.
+A seam is the public boundary you test at. Test through that boundary. Do not test private helpers, and do not mock a module this app owns. The boundary to mock, when a test needs it, is the HTTP edge in `src/data/iceCreamData.ts` or the clock. The server tests use `createApp()` from `server/app.ts` with its in-memory data.
 
 ## Loop
 

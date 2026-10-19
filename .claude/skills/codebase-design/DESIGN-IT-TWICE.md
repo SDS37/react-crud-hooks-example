@@ -27,7 +27,7 @@ Prompt each sub-agent with a separate technical brief (file paths, coupling deta
 - Agent 3: "Optimise for the most common caller: make the default case trivial."
 - Agent 4 (if applicable): "Design around ports & adapters for cross-seam dependencies."
 
-Include the vocabulary in [SKILL.md](SKILL.md) and the domain words in `AGENTS.md`.
+Include the vocabulary in [SKILL.md](SKILL.md). Use the domain words already in the code.
 
 Each sub-agent outputs:
 
