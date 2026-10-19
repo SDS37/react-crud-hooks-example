@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import { Global, css } from "@emotion/react";
 import Header from "./structure/Header";
@@ -109,7 +110,7 @@ const globalStyle = css`
   }
 `;
 
-export function Layout({ children }) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>

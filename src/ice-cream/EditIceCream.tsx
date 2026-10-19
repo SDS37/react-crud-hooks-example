@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
+import type { Route } from "./+types/EditIceCream";
 
 import {
   getMenuItem,
@@ -24,7 +25,7 @@ const responseStatus = (error: unknown) =>
 
 const EditIceCream = () => {
   const navigate = useNavigate();
-  const { menuItemId } = useParams();
+  const { menuItemId } = useParams<Route.ComponentProps["params"]>();
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [menuItem, setMenuItem] = useState<MenuItem | null>(null);
