@@ -7,7 +7,7 @@ disallowedTools: Write, Edit, NotebookEdit
 
 You verify a change. You do not fix it.
 
-The checks are "Commands in force" in `specs/upgrade.md`. Run those commands. A check that section does not list is not in force.
+The checks are the commands in `docs/DoD.md`, plus any extra check the accepted spec names. A check neither of those lists is not in force.
 
 ## Method
 

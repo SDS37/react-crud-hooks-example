@@ -7,7 +7,7 @@ description: Diagnosis loop for a hard bug or a performance regression.
 
 A discipline for hard bugs. Skip phases only when explicitly justified.
 
-Run a failing check with the command in "Commands in force" in `specs/upgrade.md`, through the `test-runner` skill. Do not weaken an assertion to make the loop go green.
+Run a failing check through the `test-runner` skill. The checks are the definition of done and any extra check the accepted spec names. Do not weaken an assertion to make the loop go green.
 
 ## Redact
 
@@ -26,7 +26,7 @@ Spend disproportionate effort here. **Be aggressive. Be creative. Refuse to give
 1. **Failing test** at whatever seam reaches the bug: unit, integration, e2e.
 2. **Curl / HTTP script** against a running dev server.
 3. **CLI invocation** with a fixture input, diffing stdout against a known-good snapshot.
-4. **Playwright** against the dev servers named in "Commands in force", asserting on the page, the console, or the network.
+4. **Playwright** against the dev servers named in the definition of done, asserting on the page, the console, or the network.
 5. **Replay a captured trace.** Save a real network request / payload / event log to disk; replay it through the code path in isolation.
 6. **Throwaway harness.** Spin up a minimal subset of the system (one service, mocked deps) that exercises the bug code path with a single function call.
 7. **Property / fuzz loop.** If the bug is "sometimes wrong output", run 1000 random inputs and look for the failure mode.
