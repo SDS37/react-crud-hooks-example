@@ -6,7 +6,7 @@ import os
 import subprocess
 import sys
 
-FORMATTED_EXTENSIONS = {".js", ".jsx", ".json", ".css", ".scss"}
+FORMATTED_EXTENSIONS = {".js", ".jsx", ".ts", ".tsx", ".json", ".css", ".scss"}
 
 
 def emit(payload):
