@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { getIceCreams } from "../data/iceCreamData";
+import { getIceCreams, type CatalogueFlavour } from "../data/iceCreamData";
 
 import Main from "../structure/Main";
 import LoadError from "../structure/LoadError";
@@ -18,7 +18,7 @@ const paragraphStyle = css`
 const IceCreams = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [iceCreams, setIceCreams] = useState([]);
+  const [iceCreams, setIceCreams] = useState<CatalogueFlavour[]>([]);
 
   useEffect(() => {
     const controller = new AbortController();

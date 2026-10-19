@@ -1,5 +1,4 @@
-import { Children } from "react";
-import PropTypes from "prop-types";
+import { Children, type ReactNode } from "react";
 
 import { css } from "@emotion/react";
 const containerStyle = css`
@@ -20,16 +19,16 @@ const containerStyle = css`
   }
 `;
 
-const IceCreamCardContainer = ({ children }) => (
+type IceCreamCardContainerProps = {
+  children: ReactNode;
+};
+
+const IceCreamCardContainer = ({ children }: IceCreamCardContainerProps) => (
   <ul css={containerStyle}>
     {Children.map(children, (card) => (
       <li>{card}</li>
     ))}
   </ul>
 );
-
-IceCreamCardContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default IceCreamCardContainer;
