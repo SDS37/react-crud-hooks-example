@@ -22,7 +22,7 @@ Communication to and from subagents should be sparse. Communicate primarily thro
 
 2. (optional) Use an **exploration subagent** to conduct any exploration required by the tickets - relevant codebase files or external documentation. Ensure the exploration subagent can save files - it should save its markdown notes in a directory outside the repo, accessible by all future subagents. This lets **subagents** focus on implementation rather than exploration.
 
-3. Create the integration branch off `main`. Do not check out `main` to implement. Open a draft pull request with `gh` after the first merge in step 5 (a branch with no commits ahead of `main` cannot open one).
+3. Create the integration branch off the default branch. Do not check out the default branch to implement. Open a draft pull request with `gh` after the first merge in step 5 (a branch with no commits ahead of the default branch cannot open one).
 
 4. Use **subagents** to implement each ticket, each in its own worktree on its own branch. Each subagent:
    - confirms its worktree is based on the integration branch before starting, and resets onto it if not;
