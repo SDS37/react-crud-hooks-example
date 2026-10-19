@@ -1,6 +1,6 @@
 # TypeScript
 
-Status: proposed.
+Status: accepted, 19 October 2026.
 
 Checked on npm on 18 October 2026. Do not pick different versions. Confirm any API in the `docs` skill before writing it.
 

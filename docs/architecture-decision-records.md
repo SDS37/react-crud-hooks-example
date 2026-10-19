@@ -60,8 +60,16 @@ These records hold decisions already made in [`specs/upgrade.md`](../specs/upgra
 
 ## ADR 8: JavaScript
 
-- **Status:** accepted, 18 October 2026.
+- **Status:** superseded by ADR 9, 19 October 2026. Accepted 18 October 2026.
 - **Context:** The app is JavaScript. A stack upgrade is a large change on its own.
 - **Decision:** Keep the app JavaScript. Config and route files are JavaScript too (`react-router.config.js`, `src/routes.js`).
 - **Alternatives:** Converting to TypeScript during the upgrade was not chosen. It needs its own accepted spec.
 - **Consequences:** No TypeScript dependency, `tsconfig`, or `.ts` file is added without that spec. See `.claude/rules/typescript.md`.
+
+## ADR 9: TypeScript toolchain
+
+- **Status:** accepted, 19 October 2026. Supersedes ADR 8.
+- **Context:** [`specs/typescript.md`](../specs/typescript.md) is accepted. ADR 8 kept the app JavaScript because the upgrade was a large change on its own. The source is still JavaScript, and a wrong prop or a misspelled menu field is still invisible to the compiler.
+- **Decision:** Add TypeScript 6.0.3 in strict mode, with `allowJs` and `noEmit`. `npm run typecheck` runs `react-router typegen && tsc`. Package versions are the ones named in the spec. Source files stay `.js` until the later issues rename them.
+- **Alternatives:** TypeScript 7.0.2 was not chosen because `typescript-eslint` 8.71.2 cannot lint it. Renaming the source in this same change was not chosen. The later issues do that, one layer at a time.
+- **Consequences:** Typecheck is one of the commands in force. `prop-types` and the JSX-in-`.js` Vite plugin stay until the last of those issues. `.react-router/` stays generated and uncommitted.

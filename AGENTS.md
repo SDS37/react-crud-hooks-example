@@ -19,6 +19,7 @@ Checks (the same list as "Commands in force" in `specs/upgrade.md`):
 - Lint: `npm run lint` (ESLint 10 flat config in `eslint.config.mjs`).
 - Build: `npm run build` (React Router, SPA mode: `build/client/index.html` plus assets; `build/server` is a by-product).
 - End to end: `npx playwright test`. `playwright.config.mjs` starts both dev servers itself, so stop any you have running first. Run `npx playwright install chromium` once.
+- Typecheck: `npm run typecheck` (`react-router typegen && tsc`).
 
 Characterization tests live in `src/serverApi.test.js`, `src/utils/validators.test.js`, `src/data/iceCreamData.test.js`, and `e2e/`. Vitest runs with `globals: true` in the `node` environment; `src/setupTests.js` loads `@testing-library/jest-dom/vitest`.
 
