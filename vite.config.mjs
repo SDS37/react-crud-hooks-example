@@ -60,6 +60,6 @@ export default defineConfig({
     globals: true,
     environment: "node",
     setupFiles: ["./src/setupTests.js"],
-    include: ["src/**/*.test.js"],
+    include: ["src/**/*.test.js", "src/**/*.test.ts", "src/**/*.test.tsx"],
   },
 });

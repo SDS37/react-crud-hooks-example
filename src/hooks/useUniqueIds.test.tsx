@@ -5,7 +5,7 @@ import useUniqueIds from "./useUniqueIds";
 
 afterEach(cleanup);
 
-const Field = ({ label }) => {
+const Field = ({ label }: { label: string }) => {
   const [inputId, errorId] = useUniqueIds(2);
   return (
     <div>

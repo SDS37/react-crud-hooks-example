@@ -1,6 +1,8 @@
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+
 import { getIceCream, getIceCreams, getMenu } from "./iceCreamData";
 
-const jsonResponse = (data) => ({
+const jsonResponse = (data: unknown) => ({
   ok: true,
   status: 200,
   json: async () => data,
