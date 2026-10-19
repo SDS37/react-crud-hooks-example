@@ -40,6 +40,16 @@
             "args": []
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/commit-policy.py",
+            "args": []
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -60,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "codegraph prompt-hook"
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/codegraph-prompt.py"
           }
         ]
       }

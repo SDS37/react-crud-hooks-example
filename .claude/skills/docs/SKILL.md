@@ -1,11 +1,11 @@
 ---
 name: docs
-description: Fetch current library documentation with the ctx7 CLI before using an API. Use during the upgrade and whenever a library's API may have changed.
+description: Fetch current library documentation with the ctx7 CLI before using an API.
 ---
 
 # Current docs
 
-Use this before writing React, React Router, Vite, Vitest, Playwright, Emotion, Express, or Testing Library APIs. Training data for this repo describes the legacy stack.
+Use this before writing a library API. Training data goes stale.
 
 Run, without a global install:
 

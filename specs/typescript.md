@@ -6,7 +6,7 @@ Checked on npm on 18 October 2026. Do not pick different versions. Confirm any A
 
 ## Problem Statement
 
-The app is JavaScript, so a wrong prop, a misspelled field on a menu item, or a data-layer call with the wrong argument only shows up when a test or a user hits it. `structure/` and `ice-cream/` components declare their props with `prop-types`, but React 19 ignores `propTypes`, so those declarations no longer check anything. `docs/architecture-decision-records.md` ADR 8 and `.claude/rules/typescript.md` keep the app JavaScript until an accepted spec says otherwise.
+The app is JavaScript, so a wrong prop, a misspelled field on a menu item, or a data-layer call with the wrong argument only shows up when a test or a user hits it. `structure/` and `ice-cream/` components declare their props with `prop-types`, but React 19 ignores `propTypes`, so those declarations no longer check anything. `docs/architecture-decision-records.md` ADR 8 kept the app JavaScript until an accepted spec said otherwise.
 
 ## Solution
 
@@ -53,9 +53,9 @@ Remove `prop-types`. Each `propTypes` block becomes a props type on the componen
 
 ### Order
 
-1. **Toolchain.** Add the packages, `tsconfig.json` with `allowJs`, `npm run typecheck`, and the `typescript-eslint` config. Update "Commands in force" in `specs/upgrade.md`, the Commands section of `AGENTS.md`, and `docs/DoD.md` in the same commit. Add an ADR that supersedes ADR 8.
+1. **Toolchain.** Add the packages, `tsconfig.json` with `allowJs`, `npm run typecheck`, and the `typescript-eslint` config. Update "Commands in force" in `specs/upgrade.md` and `docs/DoD.md` in the same commit. Do not copy those commands into `AGENTS.md`. Add an ADR that supersedes ADR 8.
 2. **Convert in batches that stay green.** The data layer, utils, and hooks first, then `structure/`, then `ice-cream/`, then the root layout and routes, then the server, then the tests and config files.
-3. **Remove the old form.** Turn off `allowJs`, remove `prop-types` and the JSX plugin, and update the Architecture section of `AGENTS.md` and `.claude/rules/typescript.md`.
+3. **Remove the old form.** Turn off `allowJs`, remove `prop-types` and the JSX plugin. Do not add an architecture section to `AGENTS.md` or a language handbook under `.claude/rules/`.
 
 ## Testing Decisions
 
@@ -73,7 +73,7 @@ Remove `prop-types`. Each `propTypes` block becomes a props type on the componen
 
 ## Further Notes
 
-- `.claude/rules/typescript.md` already sets the language rules once a spec exists: strict mode, `unknown` instead of `any`, no `@ts-ignore` without a one-line reason, and `PascalCase` types with no `I` prefix. This spec does not repeat them.
+- Agent prompts stay the short process in `AGENTS.md`. Do not copy commands, architecture, or a language handbook into `AGENTS.md`, `CLAUDE.md`, or `.claude/rules/`. Strict mode, `unknown` instead of `any`, and erasable server syntax stay in the compiler config and the path-scoped type-stripping rule.
 - `.react-router/` is already in `.gitignore` and the ESLint ignores. Generated types are never committed.
 - Prettier 3 formats `.ts` and `.tsx` with its default options, but the format hook and Lefthook skip them today. Add `.ts` and `.tsx` to `FORMATTED_EXTENSIONS` in `.claude/hooks/format-on-edit.py` and to the glob in `lefthook.yml`, as a `chore(harness)` commit next to the toolchain commit.
 - The work spans many files. Break it into tickets with `to-tickets` and build it with `implement-spec`.
