@@ -14,22 +14,6 @@ export default defineConfig([
     "blob-report/",
   ]),
   {
-    files: ["src/**/*.js"],
-    extends: [js.configs.recommended],
-    plugins: { "react-hooks": reactHooks },
-    languageOptions: {
-      globals: globals.browser,
-      parserOptions: { ecmaFeatures: { jsx: true } },
-    },
-    rules: {
-      // The same two hook rules CRA's react-app config ran.
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
-      // CRA did not report unused caught errors.
-      "no-unused-vars": ["error", { caughtErrors: "none" }],
-    },
-  },
-  {
     // A characterization file: its runner may change, not its code. CRA did
     // not run this rule, and it did not report unused caught errors.
     files: ["src/serverApi.test.ts"],
@@ -37,11 +21,6 @@ export default defineConfig([
       "no-useless-assignment": "off",
       "@typescript-eslint/no-unused-vars": ["error", { caughtErrors: "none" }],
     },
-  },
-  {
-    files: ["server/**/*.js"],
-    extends: [js.configs.recommended],
-    languageOptions: { sourceType: "module", globals: globals.node },
   },
   {
     files: ["*.mjs"],
