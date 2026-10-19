@@ -7,6 +7,7 @@
     "jsxImportSource": "@emotion/react",
     "module": "esnext",
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     // vitest and @testing-library/jest-dom both declare Assertion.

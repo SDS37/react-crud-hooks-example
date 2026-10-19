@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type ErrorRequestHandler } from "express";
 
 export function createApp() {
   const app = express();
@@ -181,15 +181,18 @@ export function createApp() {
   });
 
   // Without this Express renders the error stack outside production.
-  // eslint-disable-next-line no-unused-vars
-  app.use((err, req, res, next) => {
+  // Express only treats a four-argument function as an error handler.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleError: ErrorRequestHandler = (err, req, res, next) => {
     // Log the stack only. An error from body-parser carries the raw body.
     if (!err.status || err.status >= 500) {
       console.error(err.stack);
     }
     res.status(err.status || 500);
     res.send({ error: "Request failed" });
-  });
+  };
+
+  app.use(handleError);
 
   return app;
 }
