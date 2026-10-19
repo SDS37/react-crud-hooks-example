@@ -1,5 +1,5 @@
+import type { MouseEvent, ReactNode } from "react";
 import { useNavigate } from "react-router";
-import PropTypes from "prop-types";
 
 import FocusLink from "../structure/FocusLink";
 import IceCreamImage from "./IceCreamImage";
@@ -94,17 +94,29 @@ const cardStyle = css`
   }
 `;
 
-export const IceCreamCard = ({ children, to, iceCreamId, heading }) => {
+type IceCreamCardProps = {
+  iceCreamId: number;
+  heading: string;
+  to: string | { pathname: string; search?: string };
+  children?: ReactNode;
+};
+
+export const IceCreamCard = ({
+  children,
+  to,
+  iceCreamId,
+  heading,
+}: IceCreamCardProps) => {
   const navigate = useNavigate();
 
   const onItemClickHandler = () => {
     navigate(to);
   };
 
-  const onLinkClickHandler = (e) => {
+  const onLinkClickHandler = (event: MouseEvent<HTMLAnchorElement>) => {
     //This is done to avoid the click handler of the <li>
     //firing and placing two browse entries in browser history
-    e.stopPropagation();
+    event.stopPropagation();
   };
 
   return (
@@ -122,18 +134,6 @@ export const IceCreamCard = ({ children, to, iceCreamId, heading }) => {
       </div>
     </section>
   );
-};
-
-IceCreamCard.propTypes = {
-  iceCreamId: PropTypes.number.isRequired,
-  heading: PropTypes.string.isRequired,
-  to: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      pathname: PropTypes.string.isRequired,
-    }),
-  ]).isRequired,
-  children: PropTypes.node,
 };
 
 export default IceCreamCard;

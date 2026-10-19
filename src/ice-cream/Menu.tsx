@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { getMenu } from "../data/iceCreamData";
+import { getMenu, type MenuItem } from "../data/iceCreamData";
 
 import LoadError from "../structure/LoadError";
 import LoaderMessage from "../structure/LoaderMessage";
@@ -58,7 +58,7 @@ const cardContentStyle = css`
 `;
 
 const Menu = () => {
-  const [menu, setMenu] = useState([]);
+  const [menu, setMenu] = useState<MenuItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 

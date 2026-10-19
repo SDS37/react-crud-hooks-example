@@ -1,6 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import {
+  useState,
+  useEffect,
+  useRef,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 
+import { postMenuItem, type CatalogueFlavour } from "../data/iceCreamData";
 import useUniqueIds from "../hooks/useUniqueIds";
 import useValidation from "../hooks/useValidation";
 import {
@@ -311,15 +317,38 @@ const formStyle = css`
   }
 `;
 
+type FormState = {
+  price: string;
+  inStock: boolean;
+  quantity: string;
+  description: string;
+};
+
+const fieldProps = (props: ReturnType<typeof useValidation>[1]) => ({
+  ...props,
+  "aria-describedby": props["aria-describedby"] ?? undefined,
+  "aria-required": props["aria-required"] ?? undefined,
+});
+
+type IceCreamProps = {
+  iceCream: CatalogueFlavour;
+  price?: number;
+  quantity?: number;
+  inStock?: boolean;
+  description?: string;
+  onDelete?: () => void;
+  onSubmit: (menuItem: Parameters<typeof postMenuItem>[0]) => void;
+};
+
 const IceCream = ({
-  iceCream = {},
+  iceCream,
   price = 0,
   quantity = 0,
   inStock = true,
   description = "",
   onDelete,
   onSubmit,
-}) => {
+}: IceCreamProps) => {
   const [
     descriptionId,
     descriptionErrorId,
@@ -330,9 +359,9 @@ const IceCream = ({
     priceErrorId,
   ] = useUniqueIds(7);
 
-  const formRef = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const [internalData, setInternalData] = useState(() => ({
+  const [internalData, setInternalData] = useState<FormState>(() => ({
     price: price.toFixed(2),
     inStock,
     quantity: quantity.toString(),
@@ -375,27 +404,46 @@ const IceCream = ({
     });
   }, [price, quantity, inStock, description]);
 
-  const onChangeHandler = (e) => {
-    let newInternalData = {
-      ...internalData,
-      [e.target.name]:
-        e.target.type === "checkbox" ? e.target.checked : e.target.value,
-    };
-    if (e.target.name === "quantity") {
-      newInternalData.inStock = e.target.value !== "0";
+  const onChangeHandler = (
+    event: ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
+    const target = event.target;
+    const newInternalData = { ...internalData };
+    if (
+      target.name === "description" ||
+      target.name === "price" ||
+      target.name === "quantity"
+    ) {
+      newInternalData[target.name] = target.value;
+    } else if (
+      target instanceof HTMLInputElement &&
+      target.name === "inStock"
+    ) {
+      newInternalData.inStock = target.checked;
     }
-    if (e.target.name === "inStock" && !e.target.checked) {
+    if (target.name === "quantity") {
+      newInternalData.inStock = target.value !== "0";
+    }
+    if (
+      target instanceof HTMLInputElement &&
+      target.name === "inStock" &&
+      !target.checked
+    ) {
       newInternalData.quantity = "0";
     }
     setInternalData(newInternalData);
   };
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
+  const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setHasSubmitted(true);
     if (descriptionError || quantityError || priceError) {
       setTimeout(() => {
-        formRef.current?.querySelector('[aria-invalid="true"]')?.focus();
+        formRef.current
+          ?.querySelector<HTMLElement>('[aria-invalid="true"]')
+          ?.focus();
       });
     } else {
       onSubmit({
@@ -431,10 +479,10 @@ const IceCream = ({
               <textarea
                 id={descriptionId}
                 name="description"
-                rows="3"
+                rows={3}
                 onChange={onChangeHandler}
                 value={internalData.description}
-                {...descriptionErrorProps}
+                {...fieldProps(descriptionErrorProps)}
               />
             </ErrorContainer>
             <label htmlFor={stockId}>In Stock :</label>
@@ -459,7 +507,7 @@ const IceCream = ({
                 name="quantity"
                 onChange={onChangeHandler}
                 value={internalData.quantity}
-                {...quantityErrorProps}
+                {...fieldProps(quantityErrorProps)}
               >
                 <option value="0">0</option>
                 <option value="10">10</option>
@@ -484,7 +532,7 @@ const IceCream = ({
                 name="price"
                 onChange={onChangeHandler}
                 value={internalData.price}
-                {...priceErrorProps}
+                {...fieldProps(priceErrorProps)}
               />
             </ErrorContainer>
             <div className="button-container">
@@ -502,19 +550,6 @@ const IceCream = ({
       </div>
     </div>
   );
-};
-
-IceCream.propTypes = {
-  iceCream: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-  }),
-  price: PropTypes.number,
-  quantity: PropTypes.number,
-  inStock: PropTypes.bool,
-  description: PropTypes.string,
-  onDelete: PropTypes.func,
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default IceCream;

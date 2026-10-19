@@ -1,9 +1,9 @@
 import { index, route } from "@react-router/dev/routes";
 
 export default [
-  index("./ice-cream/Menu.js"),
-  route("ice-creams", "./ice-cream/IceCreams.js"),
-  route("menu-items/add", "./ice-cream/AddIceCream.js"),
-  route("menu-items/:menuItemId", "./ice-cream/EditIceCream.js"),
+  index("./ice-cream/Menu.tsx"),
+  route("ice-creams", "./ice-cream/IceCreams.tsx"),
+  route("menu-items/add", "./ice-cream/AddIceCream.tsx"),
+  route("menu-items/:menuItemId", "./ice-cream/EditIceCream.tsx"),
   route("*", "./routes/catch-all.js"),
 ];
