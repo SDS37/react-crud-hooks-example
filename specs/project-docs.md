@@ -25,4 +25,4 @@ A new decision is a new ADR. Do not silently rewrite an accepted one. `docs/READ
 
 The commit convention lives in `docs/commits.md`. `AGENTS.md` names the shape in one line. A commit hook denies a message that does not match, and the denial includes that file. The index links to it.
 
-Do not add `docs/standards/` files that restate React, Express, or JavaScript documentation. Mermaid diagrams belong only in `docs/architecture.md`. Do not add them to the decision records or the definition of done.
+Do not add `docs/standards/` files that restate React, Express, or JavaScript documentation. Mermaid diagrams of the app belong in `docs/architecture.md`. The agent-configuration diagram belongs in `docs/claude.md`. Do not add diagrams to the decision records or the definition of done.
