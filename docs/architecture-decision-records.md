@@ -64,7 +64,7 @@ These records hold decisions already made in [`specs/upgrade.md`](../specs/upgra
 - **Context:** The app is JavaScript. A stack upgrade is a large change on its own.
 - **Decision:** Keep the app JavaScript. Config and route files are JavaScript too (`react-router.config.js`, `src/routes.js`).
 - **Alternatives:** Converting to TypeScript during the upgrade was not chosen. It needs its own accepted spec.
-- **Consequences:** No TypeScript dependency, `tsconfig`, or `.ts` file is added without that spec. See `.claude/rules/typescript.md`.
+- **Consequences:** No TypeScript dependency, `tsconfig`, or `.ts` file is added without that spec. Superseded by ADR 9.
 
 ## ADR 9: TypeScript toolchain
 

@@ -1,6 +1,6 @@
 ---
 name: test-runner
-description: Spawn the test-runner agent to verify a change and report the result. Use after a behavior change, or when implement asks for verification. The author does not run this grade in its own context.
+description: Spawn the test-runner agent to verify a change. The author does not grade its own change.
 ---
 
 # Test runner

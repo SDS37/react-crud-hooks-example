@@ -1,6 +1,6 @@
 ---
 name: pr
-description: Use when writing a PR body.
+description: Write a pull request body.
 ---
 
 Open the pull request with `gh pr create` from a branch off `main`. Do not commit to `main`.
@@ -8,7 +8,7 @@ Open the pull request with `gh pr create` from a branch off `main`. Do not commi
 ```markdown
 ## Summary
 
-What changed and why, in the vocabulary of AGENTS.md.
+What changed and why.
 
 ## Evidence
 

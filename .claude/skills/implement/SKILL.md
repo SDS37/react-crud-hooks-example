@@ -14,4 +14,4 @@ Call the Skill tool with "tdd" at the seams the spec already names.
 
 Run the checks through the `test-runner` skill: the focused file as you go, then every check in "Commands in force". Do not edit a characterization assertion.
 
-Once `test-runner` reports GREEN, call the Skill tool with "code-review". Commit only after that report has no Blocking finding, using `.claude/rules/conventional-commits.md`. Then call the Skill tool with "pr" and open the pull request with `gh`.
+Once `test-runner` reports GREEN, call the Skill tool with "code-review". Commit only after that report has no Blocking finding. Message shape is Conventional Commits. Then call the Skill tool with "pr" and open the pull request with `gh`.

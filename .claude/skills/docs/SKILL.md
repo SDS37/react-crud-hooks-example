@@ -1,6 +1,6 @@
 ---
 name: docs
-description: Fetch current library documentation with the ctx7 CLI before using an API. Use during the upgrade and whenever a library's API may have changed.
+description: Fetch current library documentation with the ctx7 CLI before using an API.
 ---
 
 # Current docs

@@ -14,7 +14,6 @@ The format check (`npx prettier --check` on every changed file) also stays in fo
 
 ## Not in this DoD
 
-- Renaming source files to TypeScript. The app stays JavaScript until the later issues in [`specs/typescript.md`](../specs/typescript.md).
 - Server rendering. The app is a client-rendered SPA (`ssr: false`).
 - Language style guides. Prettier's default options and the ESLint config are the style.
 - Diagrams.

@@ -4,7 +4,7 @@ A menu for an ice cream shop. Browse what is on the menu, add a flavour from the
 
 ## Stack
 
-Node 24.22.0, React 19, React Router 8 in SPA mode, Vite 8, Emotion 11, and Express 5. Pages call `fetch` only through `src/data/iceCreamData.js`. The app stays JavaScript.
+Node 24.22.0, React 19, React Router 8 in SPA mode, Vite 8, Emotion 11, Express 5, and TypeScript. Pages call `fetch` only through `src/data/iceCreamData.ts`.
 
 ## Requirements
 
@@ -28,12 +28,12 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000).
 
-| URL | Page |
-| --- | --- |
-| `/` | Menu |
-| `/ice-creams` | Catalogue flavours that are not on the menu yet |
-| `/menu-items/add?iceCreamId=N` | Add that flavour |
-| `/menu-items/:menuItemId` | Edit or delete that item |
+| URL                            | Page                                            |
+| ------------------------------ | ----------------------------------------------- |
+| `/`                            | Menu                                            |
+| `/ice-creams`                  | Catalogue flavours that are not on the menu yet |
+| `/menu-items/add?iceCreamId=N` | Add that flavour                                |
+| `/menu-items/:menuItemId`      | Edit or delete that item                        |
 
 Any other path ends on `/`.
 
@@ -41,13 +41,13 @@ Any other path ends on `/`.
 
 Run these on Node 24.22.0. The definition of done is [docs/DoD.md](docs/DoD.md).
 
-| Command | What it does |
-| --- | --- |
-| `npm test` | Vitest, once. `npm run test:watch` is watch mode. |
-| `npm test -- src/path/File.test.js` | One test file. |
-| `npm run lint` | ESLint. |
-| `npm run build` | SPA build. The page is `build/client/index.html`. |
-| `npx playwright test` | End-to-end tests. Install the browser once with `npx playwright install chromium`. |
+| Command                             | What it does                                                                       |
+| ----------------------------------- | ---------------------------------------------------------------------------------- |
+| `npm test`                          | Vitest, once. `npm run test:watch` is watch mode.                                  |
+| `npm test -- src/path/File.test.ts` | One test file.                                                                     |
+| `npm run lint`                      | ESLint.                                                                            |
+| `npm run build`                     | SPA build. The page is `build/client/index.html`.                                  |
+| `npx playwright test`               | End-to-end tests. Install the browser once with `npx playwright install chromium`. |
 
 Playwright starts the API and the dev server itself. Stop anything already listening on ports 3000 and 5001 before that command.
 

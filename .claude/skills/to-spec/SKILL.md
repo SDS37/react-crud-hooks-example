@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 Write the spec to `specs/<slug>.md` from the conversation and the code. Do not interview the user. Do not publish it to GitHub. Set `Status: proposed` at the top and stop. Do not edit `src/`, `server/`, or `package.json` until the user accepts that file.
 
-Use the vocabulary in `AGENTS.md`. Do not create a glossary or a `docs/` file.
+Use the words already in the code. Do not create a glossary or a `docs/` file.
 
 ## Process
 
@@ -28,7 +28,7 @@ The solution, from the user's perspective.
 
 Numbered stories for the behavior the conversation already asked for:
 
-1. As a shop staff member, I want to see the menu sorted by name, so that I can find a flavour quickly
+1. As a reader, I want the list sorted by name, so that I can find an entry quickly
 
 Do not add stories the conversation did not discuss.
 

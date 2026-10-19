@@ -1,13 +1,13 @@
 ---
 name: diagnosing-bugs
-description: Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or reports something broken/throwing/failing/slow.
+description: Diagnosis loop for a hard bug or a performance regression.
 ---
 
 # Diagnosing Bugs
 
 A discipline for hard bugs. Skip phases only when explicitly justified.
 
-Use the vocabulary in `AGENTS.md`. Run a failing check with the command in "Commands in force" in `specs/upgrade.md`, through the `test-runner` skill. Do not weaken a characterization assertion to make the loop go green.
+Run a failing check with the command in "Commands in force" in `specs/upgrade.md`, through the `test-runner` skill. Do not weaken an assertion to make the loop go green.
 
 ## Redact
 
