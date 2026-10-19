@@ -119,6 +119,7 @@ Run every check on Node 24.22.0 (`.nvmrc`).
 - Lint: `npm run lint`
 - Build: `npm run build`
 - End to end: `npx playwright test`. Its config starts both dev servers, so none may already be running on ports 3000 or 5001.
+- Typecheck: `npm run typecheck` (`react-router typegen && tsc`).
 
 Dev servers: `npm run start-server` (Express on port 5001) and `npm start` (Vite on port 3000, with `/api` proxied to port 5001).
 
