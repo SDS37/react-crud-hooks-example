@@ -15,5 +15,13 @@
     "rootDirs": [".", "./.react-router/types"],
     "types": ["node"]
   },
-  "include": [".react-router/types/**/*", "src/**/*", "server/**/*"]
+  "include": [
+    ".react-router/types/**/*",
+    "src/**/*",
+    "server/**/*",
+    "e2e/**/*.ts",
+    "vite.config.ts",
+    "playwright.config.ts",
+    "react-router.config.ts"
+  ]
 }

@@ -1,10 +1,11 @@
 import path from "node:path";
 import { reactRouter } from "@react-router/dev/vite";
-import { defineConfig, transformWithOxc } from "vite";
+import { transformWithOxc, type Plugin } from "vite";
+import { defineConfig } from "vitest/config";
 
 const apiServer = "http://localhost:5001";
 const appSourceDir = path.resolve("src") + path.sep;
-const isAppSourceFile = (id) =>
+const isAppSourceFile = (id: string) =>
   id.startsWith(appSourceDir) &&
   !id.includes("/node_modules/") &&
   id.endsWith(".js");
@@ -13,7 +14,7 @@ const isAppSourceFile = (id) =>
 // The React Router plugin parses .js route modules with Babel, which rejects
 // JSX, so this must run first. It outlives React 16: drop it only by renaming
 // the files to .jsx. The automatic runtime needs no React import in each file.
-const jsxInJsFiles = {
+const jsxInJsFiles: Plugin = {
   name: "jsx-in-js-files",
   enforce: "pre",
   async transform(code, id) {
@@ -59,7 +60,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
-    setupFiles: ["./src/setupTests.js"],
-    include: ["src/**/*.test.js", "src/**/*.test.ts", "src/**/*.test.tsx"],
+    setupFiles: ["./src/setupTests.ts"],
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
   },
 });
