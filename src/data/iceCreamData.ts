@@ -19,7 +19,7 @@ type MenuItemInput = {
   quantity: number;
   price: number;
   description: string;
-  isSpecial?: boolean;
+  isSpecial: boolean;
 };
 
 type RequestOptions = {

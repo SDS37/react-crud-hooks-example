@@ -76,6 +76,32 @@ test.describe("form", () => {
     ).toBeVisible();
   });
 
+  test("ticking Today's special puts the badge on the first card", async ({
+    page,
+  }) => {
+    // The menu is shared, so the special is cleared again before the test ends.
+    const special = page.getByLabel("Today's special");
+    const save = page.getByRole("button", { name: "Save" });
+    const firstCard = page.getByRole("main").locator("section").first();
+    try {
+      await page.goto("/menu-items/1");
+      await expect(page.getByLabel("Description")).not.toHaveValue("");
+      await special.check();
+      await save.click();
+
+      await expect(page).toHaveURL("/");
+      await expect(firstCard).toContainText("Cherry Blast");
+      await expect(firstCard).toContainText("Today's special");
+    } finally {
+      await page.goto("/menu-items/1");
+      await expect(page.getByLabel("Description")).not.toHaveValue("");
+      await special.uncheck();
+      await save.click();
+      await expect(page).toHaveURL("/");
+      await expect(page.getByText("Today's special")).toHaveCount(0);
+    }
+  });
+
   test("the heading receives focus after a save that returns home", async ({
     page,
   }) => {

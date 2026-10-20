@@ -4,9 +4,9 @@
 
 **Blocked by:** 02: Refuse an invalid special, 03: Show the special first with a badge
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A form test covers the disabled state, the enabled state for a checked special, and the hint.
-- [ ] One Playwright test ticks the box on a flavour, saves, and sees the badge on the first card of the menu.
-- [ ] That test leaves the shared menu as the other e2e specs expect.
-- [ ] Every check in `docs/DoD.md` exits 0.
+- [x] A form test covers the disabled state, the enabled state for a checked special, and the hint.
+- [x] One Playwright test ticks the box on a flavour, saves, and sees the badge on the first card of the menu.
+- [x] That test leaves the shared menu as the other e2e specs expect.
+- [x] Every check in `docs/DoD.md` exits 0.

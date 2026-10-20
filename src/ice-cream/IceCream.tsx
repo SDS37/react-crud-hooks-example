@@ -254,6 +254,12 @@ const formStyle = css`
         }
       }
 
+      .special-hint {
+        margin: 0 0 0.5em;
+        color: #ab131c;
+        font-size: 0.9em;
+      }
+
       .error-wrapper {
         min-height: 2em;
         padding-top: 0.2em;
@@ -320,6 +326,7 @@ const formStyle = css`
 type FormState = {
   price: string;
   inStock: boolean;
+  isSpecial: boolean;
   quantity: string;
   description: string;
 };
@@ -335,6 +342,7 @@ type IceCreamProps = {
   price?: number;
   quantity?: number;
   inStock?: boolean;
+  isSpecial?: boolean;
   description?: string;
   onDelete?: () => void;
   onSubmit: (menuItem: Parameters<typeof postMenuItem>[0]) => void;
@@ -345,6 +353,7 @@ const IceCream = ({
   price = 0,
   quantity = 0,
   inStock = true,
+  isSpecial = false,
   description = "",
   onDelete,
   onSubmit,
@@ -353,17 +362,20 @@ const IceCream = ({
     descriptionId,
     descriptionErrorId,
     stockId,
+    specialId,
+    specialHintId,
     quantityId,
     quantityErrorId,
     priceId,
     priceErrorId,
-  ] = useUniqueIds(7);
+  ] = useUniqueIds(9);
 
   const formRef = useRef<HTMLFormElement>(null);
 
   const [internalData, setInternalData] = useState<FormState>(() => ({
     price: price.toFixed(2),
     inStock,
+    isSpecial,
     quantity: quantity.toString(),
     description,
   }));
@@ -399,10 +411,11 @@ const IceCream = ({
     setInternalData({
       price: price.toFixed(2),
       inStock,
+      isSpecial,
       quantity: quantity.toString(),
       description,
     });
-  }, [price, quantity, inStock, description]);
+  }, [price, quantity, inStock, isSpecial, description]);
 
   const onChangeHandler = (
     event: ChangeEvent<
@@ -422,6 +435,11 @@ const IceCream = ({
       target.name === "inStock"
     ) {
       newInternalData.inStock = target.checked;
+    } else if (
+      target instanceof HTMLInputElement &&
+      target.name === "isSpecial"
+    ) {
+      newInternalData.isSpecial = target.checked;
     }
     if (target.name === "quantity") {
       newInternalData.inStock = target.value !== "0";
@@ -450,11 +468,14 @@ const IceCream = ({
         iceCream: { id: iceCream.id },
         price: parseFloat(internalData.price),
         inStock: internalData.inStock,
+        isSpecial: internalData.isSpecial,
         quantity: parseInt(internalData.quantity),
         description: internalData.description,
       });
     }
   };
+
+  const showSpecialHint = internalData.isSpecial && !internalData.inStock;
 
   return (
     <div css={formStyle}>
@@ -495,6 +516,27 @@ const IceCream = ({
                 checked={internalData.inStock}
               />
               <div className="checkbox-wrapper-checked" />
+            </div>
+            <label htmlFor={specialId}>Today&apos;s special :</label>
+            <div>
+              <div className="checkbox-wrapper">
+                <input
+                  id={specialId}
+                  type="checkbox"
+                  name="isSpecial"
+                  onChange={onChangeHandler}
+                  checked={internalData.isSpecial}
+                  disabled={!internalData.isSpecial && !internalData.inStock}
+                  aria-describedby={showSpecialHint ? specialHintId : undefined}
+                />
+                <div className="checkbox-wrapper-checked" />
+              </div>
+              {showSpecialHint && (
+                <p id={specialHintId} className="special-hint">
+                  Out of stock items can&apos;t be today&apos;s special. Untick
+                  this or restock to save.
+                </p>
+              )}
             </div>
             <label htmlFor={quantityId}>Quantity :</label>
             <ErrorContainer
