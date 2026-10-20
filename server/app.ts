@@ -126,8 +126,7 @@ export function createApp() {
   app.post("/api/menu", (req, res) => {
     const { iceCream, ...rest } = req.body;
     const newMenuItem = {
-      id:
-        menuData.reduce((prev, cur) => (cur.id > prev ? cur.id : prev), 0) + 1,
+      id: menuData.length + 1,
       iceCream: {
         ...iceCreams.find((item) => item.id === parseInt(iceCream.id, 10)),
       },
