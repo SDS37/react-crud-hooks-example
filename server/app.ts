@@ -40,6 +40,7 @@ export function createApp() {
       id: 1,
       iceCream: { id: 1, name: "Cherry Blast" },
       inStock: true,
+      isSpecial: false,
       quantity: 20,
       price: 1.51,
       description:
@@ -49,6 +50,7 @@ export function createApp() {
       id: 2,
       iceCream: { id: 15, name: "Catastrophe" },
       inStock: true,
+      isSpecial: false,
       quantity: 30,
       price: 1.64,
       description: "A feline strawberry cranium, what could possibly go wrong?",
@@ -57,6 +59,7 @@ export function createApp() {
       id: 3,
       iceCream: { id: 10, name: "Snowman Godfather" },
       inStock: true,
+      isSpecial: false,
       quantity: 30,
       price: 1.5,
       description:
@@ -66,6 +69,7 @@ export function createApp() {
       id: 4,
       iceCream: { id: 4, name: "Roswell Crash" },
       inStock: true,
+      isSpecial: false,
       quantity: 10,
       price: 1.82,
       description: "A zing of lime straight from Area 51",
@@ -74,6 +78,7 @@ export function createApp() {
       id: 5,
       iceCream: { id: 27, name: "Sundae Everyday" },
       inStock: false,
+      isSpecial: false,
       quantity: 0,
       price: 2.98,
       description: "Hazelnut and vanilla, chocolate and cherries",
@@ -82,6 +87,7 @@ export function createApp() {
       id: 6,
       iceCream: { id: 21, name: "Castle in the Sky" },
       inStock: true,
+      isSpecial: false,
       quantity: 50,
       price: 2.19,
       description: "A floating stronghold of vanilla, chocolate and pistachio",
@@ -90,6 +96,7 @@ export function createApp() {
       id: 7,
       iceCream: { id: 24, name: "Raspberry Pi" },
       inStock: true,
+      isSpecial: false,
       quantity: 20,
       price: 1.29,
       description: "Chocolate electricity on a motherboard of raspberry",
@@ -102,6 +109,15 @@ export function createApp() {
         menuData.find((menuItem) => menuItem.iceCream.id === iceCream.id) ===
         undefined,
     );
+
+  // A menu has at most one special. Saving a special clears the others.
+  const clearOtherSpecials = (saved: { id: number; isSpecial: boolean }) => {
+    if (saved.isSpecial === true) {
+      menuData = menuData.map((menuItem) =>
+        menuItem.id === saved.id ? menuItem : { ...menuItem, isSpecial: false },
+      );
+    }
+  };
 
   app.get("/api/menu/stock-ice-creams", (req, res) => {
     res.send(getAvailableStock());
@@ -132,7 +148,9 @@ export function createApp() {
         ...iceCreams.find((item) => item.id === parseInt(iceCream.id, 10)),
       },
       ...rest,
+      isSpecial: rest.isSpecial ?? false,
     };
+    clearOtherSpecials(newMenuItem);
     menuData.push(newMenuItem);
 
     res.send(newMenuItem);
@@ -155,13 +173,16 @@ export function createApp() {
     const intId = parseInt(req.params.id, 10);
     const { iceCream, ...rest } = req.body;
 
+    const stored = menuData.find((menuItem) => menuItem.id === intId);
     const updatedItem = {
       id: intId,
       iceCream: {
         ...iceCreams.find((item) => item.id === parseInt(iceCream.id, 10)),
       },
       ...rest,
+      isSpecial: rest.isSpecial ?? stored?.isSpecial ?? false,
     };
+    clearOtherSpecials(updatedItem);
     menuData = menuData.map((menuItem) => {
       if (menuItem.id === parseInt(req.params.id, 10)) {
         return updatedItem;

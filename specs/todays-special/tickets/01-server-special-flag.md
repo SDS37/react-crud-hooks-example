@@ -4,11 +4,11 @@
 
 **Blocked by:** None
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A fresh menu has no item with `isSpecial: true`.
-- [ ] `POST` with `isSpecial: true` makes it the only special, and a second such `POST` moves it.
-- [ ] `PUT` with `isSpecial: true` on another item moves the special, and `PUT` with `false` on the special leaves none.
-- [ ] `PUT` without `isSpecial` on the special keeps it, and `POST` without it stores `false`.
-- [ ] Deleting the special leaves no special.
-- [ ] Every check in `docs/DoD.md` exits 0.
+- [x] A fresh menu has no item with `isSpecial: true`.
+- [x] `POST` with `isSpecial: true` makes it the only special, and a second such `POST` moves it.
+- [x] `PUT` with `isSpecial: true` on another item moves the special, and `PUT` with `false` on the special leaves none.
+- [x] `PUT` without `isSpecial` on the special keeps it, and `POST` without it stores `false`.
+- [x] Deleting the special leaves no special.
+- [x] Every check in `docs/DoD.md` exits 0.
