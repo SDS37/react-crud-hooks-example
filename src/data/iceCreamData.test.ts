@@ -23,8 +23,8 @@ describe("ice cream data", () => {
   test("sorts the menu by ice cream name", async () => {
     fetchMock.mockResolvedValue(
       jsonResponse([
-        { iceCream: { name: "Mint Stack" } },
-        { iceCream: { name: "Cherry Blast" } },
+        { iceCream: { name: "Mint Stack" }, isSpecial: false },
+        { iceCream: { name: "Cherry Blast" }, isSpecial: false },
       ]),
     );
 
@@ -34,6 +34,24 @@ describe("ice cream data", () => {
     expect(menu.map((item) => item.iceCream.name)).toEqual([
       "Cherry Blast",
       "Mint Stack",
+    ]);
+  });
+
+  test("sorts the special first, then by ice cream name", async () => {
+    fetchMock.mockResolvedValue(
+      jsonResponse([
+        { iceCream: { name: "Cherry Blast" }, isSpecial: false },
+        { iceCream: { name: "Toxic Sludge" }, isSpecial: true },
+        { iceCream: { name: "Arctic Rainbow" }, isSpecial: false },
+      ]),
+    );
+
+    const menu = await getMenu();
+
+    expect(menu.map((item) => item.iceCream.name)).toEqual([
+      "Toxic Sludge",
+      "Arctic Rainbow",
+      "Cherry Blast",
     ]);
   });
 

@@ -18,6 +18,7 @@ const menuItem = {
   quantity: 5,
   price: 2.5,
   description: "Cool",
+  isSpecial: false,
 };
 
 const serverError = () =>

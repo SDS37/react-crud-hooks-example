@@ -117,4 +117,163 @@ describe("menu API", () => {
     expect(second.status).toBe(200);
     expect(second.body.iceCream.name).toBe("Cherry Blast");
   });
+
+  describe("special", () => {
+    type Item = { id: number; isSpecial: boolean };
+    const input = (id: number, extra: object = {}) => ({
+      iceCream: { id },
+      inStock: true,
+      quantity: 4,
+      price: 1.25,
+      description: "A test scoop",
+      ...extra,
+    });
+    const specials = async (app: Express) => {
+      const menu = await request<Item[]>(app, "GET", "/api/menu");
+      return menu.body.filter((item) => item.isSpecial).map((item) => item.id);
+    };
+
+    test("a fresh menu has no special", async () => {
+      const app = createApp();
+      expect(await specials(app)).toEqual([]);
+      const menu = await request<Item[]>(app, "GET", "/api/menu");
+      expect(menu.body.every((item) => item.isSpecial === false)).toBe(true);
+    });
+
+    test("post with isSpecial makes it the only special, and a second post moves it", async () => {
+      const app = createApp();
+      const first = await request<Item>(
+        app,
+        "POST",
+        "/api/menu",
+        input(0, { isSpecial: true }),
+      );
+      expect(first.body.isSpecial).toBe(true);
+      expect(await specials(app)).toEqual([first.body.id]);
+      const second = await request<Item>(
+        app,
+        "POST",
+        "/api/menu",
+        input(2, { isSpecial: true }),
+      );
+      expect(await specials(app)).toEqual([second.body.id]);
+      const moved = await request<Item>(
+        app,
+        "GET",
+        `/api/menu/${first.body.id}`,
+      );
+      expect(moved.body.isSpecial).toBe(false);
+    });
+
+    test("put with isSpecial moves the special, and false leaves none", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      expect(await specials(app)).toEqual([1]);
+      await request(app, "PUT", "/api/menu/2", input(15, { isSpecial: true }));
+      expect(await specials(app)).toEqual([2]);
+      await request(app, "PUT", "/api/menu/2", input(15, { isSpecial: false }));
+      expect(await specials(app)).toEqual([]);
+    });
+
+    test("put on a missing id leaves the current special unchanged", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      await request(app, "PUT", "/api/menu/999", input(2, { isSpecial: true }));
+      expect(await specials(app)).toEqual([1]);
+    });
+
+    test("put without isSpecial keeps it, and post without it stores false", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      const put = await request<Item>(
+        app,
+        "PUT",
+        "/api/menu/1",
+        input(1, { price: 2 }),
+      );
+      expect(put.body.isSpecial).toBe(true);
+      expect(await specials(app)).toEqual([1]);
+      const post = await request<Item>(app, "POST", "/api/menu", input(0));
+      expect(post.body.isSpecial).toBe(false);
+    });
+
+    test("deleting the special leaves no special", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      await request(app, "DELETE", "/api/menu/1");
+      expect(await specials(app)).toEqual([]);
+    });
+
+    const snapshot = async (app: Express) =>
+      (await request(app, "GET", "/api/menu")).body;
+
+    test("a non-boolean isSpecial returns 400 on post and put, and changes nothing", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      const before = await snapshot(app);
+      const post = await request(
+        app,
+        "POST",
+        "/api/menu",
+        input(0, { isSpecial: "yes" }),
+      );
+      expect(post.status).toBe(400);
+      expect(post.body).toEqual({ error: "isSpecial must be a boolean" });
+      const put = await request(
+        app,
+        "PUT",
+        "/api/menu/2",
+        input(15, { isSpecial: null }),
+      );
+      expect(put.status).toBe(400);
+      expect(put.body).toEqual({ error: "isSpecial must be a boolean" });
+      expect(await snapshot(app)).toEqual(before);
+      expect(await specials(app)).toEqual([1]);
+    });
+
+    test("an out of stock special returns 400 on post and put, and keeps the previous special", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      const before = await snapshot(app);
+      const message = {
+        error: "An out of stock menu item cannot be the special",
+      };
+      const post = await request(
+        app,
+        "POST",
+        "/api/menu",
+        input(0, { isSpecial: true, inStock: false }),
+      );
+      expect(post.status).toBe(400);
+      expect(post.body).toEqual(message);
+      const put = await request(
+        app,
+        "PUT",
+        "/api/menu/2",
+        input(15, { isSpecial: true, inStock: false }),
+      );
+      expect(put.status).toBe(400);
+      expect(put.body).toEqual(message);
+      expect(await snapshot(app)).toEqual(before);
+      expect(await specials(app)).toEqual([1]);
+    });
+
+    test("put with inStock false and no isSpecial on the special returns 400", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      const before = await snapshot(app);
+      const put = await request(
+        app,
+        "PUT",
+        "/api/menu/1",
+        input(1, { inStock: false }),
+      );
+      expect(put.status).toBe(400);
+      expect(put.body).toEqual({
+        error: "An out of stock menu item cannot be the special",
+      });
+      expect(await snapshot(app)).toEqual(before);
+      expect(await specials(app)).toEqual([1]);
+    });
+  });
 });

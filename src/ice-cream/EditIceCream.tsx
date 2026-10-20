@@ -95,6 +95,7 @@ const EditIceCream = () => {
           price={menuItem.price}
           quantity={menuItem.quantity}
           inStock={menuItem.inStock}
+          isSpecial={menuItem.isSpecial}
           description={menuItem.description}
           onDelete={onDeleteHandler}
           onSubmit={onSubmitHandler}
