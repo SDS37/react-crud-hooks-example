@@ -196,5 +196,77 @@ describe("menu API", () => {
       await request(app, "DELETE", "/api/menu/1");
       expect(await specials(app)).toEqual([]);
     });
+
+    const snapshot = async (app: Express) =>
+      (await request(app, "GET", "/api/menu")).body;
+
+    test("a non-boolean isSpecial returns 400 on post and put, and changes nothing", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      const before = await snapshot(app);
+      const post = await request(
+        app,
+        "POST",
+        "/api/menu",
+        input(0, { isSpecial: "yes" }),
+      );
+      expect(post.status).toBe(400);
+      expect(post.body).toEqual({ error: "isSpecial must be a boolean" });
+      const put = await request(
+        app,
+        "PUT",
+        "/api/menu/2",
+        input(15, { isSpecial: null }),
+      );
+      expect(put.status).toBe(400);
+      expect(put.body).toEqual({ error: "isSpecial must be a boolean" });
+      expect(await snapshot(app)).toEqual(before);
+      expect(await specials(app)).toEqual([1]);
+    });
+
+    test("an out of stock special returns 400 on post and put, and keeps the previous special", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      const before = await snapshot(app);
+      const message = {
+        error: "An out of stock menu item cannot be the special",
+      };
+      const post = await request(
+        app,
+        "POST",
+        "/api/menu",
+        input(0, { isSpecial: true, inStock: false }),
+      );
+      expect(post.status).toBe(400);
+      expect(post.body).toEqual(message);
+      const put = await request(
+        app,
+        "PUT",
+        "/api/menu/2",
+        input(15, { isSpecial: true, inStock: false }),
+      );
+      expect(put.status).toBe(400);
+      expect(put.body).toEqual(message);
+      expect(await snapshot(app)).toEqual(before);
+      expect(await specials(app)).toEqual([1]);
+    });
+
+    test("put with inStock false and no isSpecial on the special returns 400", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      const before = await snapshot(app);
+      const put = await request(
+        app,
+        "PUT",
+        "/api/menu/1",
+        input(1, { inStock: false }),
+      );
+      expect(put.status).toBe(400);
+      expect(put.body).toEqual({
+        error: "An out of stock menu item cannot be the special",
+      });
+      expect(await snapshot(app)).toEqual(before);
+      expect(await specials(app)).toEqual([1]);
+    });
   });
 });

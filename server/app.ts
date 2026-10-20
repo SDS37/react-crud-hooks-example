@@ -119,6 +119,20 @@ export function createApp() {
     }
   };
 
+  // Returns the 400 message for a special that cannot be saved, if any.
+  const specialError = (
+    body: { isSpecial?: unknown },
+    saved: { isSpecial: boolean; inStock?: unknown },
+  ) => {
+    if (body.isSpecial !== undefined && typeof body.isSpecial !== "boolean") {
+      return "isSpecial must be a boolean";
+    }
+    if (saved.isSpecial === true && saved.inStock === false) {
+      return "An out of stock menu item cannot be the special";
+    }
+    return undefined;
+  };
+
   app.get("/api/menu/stock-ice-creams", (req, res) => {
     res.send(getAvailableStock());
   });
@@ -150,6 +164,12 @@ export function createApp() {
       ...rest,
       isSpecial: rest.isSpecial ?? false,
     };
+    const error = specialError(rest, newMenuItem);
+    if (error) {
+      res.status(400);
+      res.send({ error });
+      return;
+    }
     clearOtherSpecials(newMenuItem);
     menuData.push(newMenuItem);
 
@@ -182,6 +202,12 @@ export function createApp() {
       ...rest,
       isSpecial: rest.isSpecial ?? stored?.isSpecial ?? false,
     };
+    const error = specialError(rest, updatedItem);
+    if (error) {
+      res.status(400);
+      res.send({ error });
+      return;
+    }
     clearOtherSpecials(updatedItem);
     menuData = menuData.map((menuItem) => {
       if (menuItem.id === parseInt(req.params.id, 10)) {

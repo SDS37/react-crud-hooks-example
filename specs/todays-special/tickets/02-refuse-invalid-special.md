@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] A non-boolean `isSpecial` on `POST` and on `PUT` returns 400 and leaves the menu unchanged.
-- [ ] `isSpecial: true` with `inStock: false` returns 400 on `POST` and on `PUT`.
-- [ ] A `PUT` with `inStock: false` and no `isSpecial` on the current special returns 400.
-- [ ] After each 400 the previous special is still the special.
-- [ ] No field other than `isSpecial` is newly validated.
-- [ ] Every check in `docs/DoD.md` exits 0.
+- [x] A non-boolean `isSpecial` on `POST` and on `PUT` returns 400 and leaves the menu unchanged.
+- [x] `isSpecial: true` with `inStock: false` returns 400 on `POST` and on `PUT`.
+- [x] A `PUT` with `inStock: false` and no `isSpecial` on the current special returns 400.
+- [x] After each 400 the previous special is still the special.
+- [x] No field other than `isSpecial` is newly validated.
+- [x] Every check in `docs/DoD.md` exits 0.
