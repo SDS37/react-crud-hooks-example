@@ -117,4 +117,50 @@ describe("menu API", () => {
     expect(second.status).toBe(200);
     expect(second.body.iceCream.name).toBe("Cherry Blast");
   });
+
+  const newMenuItem = {
+    iceCream: { id: 0 },
+    inStock: true,
+    quantity: 4,
+    price: 1.25,
+    description: "A test scoop",
+  };
+
+  test("an add after a delete does not reuse a live menu id", async () => {
+    const app = createApp();
+    await request(app, "DELETE", "/api/menu/3");
+    const before = await request<{ id: number }[]>(app, "GET", "/api/menu");
+    const added = await request<{ id: number }>(
+      app,
+      "POST",
+      "/api/menu",
+      newMenuItem,
+    );
+    expect(before.body.map((item) => item.id)).not.toContain(added.body.id);
+
+    const raspberryPi = await request<{ iceCream: { name: string } }>(
+      app,
+      "GET",
+      "/api/menu/7",
+    );
+    expect(raspberryPi.body.iceCream.name).toBe("Raspberry Pi");
+    const fetched = await request<{ iceCream: { name: string } }>(
+      app,
+      "GET",
+      `/api/menu/${added.body.id}`,
+    );
+    expect(fetched.body.iceCream.name).toBe("Stripey Madness");
+  });
+
+  test("an add does not reuse the id of a deleted menu item", async () => {
+    const app = createApp();
+    await request(app, "DELETE", "/api/menu/7");
+    const added = await request<{ id: number }>(
+      app,
+      "POST",
+      "/api/menu",
+      newMenuItem,
+    );
+    expect(added.body.id).not.toBe(7);
+  });
 });

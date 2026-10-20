@@ -96,6 +96,9 @@ export function createApp() {
     },
   ];
 
+  // Never reuse an id, even a deleted one, so a stale URL cannot open another item.
+  let nextMenuId = Math.max(...menuData.map((item) => item.id)) + 1;
+
   const getAvailableStock = () =>
     iceCreams.filter(
       (iceCream) =>
@@ -126,7 +129,7 @@ export function createApp() {
   app.post("/api/menu", (req, res) => {
     const { iceCream, ...rest } = req.body;
     const newMenuItem = {
-      id: menuData.length + 1,
+      id: nextMenuId++,
       iceCream: {
         ...iceCreams.find((item) => item.id === parseInt(iceCream.id, 10)),
       },
