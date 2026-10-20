@@ -175,6 +175,13 @@ describe("menu API", () => {
       expect(await specials(app)).toEqual([]);
     });
 
+    test("put on a missing id leaves the current special unchanged", async () => {
+      const app = createApp();
+      await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));
+      await request(app, "PUT", "/api/menu/999", input(2, { isSpecial: true }));
+      expect(await specials(app)).toEqual([1]);
+    });
+
     test("put without isSpecial keeps it, and post without it stores false", async () => {
       const app = createApp();
       await request(app, "PUT", "/api/menu/1", input(1, { isSpecial: true }));

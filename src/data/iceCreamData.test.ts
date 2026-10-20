@@ -23,8 +23,8 @@ describe("ice cream data", () => {
   test("sorts the menu by ice cream name", async () => {
     fetchMock.mockResolvedValue(
       jsonResponse([
-        { iceCream: { name: "Mint Stack" } },
-        { iceCream: { name: "Cherry Blast" } },
+        { iceCream: { name: "Mint Stack" }, isSpecial: false },
+        { iceCream: { name: "Cherry Blast" }, isSpecial: false },
       ]),
     );
 

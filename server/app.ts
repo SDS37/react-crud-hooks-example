@@ -208,7 +208,9 @@ export function createApp() {
       res.send({ error });
       return;
     }
-    clearOtherSpecials(updatedItem);
+    if (stored) {
+      clearOtherSpecials(updatedItem);
+    }
     menuData = menuData.map((menuItem) => {
       if (menuItem.id === parseInt(req.params.id, 10)) {
         return updatedItem;
