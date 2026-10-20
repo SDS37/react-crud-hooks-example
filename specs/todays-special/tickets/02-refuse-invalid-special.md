@@ -4,7 +4,7 @@
 
 **Blocked by:** 01: Mark a menu item as the special through the API
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] A non-boolean `isSpecial` on `POST` and on `PUT` returns 400 and leaves the menu unchanged.
 - [x] `isSpecial: true` with `inStock: false` returns 400 on `POST` and on `PUT`.
