@@ -48,6 +48,14 @@ const cardContentStyle = css`
     }
   }
 
+  p.special {
+    width: 100%;
+    margin: 0 0 0.5em 0;
+    font-size: 0.875em;
+    font-weight: bold;
+    color: #403147;
+  }
+
   p.description {
     width: 100%;
     margin-top: 1em;
@@ -89,7 +97,15 @@ const Menu = () => {
       {menu.length > 0 ? (
         <IceCreamCardContainer>
           {menu.map(
-            ({ id, iceCream, price, description, inStock, quantity }) => (
+            ({
+              id,
+              iceCream,
+              price,
+              description,
+              inStock,
+              quantity,
+              isSpecial,
+            }) => (
               <IceCreamCard
                 key={id.toString()}
                 iceCreamId={iceCream.id}
@@ -97,6 +113,7 @@ const Menu = () => {
                 heading={iceCream.name}
               >
                 <div css={cardContentStyle}>
+                  {isSpecial && <p className="special">Today&apos;s special</p>}
                   <p className="price">{`$${price.toFixed(2)}`}</p>
                   <p className={`stock${inStock ? "" : " out"}`}>
                     {inStock

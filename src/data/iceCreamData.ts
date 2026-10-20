@@ -10,6 +10,7 @@ export type MenuItem = {
   quantity: number;
   price: number;
   description: string;
+  isSpecial: boolean;
 };
 
 type MenuItemInput = {
@@ -18,6 +19,7 @@ type MenuItemInput = {
   quantity: number;
   price: number;
   description: string;
+  isSpecial?: boolean;
 };
 
 type RequestOptions = {
@@ -54,6 +56,9 @@ const requestJson = async <T>(
 export const getMenu = ({ signal }: { signal?: AbortSignal } = {}) =>
   requestJson<MenuItem[]>("/api/menu", { signal }).then((data) =>
     data.sort((a, b) => {
+      if (a.isSpecial !== b.isSpecial) {
+        return a.isSpecial ? -1 : 1;
+      }
       if (a.iceCream.name < b.iceCream.name) {
         return -1;
       }

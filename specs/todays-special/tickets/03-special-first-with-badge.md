@@ -4,9 +4,9 @@
 
 **Blocked by:** 01: Mark a menu item as the special through the API
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A `getMenu` test, like "sorts the menu by ice cream name", shows the special first and the rest in name order.
-- [ ] With no special the order is unchanged.
-- [ ] The special's card shows the text "Today's special", and no other card does.
-- [ ] Every check in `docs/DoD.md` exits 0.
+- [x] A `getMenu` test, like "sorts the menu by ice cream name", shows the special first and the rest in name order.
+- [x] With no special the order is unchanged.
+- [x] The special's card shows the text "Today's special", and no other card does.
+- [x] Every check in `docs/DoD.md` exits 0.
