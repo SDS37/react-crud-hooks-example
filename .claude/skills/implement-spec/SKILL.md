@@ -36,6 +36,6 @@ Communication to and from subagents should be sparse. Communicate primarily thro
 
 7. Once all tickets are complete, call the Skill tool with `code-review` on the integration branch. Fix the findings in one subagent, then run `test-runner` again.
 
-8. If a draft pull request exists, mark it ready for review with the body from the `pr` skill. Report the integration branch.
+8. If a draft pull request exists, report the integration branch and ask the user to run `/pr` to write the body and mark it ready.
 
 9. Clean up all **subagent** worktrees.

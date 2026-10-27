@@ -14,4 +14,4 @@ Call the Skill tool with "tdd" at the seams the spec already names.
 
 Run the checks through the `test-runner` skill: the focused file as you go, then every check in `docs/DoD.md` and any extra check the spec names. Do not edit an assertion the spec says to keep.
 
-Once `test-runner` reports GREEN, call the Skill tool with "code-review". Commit only after that report has no Blocking finding. The message shape is in `docs/commits.md`. Then call the Skill tool with "pr" and open the pull request with `gh`.
+Once `test-runner` reports GREEN, call the Skill tool with "code-review". Commit only after that report has no Blocking finding. The message shape is in `docs/commits.md`. Then ask the user to run `/pr` to open the pull request.

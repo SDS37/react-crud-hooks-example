@@ -1,6 +1,7 @@
 ---
 name: pr
 description: Use when writing a PR body.
+disable-model-invocation: true
 ---
 
 Open the pull request with `gh pr create` from a branch off the default branch. Do not commit directly to it.

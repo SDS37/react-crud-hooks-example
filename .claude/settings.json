@@ -17,17 +17,36 @@
       "Bash(npx playwright *)",
       "Bash(npx ctx7@latest *)",
       "Bash(npx ctx7 *)",
-      "Bash(gh *)",
+      "Bash(gh pr *)",
+      "Bash(gh run *)",
+      "Bash(gh repo view *)",
       "mcp__codegraph__*"
     ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Edit(./.env)",
-      "Edit(./.env.*)",
-      "Write(./.env)",
-      "Write(./.env.*)"
-    ]
+    "ask": [
+      "Bash(gh pr merge *)",
+      "Bash(gh pr close *)",
+      "Bash(gh run cancel *)",
+      "Bash(gh run delete *)"
+    ],
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Edit(./.env)", "Edit(./.env.*)"]
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": false,
+    "allowUnsandboxedCommands": false,
+    "excludedCommands": ["gh *", "git fetch *", "git pull *", "git push *"],
+    "filesystem": {
+      "allowWrite": ["~/.npm"]
+    },
+    "network": {
+      "allowLocalBinding": true,
+      "allowedDomains": [
+        "github.com",
+        "api.github.com",
+        "*.npmjs.org",
+        "context7.com"
+      ]
+    }
   },
   "hooks": {
     "PreToolUse": [

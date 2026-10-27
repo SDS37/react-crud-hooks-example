@@ -9,8 +9,20 @@ import sys
 FORMATTED_EXTENSIONS = {".js", ".jsx", ".ts", ".tsx", ".json", ".css", ".scss"}
 
 
-def emit(payload):
-    json.dump({"hookSpecificOutput": payload}, sys.stdout)
+def emit_block(reason):
+    json.dump({"decision": "block", "reason": reason}, sys.stdout)
+
+
+def emit_context(text):
+    json.dump(
+        {
+            "hookSpecificOutput": {
+                "hookEventName": "PostToolUse",
+                "additionalContext": text,
+            }
+        },
+        sys.stdout,
+    )
 
 
 def main():
@@ -32,13 +44,7 @@ def main():
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
     prettier = os.path.join(root, "node_modules", ".bin", "prettier")
     if not os.path.isfile(prettier):
-        emit(
-            {
-                "hookEventName": "PostToolUse",
-                "decision": "block",
-                "reason": "Prettier is missing. Run npm install before editing.",
-            }
-        )
+        emit_block("Prettier is missing. Run npm install before editing.")
         return
 
     with open(path, "rb") as handle:
@@ -51,26 +57,18 @@ def main():
     )
     if result.returncode != 0:
         detail = (result.stderr or result.stdout or "prettier failed").strip()
-        emit(
-            {
-                "hookEventName": "PostToolUse",
-                "decision": "block",
-                "reason": "Prettier rejected the file. Fix it before continuing.\n"
-                + detail,
-            }
+        emit_block(
+            "Prettier rejected the file. Fix it before continuing.\n" + detail
         )
         return
 
     with open(path, "rb") as handle:
         after = handle.read()
     if before != after:
-        emit(
-            {
-                "hookEventName": "PostToolUse",
-                "additionalContext": "Prettier reformatted "
-                + path
-                + ". Re-read the file before the next edit.",
-            }
+        emit_context(
+            "Prettier reformatted "
+            + path
+            + ". Re-read the file before the next edit."
         )
 
 
